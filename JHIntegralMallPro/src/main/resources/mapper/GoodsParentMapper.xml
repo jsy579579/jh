@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.GoodsParentDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.GoodsParent">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="goods_parent_name" jdbcType="VARCHAR" property="goodsParentName" />
+		<result column="create_time" jdbcType="DATE" property="createTime" />
+		<result column="change_time" jdbcType="DATE" property="changeTime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="business_id" jdbcType="INTEGER" property="businessId" />
+	</resultMap>
+	<!--获取全部父分组 -->
+	<select id="selectParent" resultMap="BaseResultMap">
+		select * from t_goods_parent
+	</select>
+	
+<!-- 	<select id=""></select>
+	查看商品是否存在此父分组
+	<select id=""></select>
+	添加父分组
+	<insert id=""></insert>
+	删除父分组
+	<update id=""></update>  -->
+
+
+</mapper>

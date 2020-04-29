@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css"/>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('plusready', function () {
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+        });
+    </script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        label {
+            width: 10%;
+        !important
+        }
+
+        input {
+            height: 35px;
+        }
+
+        input[type=text] {
+            border: 0;
+
+        }
+
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=password] {
+            border: 0;
+        }
+
+        input[type=button] {
+            border: 0;
+        }
+
+        #mis h3 {
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 20px;
+        }
+
+        .city {
+            height: auto;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        .city input[type=text] {
+            margin: 0;
+
+        }
+
+        .city input:nth-child(2) {
+            border-bottom: 1px solid #ebebeb;
+
+        }
+
+        .text {
+            width: 100%;
+            color: #FF9A4A;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+
+        .select {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .select select {
+            width: 49%;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .mui-table-view:after {
+            background-color: #fff;
+        }
+
+        .mui-table-view:before {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body style="padding: 0 15px">
+<script>
+		try{
+			window.android.invokeMethod(0,["确认充值信息","true"])
+				}catch(e){
+			console.log(e)
+		}
+	</script>
+<header class="mui-bar mui-bar-nav" style="background:#37c3e7">
+    <h1 class="mui-title" style="color:#fff;">确认绑定信息</h1>
+</header>
+	<form method="get" class="mui-table-view-cell" action="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/tobindcardmessage" >
+<div style="margin:60px 0px 10px 0px;border-radius:5px;background: none;">
+    <div class="mui-input-row">
+        <input id="topname" type="text" th:value="${bankName}" disabled="disabled" name="bankName" placeholder="充值卡银行名称"/>
+       <!--  <input id="pro" style="display:none" type="text" name="province" th:value="${province}" />
+        <input id="cit" style="display:none" type="text" name="city" th:value="${city}" /> -->
+        <input id="bname" style="display:none" type="text" name="bankBranchName" th:value="${bankBranchName}" />
+    </div>
+</div>
+<div>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media">
+            <a href="javascript:;">
+                <img class="mui-media-object mui-pull-left"
+                     src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png"/>
+                <div class="mui-media-body">
+                    充值卡卡号
+                    <p class='mui-ellipsis' id="ka"  th:text="${bankNo}"></p>
+                    <input id="ka2" type="hidden" name="bankNo" th:value="${bankNo}" placeholder=""/>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="select">
+    <select name="" id="province">
+        <option id="province2" name="province"  th:value="${province}"   >请选择所在省份</option>
+    </select>
+    <select name="" id="city">
+        <option id="city2" th:value="${city}" name="city">请选择所在市/区</option>
+    </select>
+</div>
+<select name="" id="branch">
+    <option id="branch2" name="bankBranchName"  value="" >请选择充值卡银行支行</option>
+</select>
+<input type="text" placeholder="请输入充值卡银行支行名称" style="display:none" id="handdown"/>
+<div class="city">
+    <div>
+        <span></span>
+        <input style="display:none" type="text" placeholder="支行联行号" name="bankBranchId" th:value="${bankBranchId}" id="branchno"/>
+    </div>
+</div>
+    <div>
+        <span></span>
+        <input style="display:none" type="text"  name="expiredTime" th:value="${expiredTime}" id="exp"/>
+         <input style="display:none" type="text"  name="isRegister" th:value="${isRegister}" id="isregister"/>
+        <input type="text" placeholder="充值卡有效期"  id="expiredTime"/>
+    </div>
+    <div>
+        <span></span>
+        <input style="display:none" type="text" name="securityCode"  th:value="${securityCode}" id="sec"/>
+        <input type="text" placeholder="充值卡安全码"  id="securityCode"/>
+    </div>
+    <input style="display:none" type="text" name="securityCode"  th:value="${securityCode}" id="companyType"/>
+<input style="display:none" type="text" name="expiredTime"  th:value="${expiredTime}" id="expiredTime"/>
+<input style="display:none" type="text" name="bankBranchName"  th:value="${bankBranchName}" id="bankBranchName"/>
+<input style="display:none" type="text" name="bankBranchId"  th:value="${bankBranchId}" id="bankBranchId"/>
+<input style="display:none" type="text" name="province"  th:value="${province}" id="province"/>
+<input style="display:none" type="text" name="city"  th:value="${city}" id="city"/>
+<input style="display:none" type="text" name="bankName"  th:value="${bankName}" id="bankName"/>
+<input style="display:none" type="text" name="amount"  th:value="${amount}" id="amount"/>
+<input style="display:none" type="text" name="ordercode"  th:value="${ordercode}" id="ordercode"/>
+ <input style="margin:0 auto;display:block;width:100%;height:40px;background:#37c3e7;border:0;" type="submit" value="确定并充值"/>
+<p class="text">提醒：您正在进行一笔消费交易，请认真核实并确保银行卡信息不能透露给别人！</p>
+</form>
+
+<script  type="text/javascript">
+    $(function () {
+    	var bname = $("#bname").val();
+		var pro = $("#pro").val();
+		var cit = $("#cit").val();
+		var sec = $("#sec").val();
+		var exp = $("#exp").val();
+		console.log(exp)
+		if($("#branchno").val()==""){
+			$("#branchno").val("null")
+		}
+		
+	/* 	if(bname != "null"){
+			$("#province2").text(pro);
+			$("#city2").text(cit);
+			$("#branch2").text(bname);
+		}
+		if(bname == ""){
+			$("#province2").text("请选择所在省份");
+			$("#city2").text("请选择所在市/区");
+			$("#branch2").text("请选择充值卡银行支行");
+		}
+		 */
+		 /*   判断是否显示传入的值*/
+		 var province2=$("#province2").val()
+         var city2=$("#city2").val()
+         var branch2=$("#branch2").val()
+		 if(province2 != "" && city2 =="" && branch2==""){
+			$("#province2").text()
+		}
+         if(province2 != "" && city2 !="" && branch2!=""){
+            $("#province2").text(province2)
+            $("#city2").text(city2)
+            $("#branch2").text(branch2)
+        }
+        if(province2 != "" && city2 !="" && branch2==""){
+            $("#province2").text(province2)
+            $("#city2").text(city2)
+            $("#branch2").text()
+        }
+          if(province2 == "" && city2 =="" && branch2==""){
+            $("#province2").text()
+            $("#city2").text()
+            $("#branch2").text()
+        }
+          /*   判断是否显示传入的值*/ 
+
+		if(exp != "null"){
+			$("#securityCode").val(sec);
+			$("#expiredTime").val(exp);
+		}
+		if(exp == ""){
+			$("#securityCode").attr("placeholder","请输入充值卡安全码");
+			$("#expiredTime").attr("placeholder","请输入充值卡有效期");
+		}	
+		
+        var str = $('#ka').text()
+        function fun(str) {
+            var arr = str.split('');
+            arr.splice(4, 10, "*", "*", "*", "*", "*", "*", "*", "*", "*", "*");
+            str = arr.join('');
+            $('#ka').text(str)
+        }
+        fun(str);
+        
+        
+        $.ajax({
+            url: 'http://ds.jiepaypal.cn:80/v1.0/user/app/province/queryall',
+            type: 'POST',
+            dataType: 'JSON',
+            success: function (data) {
+                $.each(eval(data.result), function (i, item) {
+                	$("#province").append('<option value="'+item.provinceid+'">'+item.province+'</option>');
+                });
+            },
+            error: function () {
+                console.log('加载数据异常，请重试!');
+            }
+        });
+        function loadDevice(provinceid) {
+            $.ajax({
+                url: 'http://ds.jiepaypal.cn:80/v1.0/user/app/city/queryall',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    provinceid: provinceid
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg == "{[]}") {
+                        $("#city").empty();
+                    } else {
+                        $("#city").empty();
+                        $("#city").append('<option value="">请选择所在市/区</option>');
+                        $.each(eval(msg.result), function (i, item) {
+                            if (item.area == undefined) {
+                                item.area = item.city;
+                            }
+                            if (item.areaid == undefined) {
+                                item.areaid = item.cityid;
+                            }
+                            $("#city").append('<option value="'+item.areaid+'">'+item.area+'</option>');
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('加载数据异常，请重试!');
+                }
+            });
+        }
+        
+        $("#province").change(function () {
+            loadDevice($("#province").val());
+        });
+        
+        var provinces=$("#province2").val();
+   	 	var citys=$("#city2").val();
+        var branch2=$("#branch2").val()
+        if(provinces !="" &&citys !="" && branch2 !=""){
+            $("#province2").text(province2)
+            $("#citys").text(citys)
+            $("#branch2").text(branch2)
+        }
+		if(provinces == "" && citys == ""){
+			$('#city').change(function () {
+	            var province = $('#province option:selected').text();
+	            var city = $('#city option:selected').text();
+	            var topname = $('#topname').val();
+	            console.log(province)
+	            console.log(city)
+	            console.log(topname)
+	            $.ajax({
+	                url: 'http://ds.jiepaypal.cn:80/v1.0/paymentchannel/branchbank/query',
+	                datatype: 'json',
+	                type: 'POST',
+	                data: {
+	                    province: province,
+	                    city: city,
+	                    bankBranchname: topname
+	                },
+	                success: function (msg) {
+	                    console.log(msg)
+	                    if (msg.resp_code == "999999") {
+	                    	alert("暂不支持该银行卡");
+	                    	$('#province option:selected').text("请选择所在省份");
+	                    	$('#city option:selected').text("请选择所在市/区");
+	                    } else {
+	                        $("#branch").empty();
+	                        $("#branch").append('<option value="">请选择收款卡银行支行</option>');
+	                        $.each(eval(msg.result), function (i, item) {
+	                            console.log(item)
+	                            $("#branch").append('<option value="'+item.bankBranchno+'">'+item.bankBranchname+'</option>');
+	                        });
+	                    }
+	                },
+	                error: function (data) {
+	                    console.log('失败')
+	                }
+	            });
+	        });
+		}
+		if(provinces !="" &&citys !="" && branch2 ==""){
+	            var province = $('#province option:selected').text();
+	            var city = $('#city option:selected').text();
+	            var topname = $('#topname').val();
+	            console.log(province)
+	            console.log(city)
+	            console.log(topname)
+	            $.ajax({
+	                url: 'http://ds.jiepaypal.cn:80/v1.0/paymentchannel/branchbank/query',
+	                datatype: 'json',
+	                type: 'POST',
+	                data: {
+	                    province: province,
+	                    city: city,
+	                    bankBranchname: topname
+	                },
+	                success: function (msg) {
+	                    console.log(msg)
+	                    if (msg.resp_code == "999999") {
+                            alert("暂不支持该银行卡！");
+                            $('#provinceOfBank option:selected').text("请选择所在省份");
+                            $('#cityOfBank option:selected').text("请选择所在市/区");
+                        } else {
+	                        $("#branch").empty();
+	                        $("#branch").append('<option value="">请选择收款卡银行支行</option>');
+	                        $.each(eval(msg.result), function (i, item) {
+	                            console.log(item)
+	                            $("#branch").append('<option value="'+item.bankBranchno+'">'+item.bankBranchname+'</option>');
+	                        });
+                        }
+	                },
+	                error: function (data) {
+	                    console.log('失败')
+	                }
+	            }); 
+		}
+		 if(provinces != ""  && citys == ""  && branch2 ==""){
+             $("#province2").text()
+              $('#city').change(function () {
+              var province = $('#province option:selected').text();
+              var city = $('#city option:selected').text();
+              var topname = $('#topname').val();
+              console.log(province)
+              console.log(city)
+              console.log(topname)
+              $.ajax({
+                  url: 'http://ds.jiepaypal.cn:80/v1.0/paymentchannel/branchbank/query',
+                  datatype: 'json',
+                  type: 'POST',
+                  data: {
+                      province: province,
+                      city: city,
+                      bankBranchname: topname
+                  },
+                  success: function (msg) {
+                      console.log(msg)
+                      if (msg.resp_code == "999999") {
+                          alert("暂不支持该银行卡");
+                          $('#province option:selected').text("请选择所在省份");
+                          $('#city option:selected').text("请选择所在市/区");
+                      } else {
+                          $("#branch").empty();
+                          $("#branch").append('<option value="">请选择充值卡银行支行</option>');
+                          $.each(eval(msg.result), function (i, item) {
+                              console.log(item)
+                              $("#branch").append('<option value="'+item.bankBranchno+'">'+item.bankBranchname+'</option>');
+                          });
+                      }
+                  },
+                  error: function (data) {
+                      console.log('失败')
+                  }
+              });
+          });
+      }
+        
+         
+        $("#btn").click(function () {
+        	var companyType =$("#companyType").val()
+        	var creationDate =$("#creationDate").val()
+        	if($("#handdown").val()==null||$("#handdown").val()==""){
+            	var bankName = $("#branch option:selected").text();
+        	}else{
+        		var bankName = $("#handdown").val();
+        	}
+            var bankNo = "111111111111";
+            if($("#branchno").val()!="null"){
+            	bankNo = $("#branchno").val();
+            }else{
+            	bankNo = $("#branch option:selected").val();
+            }
+            var topName = $("#topname").val();
+            var amount = $("#amt").text();
+            var ordercode = $("#ordercode").text();
+            var province = $("#province option:selected").text();
+            var city = $("#city option:selected").text();
+            var expiredTime = $("#expiredTime").val();
+			var securityCode = $("#securityCode").val();
+	        if(bankName=="请选择充值卡银行支行"||province=="请选择所在省份"||city=="请选择所在市/区"||expiredTime==""||securityCode==""){
+	                alert("请完整信息！");
+	                return;
+	            }
+	        $("#btn").attr("disabled", "disabled");
+	 		$("#btn").css({background:'#999'})
+			$("#btn")[0].innerText="正在加载中..."
+	        var banknum = $("#ka2").val();
+	        if(bname=="null"||bname==""){
+	        	$.ajax({
+	        		url: "http://ds.jiepaypal.cn:80/v1.0/user/bank/update/cardno",
+	        		type: "post",
+	        		data: {
+		                    securityCode: securityCode,
+		                	expiredTime: expiredTime,
+		                    bankBranchName: bankName,
+		                    bankBranchId: bankNo,
+		                    province: province,
+		                    city: city,
+		                    bankno: banknum
+		                },
+		             success:function(data){
+	
+		             },
+		             error: function(data){
+		             }
+	        	});
+	        }
+        });  
+	       /*  var isRegister= $("#isregister").val();
+	        
+				var url="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/tobindcardmessage";
+				var type="POST";
+				  $.ajax({
+		                url: url,
+		                type: type,
+		                dataType: 'JSON', 
+		                data: {
+		                    securityCode: securityCode,
+		                	expiredTime: expiredTime,
+		                    bankBranchName: bankName,
+		                    bankBranchId: bankNo,
+		                    province: province,
+		                    city: city,
+		                    bankName: topName,
+		                    amount: amount,
+		                    ordercode: ordercode,   
+		                },
+		                success: function (data) {
+		                	console.log(data)
+		                if(data.resp_code=="success"){
+		            		turntopage(data.redirect_url)
+		            	}else{
+		            		alert("商户注册失败")
+		            	} 
+		                },
+		                error: function (data) {
+		                	console.log(data)
+		                    alert("充值失败");
+		                    $('#btn').removeAttr("disabled");
+		                    $("#btn").css({background:'#37c3e7'})
+							$("#btn")[0].innerText="确定并充值"
+		                }
+		            });
+                }); */
+        function turntopage(url){
+			mui.openWindow({
+			url:url,
+			});
+        }
+      }); 
+</script>
+</body>
+</html>

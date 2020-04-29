@@ -1,0 +1,131 @@
+redis:
+  host: 127.0.0.1
+  port: 6379
+  timeout: 0
+  database: 0
+  pool:
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 0   
+ld:
+    cerpath1: E:\ldboqi.cer
+    cerpath2: E:\1107.cer
+    jkspath: E:\1107.jks  
+payment:  
+  ipAddress: http://192.168.1.6
+ap:
+  keyStorePath: D:\11909061520274.pfx
+bq:
+    cerpath: D:\boqi\key\boqi.cer
+    jkspath: D:\boqi\key\mcht\1125.jks
+bqx:
+    cerpath: D:\boqi\key\boqi.cer
+    jkspath: D:\boqi\key\1126.jks
+    
+ytjf:
+  merchantId: 888201710260125
+  datekey: Y048q1A545MZyK44
+  payUrl: http://cashier.etonepay.com
+  encode: utf-8 
+  path: D:/box/rsa_public_key.pem
+#全民付移动c扫b 接口公共参数配置
+ys:
+  #银商平台接口地址
+  url: https://qr-test2.chinaums.com/netpay-route-server/api/
+  #商户号
+  mid: 898340149000005
+  #终端号
+  tid: 88880001
+  #机构商户号
+  instMid: QRPAYDEFAULT
+  #来源系统
+  msgSrc: WWW.TEST.COM
+  #通讯秘钥
+  key: fcAmtnx7MwismjWNhNKdHC44mNXtnEQeJkRrhKJwyrW2ysRR
+  #全民付移动c扫b 获取二维码接口参数配置
+  #消息类型:获取二维码
+  msgType_getQRCode: bills.getQRCode
+yswg:
+  rootpath: D:\certs\
+xs:
+  #新生支付通道请求地址
+  base_url: http://122.112.196.222:7000/sdk/action
+  #机构号
+  Merchantsip: localhost
+  Merchants: 809115
+  kyes: e10adc3949ba59abbe56e057f20f883e
+  orgno: 1810185517791881
+  #商户号
+  merno: 611810185517122
+  #商户蜜钥
+  key: d0d366d8357078365dc678d9777013be
+  #密钥路径
+  private_path: /product/deploy/xs/1810185517791881-rsa-private.pem
+
+kq:
+   jkspath: '/product/deploy/kq/81231004816105690.jks'
+ryt:
+  url: http://unionpay.rytpay.com.cn
+  appId: 4028e4a262fbf5830162fbf9896d0002
+  pub_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCU0I4mSCj7JVAbA+g/whcIWGYMYh0zcIzi9mOGu9LY9E1QfLOsekXrpADcQKHZ6cx3E3KmGcNFDZNU+vz+VMdWRkgkY6fx1KvympQRuFeWylVUIHqAqUTBMR56anF0JL5QpfZq2Q1mYPFQPhRvsKLBWUX191NcCGrA6B56yr20XQIDAQAB
+jftx:
+  requestURL: https://payfor.jfpays.com/rest/v1/api/
+  partnerNo: ta7E6dop70WE
+  public_key: /product/deploy/jftx/jfdf_rsa_pub_key.pem
+  private_key: /product/deploy/jftx/xinli_rsa_private_key_pkcs8.pem
+unsxinli:
+    accountId: 2120180316165901001
+    payUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/pay
+    queryUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/queryOrderStatus
+    key: '00juhexinli'
+brandid:
+  blacklist: -蚂蚁窝-骆驼管家-轻松花-多一点卡管家-
+  inblacklisterrortip: requestError
+withdraw:
+  key: df10ef8509dc176d733d59549e7dbfaf
+np:
+  address: 'http://internetpay.naxinpay.com:8010'
+gbp:
+  clientIp: '139.196.125.48'
+  language: 'zh_CN'
+  tempZipFilePath: 'D:\xl\fugui.com\oldcangjingge\kft_tempzip'
+  severDomain: 'merchant.kftpay.com.cn'
+  severPort: '8443'
+  keyStoreType: 'PKCS12'
+  keyStorePath: 'D:\pfx.pfx'
+  keyStorePassword: 'ahzf0312A'
+  alias: ''
+  keyPassword: 'ahzf0312A'
+kft:
+  clientIp: '139.196.125.48'
+  connectionTimeoutSeconds: '60'
+  responseTimeoutSeconds: '600'
+  kftSeverDomain: 'merchant.kftpay.com.cn'
+  kftSeverPort: '8443'
+  merchantId: '2019072903322439'
+  merchantIdXe: '2019071900100098'
+  version: '1.0.0-PRD'
+ybgj:
+  myPrivateKey: 'MIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQDKjlt3PWoBbchL2nLv1QP18vTmtS9gZiDIzUFJlB6Z8tvRpO27qvirJMMTSollDtUmNw1uFdkgWzOuimbjd1fNvxJ3Hb5LJ1caWQaqNslIwlkuwOQJKnvCpCtqFLwuMT7T5JvA486rXn7aGtZ+1pjr0ZbSUJfwJkEJlr7Wv5FB2UCMNV5nhvP6iAm+BAr/BUnTM4LH17BCFOSNs9pPZw3xONiivwuR5tOfWJzMDF8G9G8GfwcMdI+Jgydmd1LETQ874rWiFGcqkiq/YXUfVDMYR6v48vZ9GroEbvV2Vdlervmrct96INt8PPFyyOvJTIkH7/TgLaItyKA1KdTbW8FbAgMBAAECggEBAIx9BkWCzBZnnWe3AMcFeLTKqT+m5VA4JX8AlcrBuCPQxNP4T4c9gzG40rB7nyX/jqjtwBvdfXYqq4LgrZIRAU5LuzPw5j5b79bvbmb6jssvOQnrcX5GAAa1NQNjlE15jHkM81Zq6roDVXpS6PiaQQA2oyQGEAvZjHxpGL37qnT/S8NV1Uhzz7GO3UPfyrxM7HnWjQ5aHr5nju6JMLYJYIOCq/48vUQloLOPTSP4mTaWPrxAhCCeXshe/ie1VfnpBZtKvQRbBIU5zl1Z3jqycGJkvCIc9/ugD8MVsmjRdjkAJcMfgCZqNr2TcmANFUgMzlnWyLxrs2LkBOJMxnXJAYECgYEA+bMdwqVDtmlWgOc28pppO/o28nnEVkCAPgBM/iF9UrfIlY0K6gO6jfHI6yExx20sI0q2cYgkfT8SYYjtO17rrnk1Mt1zAZIkNyQwJnRZEbjumxF6r26T6HOswmto9t7rcI04TlTGkjbIhkdhl1YDNgWJuRE7bz459i4lR6EwwEECgYEAz6q6CSy0s2hqQq2DV2+8Dlml7wjqEaNsk9Hp6Iu6vD0e6sPg7iuO5k46uI8yZhbZMJoGNOZsj6o5aG7hVm1meNLw3fuGWlu7cZ1MMlGzG82r4ArTnDmsNmkEWuQzaGEIqdaRApikY/TmZ2BellUCM6n6IYAbkRIEURYBnPcg2psCgYEA7RagdFfdMk9UnnJr3vC0aQmMsLDjto3p9nTspgQAbdEpOK7CJS7DLNHd1zweet/zH9Np5eTB2NZRSqDruArJt1FJLPHNqDkt/9lxiqHAjK5OiJiRKA/TisyCxducv4MshCLiyqV+Igi4X59ZT4uQ4vNhMILnLxojiNeJ+DhaBMECgYEAmC+pvmeA1anDlbHK+xzrWCjirdZ+kwaM35eKL92Wr7SrH6kFAgXx512VMwPeD2rXKAL4YXQsQuygvaPkh44M9qa/1i4qO7XWHGEGIio1dD65oqrMgUTSq90yT9nEws25p52TD7AFaStkXoYFS25o+quqnzpe+WWWvEXAUOPas9kCgYEAu59klu0krgeYrWM/ULvM/yvhyN1KMuWBjlMHVacCCSraoh9rlafar650aEedj3j1pDOMATT4fi6QrTao3MkWdPnCaWPUNW9CXJ3L6TS2Ru8nC0wErdevnMZ55kqfXYoT00ZRGcX43RhaTYJ6HLmpCD7xfYeqHAYMeP8T44aIWT8='
+  publicKeyPartner: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6n5kl0KbwksRGSTvLvxTmMSWhzxluYUU2Zm4YRcpik1TvId96j3kN8I+5z0oVah+RSl1eGR/+K8LbFfqYEXwgo6nGhoI+GEsbInKlnBGSu9skmJMWhfLIPjBU9CG31OLllK/Vfw+Hz3ubmTasymH/GfdXmf4TTGO5l2uwtIVl4yej/WwYsXBxNZzSVSvV8GEigf2hUBdZxY2rsH2DOjPOs2rbhsXydPdcfs9ZCXb0Bi5Tn6ex/mnAQuquoTdjQKK8+ZQ/AGZxOlC2pcGjXiuy/FMrSYY0Zqb/KouCfX/nvRFcQ+WXjW0r/Lfu5KXBVGLL75PCX9ragfgxIgL1Hz88wIDAQAB'
+  partnerNo: 'YBGJuwBsg2J4'
+hlb:
+  url: 'http://pay.trx.helipay.com/trx/app/interface.action'
+  customerNumber: 'E1801481664'
+  key: 'HUBjTb5ajGHXT5wpEh1oKFDt26rp1rf6'
+  orderIp: '101.132.74.149'
+tl:
+  agentNo: 7013101000002
+  key: qdtaVmtDhIW&ld7%jIBiL@*@5xrgZ@!S
+ldx:
+  partnerNo: 1479089
+  key: ef039901fb01b67e025928a01f818760
+ldd:
+  partnerNo: 1356182
+  key: d9d50859d1f8117f37c4efdeedd75045
+yxe:
+  url: 'http://47.104.220.122:18500'
+  payKey: 'ff604dec92344462b985a3ec02c1ad4a'
+  paySecret: '5cc8fe60d0814a63a79f2eac7a96afc6'
+  platMerchant: 'DEV88882019111310001145'

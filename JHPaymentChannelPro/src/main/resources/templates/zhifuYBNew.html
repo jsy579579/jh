@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css"/>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('plusready', function () {
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+        });
+    </script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+        input {
+            height: 35px;
+        }
+        input[type=text] {
+            border: 0;
+            width: 100%;
+            height: 40px;
+
+        }
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=button] {
+           border: 0;
+            width: 34%;
+            margin-left: 5px;
+            height: 40px;
+
+        }
+         .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+        #phone{
+            width: 100%;
+        }
+    </style>
+</head>
+<body style="padding: 0 15px">
+<script>
+		try{
+			window.android.invokeMethod(0,["确认充值信息","true"])
+				}catch(e){
+			console.log(e)
+		}
+	</script>
+<header class="mui-bar mui-bar-nav" style="background:#37c3e7">
+    <h1 class="mui-title" style="color:#fff;">银联4出款</h1>
+</header>
+ 
+<div class="mui-content" style="margin-top: 10px;">
+    	请输入金额:<input type="text" id="amount" placeholder="请输入金额" />
+       	请输入手机号:<input type="text" id="phone" placeholder="请输入手机号" />
+</div>
+<div class="mui-input-row" style="width:100%;margin:0px auto;">
+    <button id="btn" class="mui-btn mui-btn-primary"
+            style="width:100%;height:40px;padding:10px 0;background:#37c3e7;border:0;">确定
+    </button>
+</div>
+  <div id="show" class="mui-input-row"
+     style="width:50%;position:fixed;top:50%;left:50%;transform: translate(-50%,-50%);z-index: 100;text-align: center;background:rgba(0,0,0,.7);color:#fff; padding: 12px 0;border-radius: 10px;display: none; font-weight: 400;font-size: 14px;"></div>
+        </div>
+
+<script  type="text/javascript">
+	
+    $(function () {
+        var wait = 60;
+        function time(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "获取验证码";
+                wait = 60;
+            } else {
+                o.setAttribute("disabled", true);
+                o.value = "重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                            time(o)
+                        },
+                        1000)
+            }
+        }
+        $("#btn0").click(function () {//获取验证码
+            var phone = $('#phone').val();
+            if (phone == '') {
+                $('#show').html('手机号码不能为空').stop().fadeIn(100)
+                $('#show').fadeOut(2000)
+            } else {
+                time(this);
+                var jsonObj = {
+					"mch_id":mchno,
+					"out_trade_no":ordercode,
+					"total_fee":amount,
+					"body":desc,
+					"acc_bank_name":bankname,
+					"acct_type":cardType,
+					"acc_name":username,
+					"acc_no":cardno,
+					"mobile":mobile,
+					"id_no":idcard,
+					"bank_code":banknum,
+					"expire_date":expdate,
+					"cvv":cvv,
+					"sign":sign
+				}
+                 $.ajax({
+                     type: 'POST',
+                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/sf/infoback',
+                     data:jsonObj,
+                     datatype: 'json',
+                     success: function (res) {
+                     	console.log(JSON.stringify(res));
+                         if("success"==res.code){
+                     		$("#btn").removeAttr("disabled");
+                         }else{
+                         	alert(res.message);
+                         }
+                     },
+                     error: function (res) {
+                        console.log(res)
+                        alert("请求失败！");
+                     }
+                 });
+            }
+        });
+
+
+        function turntopage(url){
+			mui.openWindow({
+			
+			url:url,
+			
+			});
+			
+		}
+        $('#btn').click(function () {
+			$("#btn").text("请求中...");
+			$('#btn').attr("disabled","disabled");
+			var jsonObj = {
+					"mobile":$('#phone').val(),
+					"realAmount":$('#amount').val()
+				}
+                 $.ajax({
+                     type: 'POST',
+                     url: "http://101.132.160.107/v1.0/paymentchannel/topup/ybnew/byhand",
+                     data:jsonObj,
+                     datatype: 'json',
+                     success: function (res) {
+                     	console.log(res);
+                         if("出款成功"==res){
+                         	alert(res);
+                         	turntopage("http://1.xinli2017.applinzi.com/login/zhufucg.html");
+                         }
+                         else{
+                         	alert(res);
+                         	turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                         }
+                     },
+                     error: function (res) {
+                        turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                     }
+                 });
+        }) 
+
+    });
+</script>
+</body>
+</html>

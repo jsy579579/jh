@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>上传图片</title>
+    <link href="http://fzjobofo.com/link/css/mui.min.css" rel="stylesheet">
+    <style type="text/css">
+        *{padding: 0;margin: 0;}
+        .upload_bg{background: linear-gradient(180deg, #319cee,#48affd,#8ad0f9);width: 100%;height: 140px;}
+        .upload_list{background-color: #fff;margin: -40px 10px 0 10px;border-radius: 8px;}
+        .form_list{padding: 30px 10px;}
+        .upload_input_one {padding: 15px 0 10px 0;border: 1px dashed #d2cccc; width: 160px; text-align: center;margin: 0 auto;}
+        .upload_input_one_des{color: #999;font-size: 14px;}
+        .upload_btn {padding: 30px 0 50px 0;text-align: center;}
+        .upload_btn_submit {background-color: #48affd;color: #fff;border-radius: 5px;width: 90%;padding: 7px 0;margin-left: 5%;}
+        .codeBottom{
+            margin-top: 0.54rem;
+            margin-left: 0.54rem;
+            margin-bottom: 0.3rem;
+            padding:0 0.3rem;
+        }
+    </style>
+</head>
+<body> 
+	<div class="upload">
+        <div class="upload_bg"><h4 style="margin-left: 165px;padding-top: 40px;color: #fff">实名认证资质审核</h4></div>
+        <div class="upload_list">
+            <form class="form_list" id="uploadForm" accept-charset="utf-8" onsubmit="document.charset='utf-8';" enctype="multipart/form-data;charset=utf-8">
+                <div class="mui-input-row">
+                    <label>身份证号</label>
+                    <input type="text" class="mui-input-clear" name="idCard" id="idCard" th:value="${idCard}" placeholder="请输入身份证号">
+                </div>
+                <div class="mui-input-row">
+                    <label>身份证正面照</label> 
+                    <input type="text" name="positiveURL" id="positiveFile" style="display: none">
+                    <!-- <input type="text" name="reverseURL" id="reverseFile" style="display: none"> -->
+                </div>
+                <div class="mui-input-row">
+                   <input type="text" name="orderCode" id="orderCode" th:value="${orderCode}" style="display: none"> 
+                </div>
+                <div class="upload_input_one">
+                    <img id="headPicOne" src="" width="100px" height="100px"> 
+                    <input type="file" name="positiveFile" accept="image/*" id="imageOne" style="display: none;">
+                    <div class="upload_input_one_des">点击上传图片</div>
+                </div>
+                <!--  <div class="upload_input_one" style='border:1px solid #000'>
+                    <img id="headPicTwo" src="" width="100px" height="100px" style="padding: 5px">
+                    <input type="file" name="reverseFile" accept="image/*" id="imgurloTwo" style="display: none;border:1px solid #000">
+                </div> -->
+                <!-- 参数 -->
+                
+                <input type="text" name="ips" id="ips" th:value="${ips}" style="display: none">
+                <input type="text" name="mainCustomerNumber" id="mainCustomerNumber" th:value="${mainCustomerNumber}" style="display: none">
+            </form>
+            <div class="upload_btn">
+                <div id="submit_btn" class="upload_btn_submit">提交</div>
+            </div>
+        </div>
+        <div class="codeBottom">
+        <p>提醒：为了确保您可以进行交易，请补充实名认证资质！</p>
+    	</div>
+	</div>
+    <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+    <script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+	<script type="text/javascript">
+        $(function() {
+            //第一张图片预览
+            $("#headPicOne").click(function () {
+                $("#imageOne").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+                $("#imageOne").on("change",function(e){
+                    var imgurloOne = document.getElementById("imageOne").value;
+                    console.log(imgurloOne)
+                    var objUrlOne = window.URL.createObjectURL(e.target.files[0]) //获取图片的路径，该路径不是图片在本地的路径
+                    console.log(objUrlOne,"1")
+                    $("#positiveFile").val(imgurloOne)
+                    if (objUrlOne) {
+                        $("#headPicOne").attr("src", objUrlOne) ; //将图片路径存入src中，显示出图片
+                    }
+                });
+            });
+            // 第二章图片预览
+           /*  $("#headPicTwo").click(function () {
+                $("#imgurloTwo").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+                $("#imgurloTwo").on("change",function(v){
+                    var objUrlTwo = window.URL.createObjectURL(v.target.files[0])//获取图片的路径，该路径不是图片在本地的路径
+                    var imgurloTwo = document.getElementById("imgurloTwo").value;
+                    console.log(imgurloTwo)
+                    console.log(objUrlTwo,"2")
+                    $("#reverseFile").val(imgurloTwo)
+                    if (objUrlTwo) {
+                        $("#headPicTwo").attr("src", objUrlTwo) ; //将图片路径存入src中，显示出图片
+                    }
+                });
+            }); */
+             //图片上传
+            $("#submit_btn").click(function () {
+                var formData = new FormData($('#uploadForm')[0]);
+                console.log(formData,"formData")
+                if($("#idCard").val() == ""){
+                    mui.toast("身份证号不能为空")
+                    return
+                }
+                if($("#idCard").val().length != 18){
+                    mui.toast("身份证号输入有误")
+                    return
+                }
+                if($("#positiveFile").val() == ""){
+                    mui.toast("图片不能为空")
+                    return
+                }
+                $.ajax({
+                    type: "POST",//请求方式
+                    url:$("#ips").val()+"/v1.0/paymentgateway/quick/ybn/changeAuditing",//接口
+                    dataType: "json",//数据类型
+                    data: formData,
+                    processData: false,  // 关键点
+                    contentType: false,  // 关键点
+                    success: function(res){
+                        console.log(res)
+                        if(res.resp_code=="000000"){
+                            //mui.toast("上传成功");
+                           window.location.href=($("#ips").val()+"/v1.0/paymentgateway/quick/ybn/auditing?ipAddress="+$("#ips").val())
+                        }else{
+                            mui.toast(res.resp_message)
+                        }
+                    }, 
+                    error: function (err) {
+                        console.log(err)
+                        mui.toast("网络走失了吆，请稍后重试")
+                    }
+                 });  
+            });
+        });
+    </script>
+</body>
+</html>

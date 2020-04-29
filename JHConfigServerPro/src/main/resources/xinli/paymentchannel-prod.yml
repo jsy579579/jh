@@ -1,0 +1,157 @@
+withdraw: 
+    secfile:
+        path: /product/deploy/104000000072348-Signature.pfx
+        path2: /product/deploy/yilian.pfx
+        
+topup:
+    secfile:
+        merchant_no: 888440058111002
+        trans_url: https://test.zhongmaopay.com/payment-gate-web/gateway/api/backTransReq
+        public_key_path: /product/deploy/888440058111002_pub.pem
+        private_key_path: /product/deploy/888440058111002_prv.pem
+        private_key_pfx_path: /product/deploy/888440058111002.pfx
+        private_key_pwd: 218525461280
+
+pay:
+    notify:
+        url: http://ds.jiepaypal.cn/v1.0/paymentchannel/pay/zhongmao/notify_call
+        
+payment:
+        ipAddress: http://ds.jiepaypal.cn
+        
+hg:
+    merchant_id: 4000991418
+    mac_key: 7F471CF394A0E371140B4C13A1F6A1FC
+      
+guofu:
+    md5: asdfipkg123
+    syscode: 20000021
+    rsapem: /product/deploy/20000021_rsa_privkey.pem
+    meracct: 9100000014
+    
+swiftpass:
+    req_url: https://pay.swiftpass.cn/pay/gateway
+    download_url: https://download.swiftpass.cn/gateway
+    mercode: 105540022779
+    merkey:  a2e1bd82e2fec0f82b0ebfa19544d36d
+    
+wft:
+    mch_id: 105590030063
+    key: 0be52fc0963cf3a42c30e4c8aa677458
+    req_url: https://pay.swiftpass.cn/pay/gateway
+    
+mima:
+     org_no: ORGAN_XL
+     md5_key: 3F8H7A5X2E7Y7U5D5H9L4M1W
+     base_url: http://flmpay.fuleme.cn/mpcctp/PAYMENT/API/
+     
+kuaijie:
+        req_url: http://dpt.51qmf.cn/ledgerApi.php?m=QuickPay&a=pay
+        merchant_key: 3566t0npsgiu96029x7n8lh5c355g6ka
+        merchant_no: 10000017
+shande:
+       form_url: https://cashier.sandpay.com.cn/qr/api
+       cerpath: /product/deploy/sand.cer
+       pfxpath: /product/deploy/fugui_sand_mid.pfx 
+       pfxpsd: 521134
+ailong:
+    mer_url: http://api.chinagpay.com/bas/BgTrans
+    mer_pay_url: http://remit.chinagpay.com/bas/BgTrans
+    return_msg_url: http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/ailong/pay
+    merId: 929000000081885
+    key: 2dDyjZMA5h5gSp6eZkrtuJ7jCwa274bd
+jifu:
+     yhPubKey: /product/deploy/dbq_rsa_public_key_2048.pem
+     hzfPriKey: /product/deploy/pkcs8_rsa_private_key_2048.pem
+ump:
+    merid: 50211
+    merprikeypath: /product/deploy/50211_.key.p8
+    platcertpath: /product/deploy/cert_2d59.crt
+ypl:
+    keystore_password: yzt20160728
+    privatekey_password: yzt20160728
+    cerpath: /product/deploy/epaylinks_pfx.cer
+    pfxpath: /product/deploy/yzt.pfx
+    url: http://14.23.90.100:8081/mp/trade
+sdj:
+     org_no: 8612102661
+     md5_key: a2azsgf3v3pax7tq
+     base_url: https://quick.jiajiepay.com/api/platform/customer-registry
+     bindcard_url: https://quick.jiajiepay.com/api/bankCard/bindCard
+     pay_url: https://quick.jiajiepay.com/api/quick/quickpay
+     bindcardmessage_url: https://quick.jiajiepay.com/api/sms/openSMS
+     paymessage_url: https://quick.jiajiepay.com/api/sms/comsumeSMS
+     updatet0_url: https://quick.jiajiepay.com/api/platform/trans-rate-modify-t0
+     updatet1_url: https://quick.jiajiepay.com/api/platform/trans-rate-modify
+     cerpath: /product/deploy/sdj.cer
+     jkspath: /product/deploy/sdj.jks
+     password: 123456
+elong:
+       merid: 10009
+       nkey: e2aed75213e8da4fbdb0222c24060937
+       url: http://www.elongpay.com/service/GateWay.aspx
+jfapi:
+       partnerNo: WPReZ5qi
+       key: WPReZ5qi4BDVedf12316745C39eehj98
+       url: http://fast.jfpays.com:19084 
+jfcoin:
+       partnerNo: TOerplMK
+       key: D632AD78D199B0AC8EA1BE796BA76DC6
+       url: http://fast.jfpays.com:19083
+jf:
+     partnerNo: UDp0WZ64
+     key: UD1RDD194BDVDPCCUB56434C39EWZE98
+     url: http://fast.jfpays.com:19083
+yh:
+     org_no: 00000000523685
+     key: bywezRZemVcR
+     registerUrl: http://www.sophiter.com/payment/synmerinfo_faci.do
+     payApplyUrl: http://www.sophiter.com/payment/UnionQuickDtPayApply.do      
+cj:
+     org_no: 10000180
+     key: 5D455C65547C631AAEA7B922E2A428B8AA893FC87533E066   
+xjy:
+      url: http://39.106.15.18/openapi/api/plat/route/rest/getdoform
+      appid: 0a2750a563ba421f96e6571279e15fe0
+      publickey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCUQRngN7UIqrWfzrSEVX9v5lyORfTBZUB8T6wcTRCd9zy0AIY8k/JFwq0xArQHNdCDmAZn8qkuFX1A9bGfCNFMPm2aZYevUbeSKV1dpe9UqSK984k5bQOHk7rwTVCrIBmK/hSwWHarYUKCmEVMw07yLYpyyR9RzWR5slY7JGEr3wIDAQAB
+xjycoin:
+         appid: 12f3b6a17e3e4ea6b35d174de1c0b78f
+         publickey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCbSJWWRh6a7ZHhcijAmqjVkbs5tRltXNEUXfvvmjwgXz5RMzcPzeBI432Wm0Gd+Z2foVTZksqzuiIVyV8KiEWr38TJ0vcaVDYXm0pYpSo4iXKPOiH4EZhSOMUvgozHobkFhrZ7RfBE4AJo/bd0bVzfMshkU4++XFBis0sbpf17QwIDAQAB
+jfshangao:
+           partnerNo: 0Kv0WK7z
+           key: D6NoAYJUqi2zGsJS0V9IRSSwrUtcJmch
+           url: http://fast.jfpays.com:19087
+jfm:
+      org_no:  UGeOSwnA
+      url: http://fast.jfpays.com:19085
+ld:
+    cerpath1: /product/deploy/boqi.cer
+    cerpath2: /product/deploy/1107.cer
+    jkspath: /product/deploy/1107.jks
+    newJkspath: /product/deploy/1109.jks
+lf:
+    registerUrl: http://channel.lifewallet.cn/merchant/create
+    modifyUrl: http://channel.lifewallet.cn/merchant/cardChange
+    sendUrl: http://channel.lifewallet.cn/fastPayRouter/consumeSMS
+    payUrl: http://channel.lifewallet.cn/fastPayRouter/trade
+    updateUrl: http://channel.lifewallet.cn/merchant/resetRate
+zx:
+    hostUrl: http://106.15.192.101:8580
+    aesKey: 7SAaTcbn6pI2m7z3OdpDDRe1oV0LwSvO
+    signKey: plq62ypyGzpolmayE17UXnDdHLaFB0Fv
+    corgId: ShangHaiXinLi
+uns:
+    accountId: 2120180316165901001
+    payUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/pay
+    queryUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/queryOrderStatus
+    key: juhe123456
+hljc:
+     pub: /product/1001055_pub.pem
+     prv: /product/1001055_prv.pem
+zb:
+   appid: '0000002598'
+   appkey: e47c84857fde2d32b163f89347e9ace6
+   pay_url: http://api.palmf.cn/api/cash/apply
+paymentgateway:
+   url: http://101.132.255.217/v1.0/paymentgateway/pay/gateway
+   withdrawKey: df10ef8509dc176d733d59549e7dbfaf

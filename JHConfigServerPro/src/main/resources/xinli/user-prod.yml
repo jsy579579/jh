@@ -1,0 +1,54 @@
+user: 
+    realname: 
+         uploadpath: /mnt/share/nginx/html
+         downloadpath: http://106.15.47.73:8888
+    shops:
+          uploadpath: /mnt/share/nginx/html/shops/
+          downloadpath: http://106.15.47.73:8888/shops/
+    app:
+         dowanloadurl: http://106.15.47.73/v1.0/user/download/app
+         uploadpath: /mnt/share/nginx/html/app/
+         downloadpath: http://106.15.47.73:8888/app/
+    pay:
+         url: http://ds.jiepaypal.cn/v1.0/facade/fixedcode/topup
+    appsys:
+           uploadpath: /mnt/share/nginx/html/appsys/
+           downloadpath: http://106.15.47.73:8888/appsys/
+    background: 
+           uploadpath: /mnt/share/nginx/html/
+           downloadpath: http://106.15.47.73:8888/appbg/
+    exchangecoin: 
+      uploadpath: /mnt/share/nginx/html/coinExchange
+      downloadpath: http://106.15.47.73:8888/coinExchange
+
+version:
+    ios:
+       number: 3.0.1
+    android:
+       number: 3.0.5
+       url: http://106.15.47.73:8888/androidway/zhuandaoqianbao.apk
+
+
+alioss:
+  endpoint: http://oss-cn-shanghai-internal.aliyuncs.com
+  out-endpoint: http://oss-cn-shanghai.aliyuncs.com
+  access_key_id: LTAIyhzaaWidVwG7
+  access_key_secret: wd2LXSDJtfREVRGY2BNeyVf9GGU0ke
+  bucket_name: xinli-juhe
+
+baidu:
+  url: https://aip.baidubce.com/rest/2.0/face/v3/match
+  ak: 1BnCXjjspgpQI2lppkOqdfCm
+  sk: 3tD35EZLoEQfs6yV6vVhg4zAGbmiXpRL
+       
+server: 
+  tomcat: 
+    max-threads: 1000
+
+logging: 
+    level:
+        tk.mybatis: ERROR
+
+spring.jpa.show-sql: false
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 

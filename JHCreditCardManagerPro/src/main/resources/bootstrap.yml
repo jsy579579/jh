@@ -1,0 +1,62 @@
+server:
+  tomcat: 
+    max-threads: 1000
+    
+mysql: 
+  dataBaseName: cardmanager
+
+---
+spring: 
+  profiles: dev
+  application: 
+    name: creditcardmanager
+  jpa:
+    show-sql: true
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 0
+    database: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0  
+  cloud: 
+    config: 
+      label: xinli
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/
+logging: 
+    level:
+      ROOT: INFO
+      org.springframework.web: INFO
+      org: 
+        hibernate: 
+          SQL: INFO
+---
+spring: 
+  profiles: prod
+  application: 
+    name: creditcardmanager
+  jpa:
+    show-sql: false
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 0
+    database: 0
+    pool:
+      max-active: 8
+      max-wait: -1
+      max-idle: 8
+      min-idle: 0  
+  cloud: 
+    config: 
+      label: baiyete
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/
+logging: 
+    level:
+      ROOT: INFO
+      org.springframework.web: INFO

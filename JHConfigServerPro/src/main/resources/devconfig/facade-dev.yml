@@ -1,0 +1,6 @@
+token:
+  secretKey: Yqilai-20160523
+
+payment: 
+        ipAddress: http://localhost
+      

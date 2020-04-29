@@ -1,0 +1,208 @@
+<!DOCTYPE HTML> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<title>交易结果返回</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css">
+<link rel="stylesheet" href="http://1.xinli2017.applinzi.com/login/src/css/layui.css">
+<script src="http://1.xinli2017.applinzi.com/login/src/layui.js"></script>
+<script src="http://1.xinli2017.applinzi.com/login/js/jquery.min.js"></script>
+<style>
+body {
+	margin: 0;
+	background: #fff;
+}
+.mui-table-view:after{
+	background: none;
+}
+.mui-table-view:before{
+	background: none;
+}
+.img{
+	max-width: 100%;
+	height: 150px
+}
+.title{
+	height: auto;
+	width: 64%;
+	text-align: center;
+	margin: 0 auto;
+
+}
+.mui-content{
+	background: #fff;
+}
+.title p{
+	font-size: 14px;
+	color: #666;
+
+}
+#smsCode[placeholder]{
+	font-size: 14px;
+}
+ #show{
+        width: 50%;
+        height: 40px;
+        text-align: center;
+        background: #555555;
+        color: #fff;
+        border-radius: 10px;
+        opacity: 0.8;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -58px;
+        bottom: 0;
+        margin: auto;
+        font-size: 12px;
+        line-height: 40px;
+        display: none;
+        color: #999
+        }
+</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav" style="background: #35a4f5;">
+		<button id="back" style="position:absolute;left:0;top:0;height:44px;background:#000;z-index:1000;opacity:0">返回</button>
+   <a class="mui-action-back iconfont icon-fanhui mui-pull-left" style="color: #fff;font-size: 18px;line-height:44px;"></a>
+    <h1 class="mui-title" style="color: #fff;">支付信息验证</h1>
+</header>
+	<div class="mui-content">
+
+			<div style="width: 100%;height: 180px;margin:0 auto;background: #fff; text-align: center;padding-top: 20px;">
+				<img class="img" src="http://1.xinli2017.applinzi.com/login/img/payback.png">
+			</div>
+			<div class="title">
+				<p>请完成支付验证，确保支付信息安全，保障合法权益</p>
+			</div>
+
+		<div id="input" class="mui-table-view" style="border-radius:10px;border:0">
+			<form  class="mui-table-view-cell"  style="padding:11px 15px 25px 15px;border:0">
+				<div style="display: none">
+					受理订单号:<input type="hidden" name="ordercode"  id="ordercode" th:value="${ordercode}"/>
+					<input type="hidden" name="ipAddress"  id="ipAddress" th:value="${ipAddress}"/>
+				</div>
+				<div style="margin-top:30px;margin-left:15px;margin-right:15px;">
+					<input style="width:60%;border-radius:10px;"  type="text" name="smsCode" id="smsCode" placeholder="请输入验证码" />&nbsp;
+					<input style="width:35%;height:40px;border-radius:10px;border:0;background: #35a4f5;color: #fff" id="btn_sendCode"  type="button" value="获取验证码" />
+				</div>
+				<div class="mui-table-view-cell">
+					<input style="margin:0 auto;display:block;width:100%;height:40px; background: #35a4f5;border: none; color: #fff;text-align: center;font-size: 14px"  id="btn" value="立即验证" readonly="readonly" />
+				</div>
+			</form>
+		</div>
+		<div id="show" class="mui-input-row"></div>
+	</div>
+	   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	    <script>
+	    	$(function(){
+	    		 /*定时器  */ 
+	    		var ipAddress = $("#ipAddress").val();
+	    		var wait=60;			
+	    		function time(o) {  
+	    		        if (wait == 0) {  
+	    		            o.removeAttribute("disabled");            
+	    		            o.value="获取验证码";  
+	    		            wait = 60;
+	    		        } else {  
+	    		            o.setAttribute("disabled", true);  
+	    		            o.value= wait+'(s)';  
+	    		            wait--;			            
+	    		            setTimeout(function() {  
+	    		                time(o)  
+	    		            },  
+	    		            1000)  
+	    		        }  
+	    		    };	
+	    		 /*定时器  */  
+	    		var payNo;
+	    		//提交手机号码重复验证
+	    		$("#btn_sendCode").click(function(){
+	    				var ordercode=$('#ordercode').val()
+	    				time(this);
+	    				$.ajax({
+	    				type: "POST",
+	    				url: ipAddress + "/v1.0/paymentchannel/topup/wlb/consumesms",
+	    				dataType: "json",
+	    				data: {
+	    					ordercode:ordercode
+	    					   },
+	    				success: function(jsonStr){
+	    					console.log(jsonStr)
+	    					
+	    					payNo=jsonStr.trxTime
+	    					/* var code=jsonStr.respcode;
+	    					var msg=jsonStr.respmsg; */
+	    					if(jsonStr.resp_code=="success"){
+	    						 $('#show').stop().fadeIn(100).html("短信发送成功")
+	    				         $('#show').fadeOut(4000).html("短信发送成功")
+	    					}else{
+	    						alert(data.resp_message)
+	    					}
+
+	    					
+	    				}, 
+	    				error: function (XMLHttpRequest, textStatus, errorThrown) {
+	    					alert("交易排队中，请稍后重试！");
+	    					}
+	    				});	
+	    		});
+	    		//提交手机号码重复验证end
+	    		//点击方法
+	    		$('#btn').click(function(){
+	    		
+		 			$("#btn").attr("disabled", "disabled");
+			 		$("#btn").css({background:'#999'})
+					$("#btn").val("正在加载中...")
+	    			var smscode=$('#smsCode').val();
+	    			var ordercode=$('#ordercode').val();
+	    			$.ajax({
+			            url: ipAddress + '/v1.0/paymentchannel/topup/wlb/consume',
+			            type: 'POST',
+			            dataType: 'JSON',
+			            data: {
+							ordercode:ordercode,
+							smsCode:smscode,
+							payNo:payNo
+							   },
+			            success: function (data) {
+			            	console.log(data)
+			            	if(data.resp_code=="success"){
+			            		turntopage(data.redirect_url)
+
+			            	}else{
+			            		//turntopage(data.redirect_url)
+			            		$('#show').stop().fadeIn(100).html(data.resp_message)
+                    		    $('#show').fadeOut(2000).html(data.resp_message)
+			            	}
+			            },
+			            error: function (err) {
+			            	 $('#btn').removeAttr("disabled");
+		                    $("#btn").css({background:'#35a4f5'})
+							$("#btn").val("立即验证")
+			            	console.log(err)
+			                console.log('加载数据异常，请重试!');
+			            }
+	        		});
+	    		}) 
+	    		
+	    		//原生返回上一页
+	    		$('#back').click(function(){
+	            try{
+	                window.android.invokeMethod(1,["true"])
+	            }catch(e){
+	                console.log(e)
+	            }
+
+	        })
+	    	})
+	    	//跳转页面
+	    	 function turntopage(url){
+			mui.openWindow({
+			url:url,
+			});
+		}
+	    </script>
+</body>
+</html>

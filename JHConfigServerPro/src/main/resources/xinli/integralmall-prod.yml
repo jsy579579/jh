@@ -1,0 +1,16 @@
+user:
+    realname:
+          uploadpath: /mnt/share/nginx/html/mall/
+          downloadpath: http://106.15.47.73:8888/mall/
+       
+server: 
+  tomcat: 
+    max-threads: 1000
+
+logging: 
+    level:
+        tk.mybatis: ERROR
+
+spring.jpa.show-sql: false
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 

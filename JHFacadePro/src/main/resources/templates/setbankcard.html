@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>修改卡信息</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header,
+        menu, nav, output, section, summary,
+        time, mark, audio, video, input {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-weight: normal;
+        vertical-align: baseline;
+        list-style: none
+        }
+        body{
+          background: #efeff4 ;
+        }
+        .header_title_right{
+        height: 44px;
+        width: auto;
+        line-height: 44px;
+        position: absolute;
+        right: 15px;
+        top: 0;
+        color: #666;
+        }
+        .header_title_fonts{
+        font-size: 12px;
+        color: #666; 
+        }
+        .header{
+        height: 44px;
+        width: 100%;
+        position: fixed;
+        line-height: 44px;
+        display: flex;
+        z-index: 44;
+        background: #fff
+        }
+        .back{
+        height: 44px;
+        width: 44px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+        line-height: 44px;
+        color: #1485f4;
+        }
+        .header_title{
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+        line-height: 44px;
+        }
+        /*我的页面*/
+        .header_title_right{
+          height: 44px;
+          width: auto;
+          line-height: 44px;
+          position: absolute;
+          font-size: 14px;
+          right: 15px;
+          top: 0;
+        }
+        .bindingcard2{
+          padding-top: 44px ;
+            font-size: 16px;
+        }
+        .addcard_icon{
+          font-size: 22px;
+        }
+        .addcard_notice{
+          font-size: 13px;
+          line-height: 40px;
+          padding-left: 20px;
+        }
+        .addcard_title{
+          height: 40px;
+          line-height: 40px;
+          font-size: 15px;
+          padding-left: 20px;
+
+        }
+        .addcard_button2{
+          padding: 31px 20px;
+        }
+        .sendcodes{
+          width: 100px;
+          height: 60px;
+          position: absolute;
+          right:15px;
+          top:0;
+          text-align: center;
+        }
+        .bindingcard_item{
+          height: 44px;
+          display: flex;
+          line-height: 44px;
+          margin-bottom: 1px ;
+          padding: 0 15px;
+        }
+        .bindingcard_item_label{
+          width: 25%;
+        }
+        .bindingcard_item_row{
+          text-align: right;
+          width: 75%;
+        }
+        .bindingcard_item_row input[placeholder]{
+          font-size: 14px;
+          text-align: right;
+        }
+        .bindingcard_item_row input{
+          font-size: 16px;
+          text-align: right;
+          color: #999;
+          /*border:none;*/
+          height: 40px;
+          width: 100%;
+        }
+        .primary_button{
+            height: 40px;
+            width: 100%;
+            background: #0F80F2;
+            font-size: 16px;
+            color: #fff;
+            text-align: center;
+        }
+        .active_select{
+          color: #1485f4;
+        }
+        .triangle-facing-left {  
+           display: inline-block;
+          border-left: 2px solid;
+          border-bottom: 2px solid;
+          width: 12px;
+          height: 12px;
+          transform: rotate(45deg);
+       }  
+      .content_background{
+        background:#fff;
+      }
+    </style>
+</head>
+<body>
+  <div class="ranking_box">
+      <header class="header ">
+        <div class="back" >
+            <span class=" triangle-facing-left" ></span>
+        </div>
+        <h1 class="header_title">修改信息</h1>
+     </header>
+         <div class="bindingcard2">
+        <ul class="bindingcard_list">
+          <li class="bindingcard_item content_background">
+            <div class="bindingcard_item_label">银行卡号</div>
+            <div class="bindingcard_item_row text_color_theme" >
+               <input type="number" disabled="disabled"  th:value="${creditCardNumber}" id="creditCardNumber"  />
+            </div>
+          </li>
+           <li class="bindingcard_item content_background">
+            <div class="bindingcard_item_label">CVN2</div>
+            <div class="bindingcard_item_row">
+               <input type="number"  placeholder="信用卡背后CVN2后三位数字" value=""  id="securityCode" />
+            </div>
+          </li>
+           <li class="bindingcard_item content_background">
+            <div class="bindingcard_item_label">有效期</div>
+            <div class="bindingcard_item_row ">
+               <input type="number" placeholder="请输入有效期(年月) 如：0922" id="expiredTime" value=""  />
+            </div>
+          </li>
+        </ul>
+  </div>
+  <span style="display:none" id="requestUrl" th:text="${requestUrl}"></span>
+  <span style="display:none" id="userId" th:text="${userId}"></span>
+  
+ <div class="addcard_button2">
+    <button class="primary_button" id="btn" >提交</button>
+ </div>
+  </div>
+<script>
+   $(function () {
+    $("#btn").click(function(){
+     var securityCode= $("#securityCode").val()
+     var expiredTime = $("#expiredTime").val()
+     var requestUrl = $("#requestUrl").text()
+     var userId = $("#userId").text()
+     var creditCardNumber = $("#creditCardNumber").val()
+         $.ajax({
+            url: requestUrl,
+            type: "POST",
+            dataType: 'JSON', 
+            data: {
+            	userId:userId,
+            	bankCardNumber:creditCardNumber,
+                securityCode: securityCode,
+                expiredTime: expiredTime,
+            },
+            success: function (res) {
+            	alert(res.resp_message);
+                console.log(data)
+            },
+            error: function (err) {
+                alert(err.resp_message);
+                console.log(err)
+            }
+        });
+    })
+   })
+</script>
+</body>
+</html>

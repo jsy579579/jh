@@ -1,0 +1,13 @@
+juhe:
+  realname:
+    url: http://op.juhe.cn/idcard/query
+    key: 2a7fc8c8e5c4d6026d1df59396ecbaa6
+  auth4:
+    url: http://v.juhe.cn/verifybankcard4/query
+    key: f0add8418c505eda3f7a1e6865135f9e
+  cardlocation:
+    url: http://v.juhe.cn/bankcardinfo/query
+    key: e6db2dc1255e580f5e001f62d5f00613
+  sms:
+    url: http://v.juhe.cn/sms/send
+    key: 1213e5a1ca48e3648e3a0221e0d941d4

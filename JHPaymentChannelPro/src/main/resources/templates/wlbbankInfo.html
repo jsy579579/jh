@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"></meta>
+<meta name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title></title>
+<link rel="stylesheet"
+	href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" />
+<script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+        document.addEventListener('plusready', function () {
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+        });
+    </script>
+<style>
+body {
+	font-size: 16px;
+}
+
+label {
+	width: 10%;
+	!
+	important
+}
+
+input {
+	height: 35px;
+}
+
+input[type=text] {
+	border: 0;
+}
+
+input[placeholder] {
+	font-size: 14px;
+}
+
+input[type=password] {
+	border: 0;
+}
+
+input[type=button] {
+	border: 0;
+}
+
+#mis h3 {
+	text-align: center;
+	padding: 10px 5px;
+	font-size: 20px;
+}
+
+.city {
+	height: auto;
+	margin-bottom: 10px;
+	background: #fff;
+}
+
+.city input[type=text] {
+	margin: 0;
+}
+
+.city input:nth-child(2) {
+	border-bottom: 1px solid #ebebeb;
+}
+
+.text {
+	width: 100%;
+	color: #FF9A4A;
+	font-size: 14px;
+	margin-top: 15px;
+}
+
+.dingdan {
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+}
+
+.dingdan span {
+	font-size: 14px;
+}
+
+.dingdan span>span {
+	font-size: 18px;
+	color: #FF9A4A;
+	font-weight: bold;
+}
+
+.select {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.select select {
+	width: 49%;
+	color: #333;
+	font-size: 14px;
+}
+
+.mui-table-view:after {
+	background-color: #fff;
+}
+
+.mui-table-view:before {
+	background-color: #fff;
+}
+
+.showCard {
+	width: 100%;
+	background: url("http://1.xinli2017.applinzi.com/img/bankcard_red.png")
+		center no-repeat;
+	background-size: 100% 100%;
+}
+
+.cardStyle {
+	padding: 10px 15px;
+	border-radius: 8px;
+	position: relative;
+	padding-left: 65px;
+	padding-bottom: 60px;
+	background-size: 100% 100%;
+}
+
+.bankLogo {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background-color: #DAE3EC;
+	padding: 5px;
+	position: absolute;
+	left: 15px;
+	top: 22px;
+}
+
+.bankLogo img {
+	width: 100%;
+	border-radius: 50%;
+}
+
+.cardStyle .cardNum {
+	display: flex;
+	justify-content: space-between;
+}
+
+.cardStyle>div:last-child {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	padding: 0 40px;
+	height: 41px;
+	line-height: 41px;
+}
+
+.bankText h4 {
+	color: #fff;
+	margin-top: 10px;
+}
+
+.bankText>p {
+	color: rgba(255, 255, 255, 0.5);
+	font-size: 12px;
+}
+
+.cardStyle .cardNum>div:nth-child(1) {
+	color: #fff;
+	font-weight: 600;
+	font-size: 20px;
+}
+
+#carno2 {
+	color: #fff;
+	font-weight: 600;
+	font-size: 20px;
+}
+
+.cardStyle .cardNum>div:last-child {
+	color: #fff;
+	font-weight: 600;
+	font-size: 20px;
+}
+
+.cardStyle .cardNum>div {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.cardStyle>div:last-child>div {
+	width: 100%;
+	height: 100%;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.newTask {
+	position: fixed;
+	bottom: 0;
+	z-index: 9;
+	height: 40px;
+	line-height: 40px;
+	background-color: #eee;
+	width: 100%;
+	text-align: center;
+	font-size: 16px;
+	color: #00aaee;
+}
+ #show{
+        width: 50%;
+        height: 40px;
+        text-align: center;
+        background: rgba(0,0,0,.6);
+        color: #fff;
+        border-radius: 10px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -58px;
+        bottom: 0;
+        margin: auto;
+        font-size: 14px;
+        line-height: 40px;
+        display: none;
+        }
+.callback {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	background: #fff;
+	left: 0;
+	top: 0;
+	z-index: 99;
+	display: none;
+}
+</style>
+</head>
+<body style="padding: 0 15px">
+	<script>
+        try{
+            window.android.invokeMethod(0,["确认充值信息","true"])
+                }catch(e){
+            console.log(e)
+            
+        }
+    </script>
+	<div style="border-radius: 5px; background: none;">
+		<div class="dingdan">
+			<span>订单金额：<span id="amt" th:text="${amount}"></span>元
+			</span> <span style="display: none" id="ordercode" th:text="${ordercode}"></span>
+			</span> <span style="display: none" id="ipAddress" th:text="${ipAddress}"></span>
+		</div>
+	</div>
+	<div>
+		<div class="showCard">
+			<div class="cardStyle">
+				<div class="bankLogo">
+					<img
+						src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png" />
+				</div>
+				<div class="bankText">
+					<h4 id="topname" th:text="${bankName}">招商银行</h4>
+					<p th:text="${cardType}" style="color: #fff; font-size: 14px;">借记卡
+					</p>
+					<input id="bname" style="display: none" type="text"
+						th:value="${bankBranchName}" />
+				</div>
+				<div>
+					<div>
+						<div class="cardNum">
+							<div th:text="${bankNo}" id="carno1"></div>
+							<div>* * * *</div>
+							<div>* * * *</div>
+							<div th:text="${bankNo}" id="carno2"></div>
+							<input id="ka2" type="hidden" th:value="${bankNo}" placeholder="" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="select">
+		<select name="" id="provinceOfBank">
+			<option id="province2" name="provinceOfBank"
+				th:value="${provinceOfBank}">请选择所在省份</option>
+		</select> <select name="" id="cityOfBank">
+			<option id="city2" name="cityOfBank" th:value="${cityOfBank}"  >请选择所在市/区</option>
+		</select>
+	</div>
+	<select name="" id="branch">
+		<option id="branch2" name="bankBranchName"
+			th:value="${bankBranchName}">请选择收款卡银行支行</option>
+	</select>
+	<input type="text" placeholder="请输入收款卡银行支行名称" style="display: none"
+		id="handdown" />
+	<div class="city">
+		<div>
+			<span></span> <input style="display: none" type="text"
+				placeholder="支行联行号" th:value="${bankBranchId}" id="branchno" />
+		</div>
+	</div>
+	<input style="display: none" type="text" th:value="${isRegister}"
+		id="isregister" />
+	<div class="mui-input-row" style="width: 100%; margin: 15px auto;">
+		<button id="btn" class="mui-btn"
+			style="width: 100%; height: 40px; background: #0a80ff; border: 0; color: #fff;">确定并充值
+		</button>
+	</div>
+	<p class="text">提醒：您正在进行一笔消费交易，请认真核实并确保银行卡信息不能透露给别人！</p>
+     <div id="show" class="mui-input-row"></div>
+	<div class="callback"></div>
+	<script type="text/javascript">
+    $(function () {
+        var bname = $("#bname").val();
+        var ipAddress = $("#ipAddress").text();
+        /* if($("#branchno").val()==""){
+            $("#branchno").val("null")
+        } */
+   	 var province2=$("#province2").val()
+     var city2=$("#city2").val()
+     var branch2=$("#branch2").val()
+	 if(province2 != "" && city2 =="" && branch2==""){
+		$("#province2").text()
+	}
+     if(province2 != "" && city2 !="" && branch2!=""){
+        $("#province2").text(province2)
+        $("#city2").text(city2)
+        $("#branch2").text(branch2)
+    }
+    if(province2 != "" && city2 !="" && branch2==""){
+        $("#province2").text(province2)
+        $("#city2").text(city2)
+        $("#branch2").text()
+    }
+      if(province2 == "" && city2 =="" && branch2==""){
+        $("#province2").text()
+        $("#city2").text()
+        $("#branch2").text()
+    }
+         
+        // 银行卡加密显示
+        var str = $('#carno1').text()
+        var str2 = $('#carno2').text()
+        function fun(str,str2) {
+            console.log(str)
+            console.log(str2)
+           var str=str.substring(0,4)
+           var str2=str2.substring(str2.length - 4, str2.length)
+            $('#carno1').text(str)
+            $('#carno2').text(str2)
+        }
+        fun(str,str2);
+        // 银行卡加密显示
+        // 三级联动
+        // 获取省的信息
+        $.ajax({
+            url: ipAddress + '/v1.0/user/app/province/queryall',
+            type: 'POST',
+            dataType: 'JSON',
+            success: function (data) {
+
+                $.each(eval(data.result), function (i, item) {
+                    $("#provinceOfBank").append('<option value="'+item.provinceid+'">'+item.province+'</option>');
+                });
+            },
+            error: function () {
+                console.log('加载数据异常，请重试!');
+            }
+        });
+        // 获取省的信息end
+        // 获取市的信息
+         function loadDevice(provinceid) {
+            $.ajax({
+                url: ipAddress + '/v1.0/user/app/city/queryall',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    provinceid: provinceid
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg == "{[]}") {
+                        $("#cityOfBank").empty();
+                    } else {
+                        $("#cityOfBank").empty();
+                        $("#cityOfBank").append('<option value="">请选择所在市/区</option>');
+                        $.each(eval(msg.result), function (i, item) {
+                            if (item.area == undefined) {
+                                item.area = item.city;
+                            }
+                            if (item.areaid == undefined) {
+                                item.areaid = item.cityid;
+                            }
+                            $("#cityOfBank").append('<option value="'+item.areaid+'">'+item.area+'</option>');
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('加载数据异常，请重试!');
+                }
+            });
+        }
+          $("#provinceOfBank").change(function () {
+           loadDevice($("#provinceOfBank").val());
+        });
+        // 获取市的信息end
+        // 获取支行信息
+         var provinces=$("#province2").val();
+        console.log(provinces)
+        var citys=$("#city2").val();
+        console.log(citys)
+         var branch2=$("#branch2").val()
+         console.log(branch2)
+        if(provinces !="" &&citys !="" && branch2 !=""){
+            $("#province2").text(province2)
+            $("#citys").text(citys)
+            $("#branch2").text(branch2)
+               // 获取省的信息
+                $.ajax({
+                    url: ipAddress + '/v1.0/user/app/province/queryall',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    success: function (data) {
+
+                        $.each(eval(data.result), function (i, item) {
+                            $("#provinceOfBank").append('<option value="'+item.provinceid+'">'+item.province+'</option>');
+                        });
+                    },
+                    error: function () {
+                        console.log('加载数据异常，请重试!');
+                    }
+                });
+                // 获取省的信息end
+                 // 获取市的信息
+         function loadDevice(provinceid) {
+            $.ajax({
+                url: ipAddress + '/v1.0/user/app/city/queryall',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    provinceid: provinceid
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg == "{[]}") {
+                        $("#cityOfBank").empty();
+                    } else {
+                        $("#cityOfBank").empty();
+                        $("#cityOfBank").append('<option value="">请选择所在市/区</option>');
+                        $.each(eval(msg.result), function (i, item) {
+                            if (item.area == undefined) {
+                                item.area = item.city;
+                            }
+                            if (item.areaid == undefined) {
+                                item.areaid = item.cityid;
+                            }
+                            $("#cityOfBank").append('<option value="'+item.areaid+'">'+item.area+'</option>');
+                        });
+                    }
+                },
+                error: function () {
+                    console.log('加载数据异常，请重试!');
+                }
+            });
+        }
+          $("#provinceOfBank").change(function () {
+           loadDevice($("#provinceOfBank").val());
+        });
+        // 获取市的信息end
+                $('#cityOfBank').change(function () {
+                var province = $('#provinceOfBank option:selected').text();
+                var city = $('#cityOfBank option:selected').text();
+                var topname = $('#topname').text();
+                console.log(province)
+                console.log(city)
+                console.log(topname)
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentchannel/jfshangao/gcbankbrach',
+                    datatype: 'json',
+                    type: 'POST',
+                    data: {
+                        province: province,
+                        city: city,
+                        bankBranchname: topname
+                    },
+                    success: function (msg) {
+                        console.log(msg)
+                        if (msg.resp_code == "999999") {
+                            $('#show').stop().fadeIn(100).html("没有支行信息，请重新选择")
+                             $('#show').fadeOut(4000).html("没有支行信息，请重新选择")
+                            $('#provinceOfBank option:selected').text("请选择所在省份");
+                            $('#cityOfBank option:selected').text("请选择所在市/区");
+                        } else {
+                            $("#branch").empty();
+                            $("#branch").append('<option id="branch2"  >请选择收款卡银行支行</option>');
+                            $.each(eval(msg.result), function (i, item) {
+                                // console.log(item)
+                            $("#branch").append('<option >'+item+'</option>');
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        console.log('失败')
+                    }
+                });
+            });
+
+
+        }
+        $('#cityOfBank').change(function () {
+            var province = $('#provinceOfBank option:selected').text();
+            var city = $('#cityOfBank option:selected').text();
+            var topname = $('#topname').text();
+            console.log(province)
+            console.log(city)
+            console.log(topname)
+            $.ajax({
+                url: ipAddress + '/v1.0/paymentchannel/jfshangao/gcbankbrach',
+                datatype: 'json',
+                type: 'POST',
+                data: {
+                    province: province,
+                    city: city,
+                    bankBranchname: topname
+                },
+                success: function (msg) {
+                    console.log(msg)
+                    if (msg.resp_code == "999999") {
+                         $('#show').stop().fadeIn(100).html("没有支行信息，请重新选择")
+                             $('#show').fadeOut(4000).html("没有支行信息，请重新选择")
+                        // alert("没有支行信息，请重新选择!");
+                        $('#provinceOfBank option:selected').text("请选择所在省份");
+                        $('#cityOfBank option:selected').text("请选择所在市/区");
+                    } else {
+                        $("#branch").empty();
+                        $("#branch").append('<option id="branch2"  >请选择收款卡银行支行</option>');
+                        $.each(eval(msg.result), function (i, item) {
+                            // console.log(item)
+                            $("#branch").append('<option >'+item+'</option>');
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log('失败')
+                }
+            });
+        });
+        if(provinces == "" && citys == ""){
+            $('#cityOfBank').change(function () {
+                var province = $('#provinceOfBank option:selected').text();
+                var city = $('#cityOfBank option:selected').text();
+                var topname = $('#topname').text();
+                console.log(province)
+                console.log(city)
+                console.log(topname)
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentchannel/jfshangao/gcbankbrach',
+                    datatype: 'json',
+                    type: 'POST',
+                    data: {
+                        province: province,
+                        city: city,
+                        bankBranchname: topname
+                    },
+                    success: function (msg) {
+                        console.log(msg)
+                        if (msg.resp_code == "999999") {
+                            $('#show').stop().fadeIn(100).html("没有支行信息，请重新选择")
+                             $('#show').fadeOut(4000).html("没有支行信息，请重新选择")
+                            $('#provinceOfBank option:selected').text("请选择所在省份");
+                            $('#cityOfBank option:selected').text("请选择所在市/区");
+                        } else {
+                            $("#branch").empty();
+                            $("#branch").append('<option id="branch2"  >请选择收款卡银行支行</option>');
+                            $.each(eval(msg.result), function (i, item) {
+                                // console.log(item)
+                               $("#branch").append('<option >'+item+'</option>');
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        console.log('失败')
+                    }
+                });
+            });
+        } 
+        if(provinces != ""  && citys == ""  && branch2 ==""){
+            $("#province2").text()
+            $('#cityOfBank').change(function () {
+                var province = $('#provinceOfBank option:selected').text();
+                var city = $('#cityOfBank option:selected').text();
+                var topname = $('#topname').text();
+                console.log(province)
+                console.log(city)
+                console.log(topname)
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentchannel/jfshangao/gcbankbrach',
+                    datatype: 'json',
+                    type: 'POST',
+                    data: {
+                        province: province,
+                        city: city,
+                        bankBranchname: topname
+                    },
+                    success: function (msg) {
+                        console.log(msg)
+                        if (msg.resp_code == "999999") {
+                            $('#show').stop().fadeIn(100).html("没有支行信息，请重新选择")
+                             $('#show').fadeOut(4000).html("没有支行信息，请重新选择")
+                            $('#provinceOfBank option:selected').text("请选择所在省份");
+                            $('#cityOfBank option:selected').text("请选择所在市/区");
+                        } else {
+                            $("#branch").empty();
+                            $("#branch").append('<option id="branch2"  >请选择收款卡银行支行</option>');
+                            $.each(eval(msg.result), function (i, item) {
+                                // console.log(item)
+                            $("#branch").append('<option >'+item+'</option>');
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        console.log('失败')
+                    }
+                });
+            });
+     }
+        
+        if(provinces !="" &&citys !="" && branch2 ==""){
+                var province = $('#provinceOfBank option:selected').text();
+                var city = $('#cityOfBank option:selected').text();
+                var topname = $('#topname').text();
+                console.log(province)
+                console.log(city)
+                console.log(topname)
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentchannel/jfshangao/gcbankbrach',
+                    datatype: 'json',
+                    type: 'POST',
+                    data: {
+                        province: province,
+                        city: city,
+                        bankBranchname: topname
+                    },
+                    success: function (msg) {
+                        console.log(msg)
+                        if (msg.resp_code == "999999") {
+                           $('#show').stop().fadeIn(100).html("没有支行信息，请重新选择")
+                             $('#show').fadeOut(4000).html("没有支行信息，请重新选择")
+                            $('#provinceOfBank option:selected').text("请选择所在省份");
+                            $('#cityOfBank option:selected').text("请选择所在市/区");
+                        } else {
+                            $("#branch").empty();
+                            $("#branch").append('<option id="branch2"  >请选择收款卡银行支行</option>');
+                            $.each(eval(msg.result), function (i, item) {
+                                // console.log(item)
+                              $("#branch").append('<option >'+item+'</option>');
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        console.log('失败')
+                    }
+                });
+         
+        } 
+        // 获取支行信息end
+         // 三级联动end
+         // 点击充值按钮
+        $("#btn").click(function () {
+      
+            // 这是获取所传val的写法
+            var bankName = $("#topname").text();
+            var amount = $("#amt").text();
+            var ordercode = $("#ordercode").text();
+            var provinceOfBank = $("#provinceOfBank option:selected").text();
+            var cityOfBank = $("#cityOfBank option:selected").text();
+            var bankBranchName = $("#branch option:selected").text();
+            var bankNo = $("#ka2").val();
+            var isRegister= $("#isregister").val();
+            console.log(bankName)
+            console.log(amount)
+            console.log(ordercode)
+            console.log(provinceOfBank)
+            console.log(cityOfBank)
+            console.log(bankBranchName)
+            console.log(bankNo)
+            console.log(isRegister)
+ 
+            // 这是获取所传val的写法end
+            if($("#handdown").val()==null||$("#handdown").val()==""){
+                var bankName = $("#branch option:selected").text();
+            }else{
+                var bankName = $("#handdown").val();
+            }
+            var bankNo = "111111111111";
+            if($("#branchno").val()!="null"){
+                bankNo = $("#branchno").val();
+            }else{
+                bankNo = $("#branch option:selected").val();
+            } 
+            var topName = $("#topname").text();
+            var amount = $("#amt").text();
+            var ordercode = $("#ordercode").text();
+            var provinceOfBank = $("#provinceOfBank option:selected").text();
+            var cityOfBank = $("#cityOfBank option:selected").text();
+            if(bankName=="请选择收款卡银行支行"||provinceOfBank=="请选择所在省份"||cityOfBank=="请选择所在市/区"){
+                  $('#show').stop().fadeIn(100).html("请完整信息！")
+                  $('#show').fadeOut(4000).html("请完整信息！")
+                    return;
+                }
+            $("#btn").attr("disabled", "disabled");
+            $("#btn").css({background:'#999'})
+            $("#btn")[0].innerHTML="正在加载中..."
+
+            var banknum = $("#ka2").val();
+
+             var bankBranchId = $("#branchno").val();
+            if(bname=="null"||bname==""){
+                $.ajax({
+                    url: ipAddress + "/v1.0/user/bank/update/cardno",
+                    type: "post",
+                    data: {
+                            bankBranchName: bankBranchName,
+                            bankBranchId: bankBranchId,
+                            provinceOfBank: provinceOfBank,
+                            cityOfBank: cityOfBank,
+                            bankno: banknum
+                        },
+                     success:function(data){
+                         
+                     },
+                     error: function(data){
+                     }
+                });
+            }
+            
+            var isRegister= $("#isregister").val();
+            console.log(isRegister)
+            if(isRegister==0){
+            	
+                var url=ipAddress + "/v1.0/paymentchannel/topup/wlb/register";
+                var type="POST";
+                  $.ajax({
+                        url: url,
+                        type: type,
+                        dataType: 'JSON', 
+                        async:false,
+                        data: {
+                            ordercode: ordercode,
+                            provinceOfBank: provinceOfBank,
+                            cityOfBank: cityOfBank,
+                            bankBranchName: bankBranchName, 
+                        },
+                        success: function (data) {
+                            console.log(data)
+                             console.log("success")
+                        if(data.resp_code=="success"){
+                            turntopage(data.redirect_url)
+                        }else{
+                               $('#show').stop().fadeIn(100).html(data.resp_message)
+                             $('#show').fadeOut(4000).html(data.resp_message)
+                        } 
+                        },
+                        error: function (data) {
+                            console.log(data)
+                             $('#show').stop().fadeIn(100).html("交易排队中,请稍后重试！")
+                             $('#show').fadeOut(4000).html("交易排队中,请稍后重试！")
+                        }
+                    });
+                  
+            }else if(isRegister==1){
+            	
+           	 var url=ipAddress + "/v1.0/paymentchannel/topup/wlb/pageopencard";
+             var type="POST";
+             $.ajax({
+                 url: url,
+                 type: type,
+                 dataType: 'JSON',
+                 async:false,
+                 data: {
+                     ordercode: ordercode,
+                 },
+                 success: function (data) {
+                     if(data.resp_code=="success"){
+                    	 turntopage(data.redirect_url)
+                     }else{
+                         $('#show').stop().fadeIn(100).html(data.resp_message)
+                          $('#show').fadeOut(4000).html(data.resp_message)
+                     	// alert(data.resp_message)
+                         //turntopage(data.redirect_url)
+                     }
+                 },
+                 error: function (data) {
+                     console.log(data)
+                      $('#show').stop().fadeIn(100).html("交易排队中,请稍后重试！")
+                      $('#show').fadeOut(4000).html("交易排队中,请稍后重试！")
+                 }
+             })
+        	
+        }else if(isRegister==2){
+        	
+        	var url=ipAddress + "/v1.0/paymentchannel/topup/wlb/updatecard";
+            var type="POST";
+            $.ajax({
+                url: url,
+                type: type,
+                dataType: 'JSON',
+                async:false,
+                data: {
+                	 ordercode: ordercode,
+                     provinceOfBank: provinceOfBank,
+                     cityOfBank: cityOfBank,
+                     bankBranchName: bankBranchName,
+                },
+                success: function (data) {
+                    if(data.resp_code=="success"){
+                   	 turntopage(data.redirect_url)
+                    }else{
+                        $('#show').stop().fadeIn(100).html(data.resp_message)
+                         $('#show').fadeOut(4000).html(data.resp_message)
+                    	// alert(data.resp_message)
+                        //turntopage(data.redirect_url)
+                    }
+                },
+                error: function (data) {
+                    console.log(data)
+                     $('#show').stop().fadeIn(100).html("交易排队中,请稍后重试！")
+                     $('#show').fadeOut(4000).html("交易排队中,请稍后重试！")
+                }
+            })
+        	
+        }else{
+        	
+        	var url=ipAddress + "/v1.0/paymentchannel/topup/wlb/turntopaypage";
+            var type="POST";
+            $.ajax({
+                url: url,
+                type: type,
+                dataType: 'JSON',
+                async:false,
+                data: {
+                    ordercode: ordercode,
+                },
+                success: function (data) {
+                    if(data.resp_code=="success"){
+                   	 turntopage(data.redirect_url)
+                    }else{
+                        $('#show').stop().fadeIn(100).html(data.resp_message)
+                         $('#show').fadeOut(4000).html(data.resp_message)
+                    	
+                    }
+                },
+                error: function (data) {
+                    console.log(data)
+                     $('#show').stop().fadeIn(100).html("交易排队中,请稍后重试！")
+                     $('#show').fadeOut(4000).html("交易排队中,请稍后重试！")
+                }
+            })
+        	
+        }
+            
+            
+            
+            
+            
+            
+            /* if(isRegister==3){
+            	 
+            	
+            	
+            } */
+            
+            
+			/* if(isRegister==1){
+            	
+                var url=ipAddress + "/v1.0/paymentchannel/topup/wlb/pageopencard";
+                var type="POST";
+                $.ajax({
+                    url: url,
+                    type: type,
+                    dataType: 'JSON',
+                    async:false,
+                    data: {
+                        ordercode: ordercode,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if(data.resp_code=="success"){
+                        	turntopage(data.redirect_url)
+                       
+                        }else{
+                            $('#show').stop().fadeIn(100).html(data.resp_message)
+                             $('#show').fadeOut(4000).html(data.resp_message)
+                        	// alert(data.resp_message)
+                            //turntopage(data.redirect_url)
+                        }
+                    },
+                })
+ 
+            }
+			
+			if(isRegister==2){
+            	
+                var url="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/jfshangao/turntopaypage";
+                var type="POST";
+                $.ajax({
+                    url: url,
+                    type: type,
+                    dataType: 'JSON',
+                    async:false,
+                    data: {
+                        ordercode: ordercode,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if(data.resp_code=="success"){
+                        	turntopage(data.redirect_url)
+                       
+                        }else{
+                         $('#show').stop().fadeIn(100).html(data.resp_message)
+                             $('#show').fadeOut(4000).html(data.resp_message)
+                            //turntopage(data.redirect_url)
+                        }
+                    },
+                })
+ 
+            }
+			
+			if(isRegister==3){
+            	
+                var url="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/jfshangao/updatecard";
+                var type="POST";
+                $.ajax({
+                    url: url,
+                    type: type,
+                    dataType: 'JSON',
+                    async:false,
+                    data: {
+                    	ordercode: ordercode,
+                        provinceOfBank: provinceOfBank,
+                        cityOfBank: cityOfBank,
+                        bankBranchName: bankBranchName,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if(data.resp_code=="success"){
+                        	turntopage(data.redirect_url)
+                       
+                        }else{
+                        	 $('#show').stop().fadeIn(100).html(data.resp_message)
+                             $('#show').fadeOut(4000).html(data.resp_message)
+                            //turntopage(data.redirect_url)
+                        }
+                    },
+                })
+ 
+            } */
+            
+        });
+    //跳转页面专用
+        function turntopage(url){
+            mui.openWindow({
+            url:url,
+            });
+        }
+           //跳转页面专用
+    });
+</script>
+</body>
+</html>

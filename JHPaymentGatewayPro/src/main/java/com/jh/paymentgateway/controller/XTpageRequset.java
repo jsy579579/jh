@@ -1,0 +1,631 @@
+package com.jh.paymentgateway.controller;
+
+import cn.jh.common.tools.ResultWrap;
+import cn.jh.common.utils.CommonConstants;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.jh.paymentgateway.basechannel.BaseChannel;
+import com.jh.paymentgateway.business.TopupPayChannelBusiness;
+import com.jh.paymentgateway.business.impl.XTTopupPage;
+import com.jh.paymentgateway.common.ChannelUtils;
+import com.jh.paymentgateway.config.RedisUtil;
+import com.jh.paymentgateway.pojo.PaymentRequestParameter;
+import com.jh.paymentgateway.pojo.XTBindCard;
+import com.jh.paymentgateway.pojo.XTOrderCode;
+import com.jh.paymentgateway.pojo.XTRegister;
+import com.jh.paymentgateway.util.XTZFutil.XTZFutil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.util.*;
+
+@Controller
+@EnableAutoConfiguration
+public class XTpageRequset extends BaseChannel {
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private TopupPayChannelBusiness topupPayChannelBusiness;
+
+
+    @Value("${payment.ipAddress}")
+    private String ip;
+
+    private static final Logger LOG = LoggerFactory.getLogger(XTTopupPage.class);
+    //会员所属商户号
+    private static final String merchantId = "M201906050693";
+
+    /**
+     * 商户信息提交(进件)
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/v1.0/paymentgateway/quick/xt/register")
+    public @ResponseBody
+    Object Register(@RequestParam(value = "orderCode") String orderCode) throws Exception {
+        PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(orderCode);
+
+        String ordercode = prp.getOrderCode();
+        String creditCard = prp.getBankCard();
+        String bankName = prp.getDebitBankName();
+        String userName = prp.getUserName();
+        String phoneC = prp.getCreditCardPhone();
+        String phoneD = prp.getDebitPhone();
+        String rate = prp.getRate();
+        String extraFee = prp.getExtraFee();
+        String idCard = prp.getIdCard();
+        String orderType = prp.getOrderType();
+        String userId = prp.getUserId();
+        String cardtype = prp.getCreditCardCardType();
+        String debitCard = prp.getDebitCardNo();
+        String cardType = prp.getDebitCardCardType();
+        String cardName = prp.getCreditCardBankName();
+        String amount = prp.getAmount();
+        String exTime = prp.getExpiredTime();
+        String expiredTime = this.expiredTimeToMMYY(exTime);
+        String securityCode = prp.getSecurityCode();
+        String ExtraFee = prp.getExtraFee();
+        String rip = prp.getIpAddress();
+        String creditCardPhone = prp.getCreditCardPhone();
+
+
+        Map<String, Object> maps = new HashMap<String, Object>();
+        XTRegister xtR = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+        XTBindCard xtB = topupPayChannelBusiness.getXTBindCardByBankCard(creditCard);
+        String subMerchId = null;
+        if (xtR == null) {
+            LOG.info("=============商户未提交信息===========");
+            maps = (Map<String, Object>) this.sendinformation(userName, phoneD, idCard, debitCard, rate, extraFee);
+            if (!"000000".equals(maps.get("resp_code"))) {
+                return maps;
+            }
+        }
+        subMerchId = xtR.getSubMerchId();
+        System.out.println("creditCard = " + creditCard);
+        maps = (Map<String, Object>) querybindcard(creditCard,subMerchId);
+        System.out.println("maps = " + maps);
+        if ("000000".equals(maps.get("resp_code"))) {
+            if (xtB ==null) {
+                XTBindCard xtBindCard = new XTBindCard();
+                xtBindCard.setBankCard(creditCard);
+                xtBindCard.setCardType(cardType);
+                xtBindCard.setIdCard(idCard);
+                xtBindCard.setPhone(creditCardPhone);
+                xtBindCard.setSubMerchId(subMerchId);
+                xtBindCard.setUserName(userName);
+                topupPayChannelBusiness.createXTBindCard(xtBindCard);
+                LOG.info("==================绑卡成功====================");
+                if (!ExtraFee.equals(xtR.getExtraFee()) || !rate.equals(xtR.getRate())) {
+                    LOG.info("==================费率不匹配，开始修改费率====================");
+                    maps = (Map<String, Object>) this.changerate(rate, extraFee, idCard, orderCode);
+                    if (!"000000".equals(maps.get("resp_code"))) {
+                        LOG.info("==================费率修改失败====================");
+                        return maps;
+                    }
+                }
+
+                LOG.info("=============================发起支付==========================");
+                maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+                maps.put(CommonConstants.RESP_MESSAGE, "成功");
+                maps.put(CommonConstants.RESULT, ip + "/v1.0/paymentgateway/quick/xt/pay-view?ordercode="+ orderCode );
+                return maps;
+
+
+            } else if (xtB != null) {
+                LOG.info("=================商户已绑卡查询费率是否正常===");
+                if (!ExtraFee.equals(xtR.getExtraFee()) || !rate.equals(xtR.getRate())) {
+                    LOG.info("==================费率不匹配，开始修改费率====================");
+                    maps = (Map<String, Object>) this.changerate(rate, extraFee, idCard, orderCode);
+                    if (!"000000".equals(maps.get("resp_code"))) {
+                        LOG.info("==================费率修改失败====================");
+                        return maps;
+                    }
+                }
+                LOG.info("=============================发起支付==========================");
+                maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+                maps.put(CommonConstants.RESP_MESSAGE, "成功");
+                maps.put(CommonConstants.RESULT, ip + "/v1.0/paymentgateway/quick/xt/pay-view?ordercode="+ orderCode );
+                return maps;
+            }
+        }else {
+            LOG.info("==================开始绑卡====================");
+            maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+            maps.put(CommonConstants.RESP_MESSAGE, "成功");
+            maps.put(CommonConstants.RESULT,
+                    ip + "/v1.0/paymentgateway/quick/xt/bind-view?orderCode="+orderCode+"&ip="+ip);
+            return maps;
+        }
+
+//        if (xtB == null) {
+//            LOG.info("=================商户未绑卡,开始绑卡，查询费率是否正常===");
+//            if (!ExtraFee.equals(xtR.getExtraFee()) || !rate.equals(xtR.getRate())) {
+//                LOG.info("==================费率不匹配，开始修改费率====================");
+//                maps = (Map<String, Object>) this.changerate(rate, extraFee, idCard, orderCode);
+//                if (!"000000".equals(maps.get("resp_code"))) {
+//                    LOG.info("==================费率修改失败====================");
+//                    return maps;
+//                }
+//            }
+//
+//            LOG.info("==================开始绑卡====================");
+//            maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+//            maps.put(CommonConstants.RESP_MESSAGE, "成功");
+//            maps.put(CommonConstants.RESULT,
+//                    ip + "/v1.0/paymentgateway/quick/xt/bind-view?orderCode="+orderCode+"&cardType="+ip);
+//            return maps;
+
+//            if ("000000".equals(maps.get("resp_code"))) {
+//
+//                LOG.info("=================绑卡请求成功，跳转绑卡页面=====================");
+//
+//                return maps;
+//            } else {
+//                return maps;
+//            }
+//        }
+
+
+//        if (xtB != null){
+//
+//                LOG.info("=================商户已绑卡查询费率是否正常===");
+//                if (!ExtraFee.equals(xtR.getExtraFee()) || !rate.equals(xtR.getRate())) {
+//                    LOG.info("==================费率不匹配，开始修改费率====================");
+//                    maps = (Map<String, Object>) this.changerate(rate, extraFee, idCard, orderCode);
+//                    if (!"000000".equals(maps.get("resp_code"))) {
+//                        LOG.info("==================费率修改失败====================");
+//                        return maps;
+//                    }
+//                }
+//                LOG.info("=============================发起支付==========================");
+//                maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+//                maps.put(CommonConstants.RESP_MESSAGE, "成功");
+//                maps.put(CommonConstants.RESULT, ip + "/v1.0/paymentgateway/quick/xt/pay-view?bankName="
+//                        + URLEncoder.encode(bankName, "UTF-8") + "&cardType=" + URLEncoder.encode(cardtype, "UTF-8")
+//                        + "&bankCard=" + creditCard + "&ordercode=" + orderCode + "&ipAddress=" + ip);
+//                return maps;
+//
+//            }
+//
+        return maps;
+    }
+
+
+
+
+
+
+
+    //商户信息提交（进件）
+    public Object sendinformation(String userName, String phoneD, String idCard, String debitCard, String rate, String extraFee) throws Exception {
+        String url = "https://pay.hengfupay.com/api/merch/register";
+        String rate0 = new BigDecimal(rate).multiply(new BigDecimal("10000")).toString();
+        String rate2 = rate0.substring(0,rate0.indexOf("."));
+        String externFee0 = new BigDecimal(extraFee).multiply(new BigDecimal("100")).toString();
+        String externFee2 = externFee0.substring(0,externFee0.indexOf("."));
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("merchName", "上海莘丽");//  1.merchName 商户名称
+        params.put("name", userName);//    2. name 持卡人姓名
+        params.put("phone", phoneD);//   3. phone 持卡人电话
+        params.put("idNo", idCard);//     4. idNo 身份证号
+        params.put("merchAddress", "上海市宝山区");//   5. merchAddress 商户地址
+        params.put("cardId", debitCard);//    6. cardId 绑定结算卡号(银行储蓄卡)
+        params.put("feeRate", rate2);//     7. feeRate 交易费率 String 32 M 0.68% 传 68. 费率值乘 于10000
+        params.put("externFee", externFee2);//    8. externFee 附加手续费 String 32 M 附加手续费，单位分：（1.00元，传 100）
+        params.put("remark", "储蓄卡进件");//    9. remark 备注 String 32 M
+        params.put("merchantId", merchantId);//   10. merchantId 会员所属商户的商户Id String 32 M
+        params.put("scope", "3");//账号类型（快捷支付3/落地云闪付4）
+        params.put("signType", "MD5");
+        params.put("sign", XTZFutil.sign(params));
+
+        String s = JSONObject.toJSONString(params);
+        LOG.info("信息提交参数=============" + s);
+        LOG.info("信息提交地址" + url);
+        String msg = null;
+        String code = null;
+        try {
+            String result = XTZFutil.post(url, s);
+            JSONObject json = JSONObject.parseObject(result);
+            code = json.getString("code");
+            msg = json.getString("msg");
+            String subMerchId = null;
+            XTRegister xtRegister = new XTRegister();
+            if ("0000".equals(code)) {
+                subMerchId = json.getString("subMerchId");
+                xtRegister.setBankCard(debitCard);
+                xtRegister.setIdCard(idCard);
+                xtRegister.setPhone(phoneD);
+                xtRegister.setRate(rate);
+                xtRegister.setExtraFee(extraFee);
+                xtRegister.setSubMerchId(subMerchId);
+                topupPayChannelBusiness.createXTRegister(xtRegister);
+                return ResultWrap.init(CommonConstants.SUCCESS, msg);
+            } else {
+                LOG.info("信通支付==============================入网失败");
+                return ResultWrap.init(CommonConstants.FALIED, msg);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.info("信通支付==============================入网异常");
+            return ResultWrap.init(CommonConstants.FALIED, msg);
+        }
+//result = {"code":"0000","msg":"商户入驻成功","subMerchId":"M201906110666","sign":"812C0F0CAD2FA8C4D688D4D501F87137"}
+    }
+
+    /**
+     * 修改费率
+     * @param orderCode
+     * @param rate
+     * @param extraFee
+     * @param idCard
+     */
+    public Object changerate(String orderCode, String rate, String extraFee, String idCard) throws Exception {
+        PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(orderCode);
+        String rip = prp.getIpAddress();
+        String url = "https://pay.hengfupay.com/api/merch/rate/modify";
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        HashMap<String, Object> maps = new HashMap<>();
+        String rate0 = new BigDecimal(rate).multiply(new BigDecimal("10000")).toString();
+        String rate2 = rate0.substring(0,rate0.indexOf("."));
+        String externFee0 = new BigDecimal(extraFee).multiply(new BigDecimal("100")).toString();
+        String externFee2 = externFee0.substring(0,externFee0.indexOf("."));
+        XTRegister xtRegister = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+        String subMerchId = xtRegister.getSubMerchId();
+        params.put("subMerchId", subMerchId);//子商户号
+        params.put("merchantId", merchantId);//        1. subMerchId 商户编号
+        params.put("feeRate", rate2);//        2.feeRate 交易费率 String 32M 0.68% 传 68. 费率值 乘于10000
+        params.put("externFee", externFee2);//        3. externFee 附加手续费 String 128 M 附加手续费，单位 分：（1.00 元，传 100）
+        params.put("scope", "3");//账号类型（快捷支付3/落地云闪付4）
+        params.put("signType", "MD5");
+        params.put("sign", XTZFutil.sign(params));
+        String s = JSONObject.toJSONString(params);
+        String code = null;
+        String msg = null;
+        LOG.info("修改费率url====" + url);
+        LOG.info("修改费率params====" + s);
+        try {
+            String result = XTZFutil.post(url, s);
+            JSONObject json = JSONObject.parseObject(result);
+            code = json.getString("code");
+            msg = json.getString("msg");
+            if ("0000".equals(code)) {
+                xtRegister.setRate(rate);
+                xtRegister.setExtraFee(extraFee);
+                xtRegister.setCreateTime(new Date());
+                topupPayChannelBusiness.createXTRegister(xtRegister);
+                maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+                maps.put(CommonConstants.RESP_MESSAGE, msg);
+            } else {
+                maps.put(CommonConstants.RESP_CODE, CommonConstants.FALIED);
+                maps.put(CommonConstants.RESP_MESSAGE, msg);
+                LOG.info("修改费率-------异常:" + msg);
+                this.addOrderCauseOfFailure(orderCode, msg, rip);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maps;
+    }
+
+    /**
+     * 绑卡
+     * @param orderCode
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(method = RequestMethod.POST,value ="/v1.0/paymentgateway/quick/xt/bindcard" )
+    public @ResponseBody Object bindcard(@RequestParam(value = "orderCode")String orderCode) throws Exception {
+        HashMap<String, Object> maps = new HashMap<>();
+        PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(orderCode);
+        String idCard = prp.getIdCard();
+        XTRegister xtRegister = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+        String userName = prp.getUserName();
+        String phone = prp.getCreditCardPhone();
+        String bankCard = prp.getBankCard();
+        String ipAddress = prp.getIpAddress();
+        String cardType = prp.getCreditCardCardType();
+        String subMerchId = xtRegister.getSubMerchId();
+        String cardtype = prp.getCreditCardCardType();
+        String bankName = prp.getDebitBankName();
+        String creditCard = prp.getBankCard();
+        String amount = prp.getAmount();
+
+        String url = "https://pay.hengfupay.com/api/card/bind";
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("subMerchId", subMerchId);//        1. subMerchId 商户编号
+        params.put("name", userName);//        2. name 持卡人姓名
+        params.put("phone", phone);//        3. phone 持卡人电话
+        params.put("idNo", idCard);//        4. idNo 身份证号
+        params.put("cardId", bankCard);//        5. cardId 交易卡号
+        params.put("notifyUrl", "www.baidu.com");//        6. notifyUrl 异步通知地址  没有回调随便填
+        params.put("frontUrl", ip + "/v1.0/paymentgateway/topup/xt/bindcardsuccess");//  7. frontUrl 页面通知地址
+        params.put("orderId", orderCode);//        9. orderId 请求流水号
+        params.put("deviceId", "IMEI");//        10.deviceId 设备 安卓:IMEI，iOS:IDFV，PC:硬盘序列号（若不填大额交易限额会被银联风控）
+        params.put("ipAddres", ipAddress);//        11 ipAddres请求IP地址 公网IP地址（若不填大额交易限额会被风控）（付款客户端IP）
+        params.put("signType", "MD5");
+        params.put("sign", XTZFutil.sign(params));
+        String s = JSONObject.toJSONString(params);
+        LOG.info("请求url================" +url);
+        LOG.info("请求params================" +s);
+        try {
+            String result = XTZFutil.post(url, s);
+            JSONObject json = JSON.parseObject(result); //转为json对象
+            LOG.info("绑卡返回的result===========================" + json);
+            String code = json.getString("code");
+            String msg = json.getString("msg");
+            if ("0000".equals(code)) {
+                Object html = json.get("html");            //获取html
+                System.out.println("html = " + html);
+                maps.put("html", html);
+            } else {
+                maps.put(CommonConstants.RESP_CODE, CommonConstants.FALIED);
+                maps.put(CommonConstants.RESP_MESSAGE, msg);
+                LOG.info("信通绑卡---异常：" + msg);
+                this.addOrderCauseOfFailure(orderCode, msg, ipAddress);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maps;
+        //result = {"code":"0000","msg":"成功","sign":"32C700E6859A88125D0F074E49749977","html":"<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/></head><body><form id = \"pay_form\" action=\"https://gateway.95516.com/gateway/api/frontTransReq.do\" method=\"post\"><input type=\"hidden\" name=\"bizType\" id=\"bizType\" value=\"000902\"/><input type=\"hidden\" name=\"tokenPayData\" id=\"tokenPayData\" value=\"{trId=62000002845&tokenType=01}\"/><input type=\"hidden\" name=\"backUrl\" id=\"backUrl\" value=\"http://pay.weiyifu123.com/gateway/appScanCode/backRcvResponse\"/><input type=\"hidden\" name=\"orderId\" id=\"orderId\" value=\"20190610005547775\"/><input type=\"hidden\" name=\"txnSubType\" id=\"txnSubType\" value=\"00\"/><input type=\"hidden\" name=\"signature\" id=\"signature\" value=\"nQQ1jkHv2YpaLFfZLaqYyp6la/k8PkdnBasa+vw4c0GRREwjAPfryLoLpF9ouROfe1Hi3u7dPxVSdL01cI/ahKTh0OGfKZyyKcFqI7Z7JGIcjPg6ukMaz+62L9OhCN79KcZHabMX1emn5Qd4P44rT7x/XNK2A+ShXYgsZ3fCUHD1cLhtnbRgKMbtWG4Ixq67ZkN35lCjIpcc5nk0XxyKIHr41jHEL5KaAaA0WkzlCoRVVpwNdZhDlypilrsw+dBds814icbEJSv2wQ3MpXRBI04SUTtuk+2K4CqoEz6ugkGx8wFUYkfAmxAEZEttEC+Ub3hY5ERlo8ywkQpNjA2LIg==\"/><input type=\"hidden\" name=\"accNo\" id=\"accNo\" value=\"RIkuF/aTdDJO7Gn65g9z5/Q9ybRUbfkWaRyo6DULuCZI7WOp4cVDo9ME3cEVqqu648YdVQgZfDqefNfJEkQi8f1eKzMIRBYHu42NydJjrZC9V8Fd5XjQ54VZ5VOD3os/1feUZ6WvweDwvt/geqKGN3EkUX5knfThj9HY1t51hv/IMMMb8YQxWH1FZR6lqRh7sM5yuRU82t6xZEcPyQYzmfKKH9ptmZbTx/dD05kMRs2mhiTCygYPw7oJCmYAkBjNRuWNMXd8QOVe9ZjqQsfIpJSpqpefrx3cN+3nq7/AU9ZhmdHjVclK56l/vkTn/34G+ep/z8d0TrGWH4+/5fxgcQ==\"/><input type=\"hidden\" name=\"customerInfo\" id=\"customerInfo\" value=\"e2NlcnRpZklkPTM2MjIwMTE5OTQxMjIxMDAzMSZjZXJ0aWZUcD0wMSZjdXN0b21lck5tPeW8oOaZk+WGmyZlbmNyeXB0ZWRJbmZvPVJkTjRNeVU2VE9kZnVJWWxvVHA0MXVXOFpRVWNZQWJWY2IwQlN3UE10a3J0clRhcUVZYTlrY3o0bUI4WjNGUnFrd045TzRoaDcrUG1tVm5uWGo2ZWFLMk1ZTDNDQkp4aU9WVk9wQThnYWdhNUlrTnhFampyTm5Xc2FCem5Yb2RUTXRtdm5nOFNROGRpeXExajdxYUdZeDNtT1RtcFpUTFV2NEV1NzFNVmtmRExhcDkxSERMOE9YWTVGRS9yV3BEdmtBd0RFTUJQcEdZYmtEaGc2ak9ScklJODh1Y2J4Q1FyeFlNbkpPb00rcEp0anFOZHN2MjJuMmxVQ1BEM3lTWWJTaW1McGFJZ0dDVTFqbEJOMEV5bUN5UEpEZ04yRG1acVQwWEZ6TVhFYUUwaHBHWFE0QkIrUHdvTkxid0Q5NHhGOFlaQ0ZwTXFiU3MyVEVtNHl2VnlJZz09fQ==\"/><input type=\"hidden\" name=\"channelType\" id=\"channelType\" value=\"07\"/><input type=\"hidden\" name=\"txnType\" id=\"txnType\" value=\"79\"/><input type=\"hidden\" name=\"frontUrl\" id=\"frontUrl\" value=\"www.baidu.com\"/><input type=\"hidden\" name=\"certId\" id=\"certId\" value=\"77965399072\"/><input type=\"hidden\" name=\"encoding\" id=\"encoding\" value=\"UTF-8\"/><input type=\"hidden\" name=\"version\" id=\"version\" value=\"5.1.0\"/><input type=\"hidden\" name=\"accessType\" id=\"accessType\" value=\"0\"/><input type=\"hidden\" name=\"encryptCertId\" id=\"encryptCertId\" value=\"77447321186\"/><input type=\"hidden\" name=\"txnTime\" id=\"txnTime\" value=\"20190610160436\"/><input type=\"hidden\" name=\"merId\" id=\"merId\" value=\"932421048460018\"/><input type=\"hidden\" name=\"accType\" id=\"accType\" value=\"01\"/><input type=\"hidden\" name=\"signMethod\" id=\"signMethod\" value=\"01\"/></form></body><script type=\"text/javascript\">document.all.pay_form.submit();</script></html>"}
+    }
+
+
+
+    //绑卡转接页面
+    @RequestMapping(method = RequestMethod.GET, value = "/v1.0/paymentgateway/quick/xt/bind-view")
+    public String returnXTbindcard(HttpServletRequest request, HttpServletResponse response, Model model)
+            throws IOException {
+        // 设置编码
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+        String orderCode = request.getParameter("orderCode");
+        String ip = request.getParameter("ip");
+        model.addAttribute("resp_code", "000000");
+        model.addAttribute("orderCode", orderCode);
+        model.addAttribute("ip", ip);
+        return "xtbindcard";
+    }
+
+
+     //跳转支付页面
+    @RequestMapping(method = RequestMethod.GET, value = "/v1.0/paymentgateway/quick/xt/pay-view")
+    public String returnHLJCQuickPay(HttpServletRequest request, HttpServletResponse response, Model model)
+            throws IOException {
+        // 设置编码
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+
+        String orderCode = request.getParameter("ordercode");
+        PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(orderCode);
+        String bankName = prp.getDebitBankName();
+        String cardType = prp.getCreditCardCardType();
+        String bankCard = prp.getBankCard();
+        String amount = prp.getAmount();
+        model.addAttribute("ordercode", orderCode);
+        model.addAttribute("bankName", bankName);
+        model.addAttribute("cardType", cardType);
+        model.addAttribute("bankCard", bankCard);
+        model.addAttribute("ipAddress", ip);
+        model.addAttribute("amount", amount);
+
+        return "xtpay";
+    }
+//,@RequestParam(value = "bankName") String bankName,@RequestParam(value = "cardType") String cardType,@RequestParam(value = "bankCard") String bankCard,@RequestParam(value = "ipAddress") String ipAddress
+     //支付 无短信
+     @RequestMapping(method = RequestMethod.POST, value = "/v1.0/paymentgateway/quick/xt/fast-pay")
+     public @ResponseBody Object fastPay(@RequestParam(value = "orderCode") String orderCode) throws Exception {
+         HashMap<String, Object> maps = new HashMap<>();
+         PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(orderCode);
+         String idCard = prp.getIdCard();
+         String userName = prp.getUserName();
+         String bankCard = prp.getBankCard();
+         XTRegister xtRegister = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+         XTBindCard xtBindCard = topupPayChannelBusiness.getXTBindCardByBankCard(bankCard);
+         String phone = xtBindCard.getPhone();
+         String amount = prp.getAmount();
+         String amount2 = new BigDecimal(amount).multiply(new BigDecimal("100")).toString();
+         String subMerchId = xtRegister.getSubMerchId();
+         String securityCode = prp.getSecurityCode();
+         String expiredTime = prp.getExpiredTime();
+         String rip = prp.getIpAddress();
+         String jsbankcard = xtRegister.getBankCard();
+        //发送的url和参数
+         String url = "https://pay.hengfupay.com/api/order/no/card/pay";
+         TreeMap<String, String> params = new TreeMap<String, String>();
+         params.put("subMerchId", subMerchId);//        1. 子商户号
+         params.put("orderId", orderCode);//     2.订单号
+         params.put("name", userName);//        3.  持卡人姓名
+         params.put("phone", phone);//     4. 持卡人电话
+         params.put("idNo", idCard);//     5. 身份证号 S
+         params.put("cardId", bankCard);//      6.  交易卡号
+         params.put("notifyUrl", "www.baidu.com");//  7. 异步通知地址 没有回调随便填
+         params.put("amount", amount2);//   8. 交易金额 单位分
+         params.put("goodsName", "信通快捷");//   9. 订单名称
+         params.put("cardType", "02");//    10. cardType 卡类型 String 32 M 01 借记卡 02 贷记卡
+         params.put("cvv", securityCode);//   11. cvv 安全码
+         params.put("expDate", expiredTime);//  12. expDate 有效期
+         params.put("deviceId", "IMEI");//10.deviceId 设备 安卓:IMEI，iOS:IDFV，PC:硬盘序列号（若不填大额交易限额会被银联风控）
+         params.put("ipAddres", rip);//  请求ip
+         params.put("settleCard", jsbankcard);//结算卡号
+         params.put("signType", "MD5");
+         params.put("sign", XTZFutil.sign(params));
+         String s = JSONObject.toJSONString(params);
+         String code = null;
+         String msg = null;
+         LOG.info("请求url================" + url);
+         LOG.info("请求params================" + s);
+         try {
+             String result = XTZFutil.post(url, s);
+             JSONObject json = JSONObject.parseObject(result);
+             code = json.getString("code");
+             msg = json.getString("msg");
+             if ("0100".equals(code)) {
+                 XTOrderCode xtOrderCode = new XTOrderCode();
+                 xtOrderCode.setOrderCode(orderCode);
+                 xtOrderCode.setStatus("0");
+                 xtOrderCode.setSubMerchId(subMerchId);
+                 topupPayChannelBusiness.createXTOrderCode(xtOrderCode);
+                 maps.put(CommonConstants.RESP_CODE, CommonConstants.SUCCESS);
+                 maps.put(CommonConstants.RESP_MESSAGE, msg);
+                 maps.put("redirect_url", ip + "/v1.0/paymentgateway/topup/topaysuccess?orderCode=" + orderCode
+                         + "&bankName=" + URLEncoder.encode(prp.getCreditCardBankName(), "UTF-8") + "&bankCard="
+                         + prp.getBankCard() + "&amount=" + prp.getAmount() + "&realAmount=" + prp.getRealAmount());
+
+             } else {
+                 maps.put(CommonConstants.RESP_CODE, CommonConstants.FALIED);
+                 maps.put(CommonConstants.RESP_MESSAGE, msg);
+                 LOG.info("快捷支付---异常：" + msg);
+                 this.addOrderCauseOfFailure(orderCode, msg, rip);
+             }
+             //result = {"code":"0100","msg":"交易处理中","sign":"3A785074A3CBAEFED1E9C30B43219882"}
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+         return maps;
+     }
+
+    /**
+     * 定时器   查询订单状态 成功就修改
+     */
+    //@Scheduled(cron = "0 */10 * * * ?")
+    public void queryandchangestatus() throws Exception {
+        List<String> ordercodelist = topupPayChannelBusiness.findAllXTordercode();
+        String url = "https://pay.hengfupay.com/api/order/query";
+        String code = null;
+        String msg = null;
+        for (int i = 0; i < ordercodelist.size(); i++) {
+            System.out.println(ordercodelist.get(i));
+            String ordercode = ordercodelist.get(i);
+            PaymentRequestParameter prp = redisUtil.getPaymentRequestParameter(ordercode);
+            String idCard = prp.getIdCard();
+            XTRegister xtRegister = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+            String subMerchId = xtRegister.getSubMerchId();
+            TreeMap<String, String> params = new TreeMap<String, String>();
+            params.put("orderId", ordercode);//        orderId 订单号
+            params.put("subMerchId", subMerchId);
+            params.put("signType", "MD5");
+            params.put("sign", XTZFutil.sign(params));
+            String s = JSONObject.toJSONString(params);
+            try {
+                String result = XTZFutil.post(url, s);
+                System.out.println("result = " + result);
+                JSONObject json = JSONObject.parseObject(result);
+                code = json.getString("orderStatus");
+                msg = json.getString("msg");
+                if ("02".equals(code)) {
+                    LOG.info("*********************交易成功***********************");
+                    XTOrderCode xtOrderCode = topupPayChannelBusiness.changextstatus(ordercode);
+                    xtOrderCode.setStatus("1");
+                    topupPayChannelBusiness.createXTOrderCode(xtOrderCode);
+                    RestTemplate restTemplate = new RestTemplate();
+                    MultiValueMap<String, String> requestEntity = new LinkedMultiValueMap<String, String>();
+                    String urll = null;
+                    String searchresult = null;
+                    urll = prp.getIpAddress() + ChannelUtils.getCallBackUrl(prp.getIpAddress());
+
+                    requestEntity = new LinkedMultiValueMap<String, String>();
+                    requestEntity.add("status", "1");
+                    requestEntity.add("order_code", ordercode);
+                    requestEntity.add("third_code", "");
+                    try {
+                        searchresult = restTemplate.postForObject(urll, requestEntity, String.class);
+                        LOG.info("修改订单状态为1");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LOG.error("", e);
+                    }
+
+                    LOG.info("订单状态修改成功===================" + ordercode + "====================" + searchresult);
+                    LOG.info("=================订单已交易成功!");
+
+                } else {
+                    LOG.info("=============订单已交易失败!" + ordercode + "失败原因"+ msg);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                LOG.info("=============信通订单查询异常!" + ordercode);
+            }
+            //result = {"code":"0000","msg":"查询成功","sign":"4314CD5159BAD3849938E4265DD6F066","orderId":"2019061004395003380153","amount":"1000","orderStatus":"02","respCode":"0000","respDesc":"交易成功"}
+        }
+
+
+    }
+
+
+
+
+
+
+
+     //绑卡查询
+    @RequestMapping(method = RequestMethod.POST,value ="/v1.0/paymentgateway/quick/xt/querybindcard" )
+    public @ResponseBody Object querybindcard(@RequestParam(value = "creditCard") String creditCard,@RequestParam(value = "subMerchId") String subMerchId) throws Exception {
+//        XTRegister xtRegister = topupPayChannelBusiness.getXTRegisterByIdCard(idCard);
+//        String subMerchId = xtRegister.getSubMerchId();
+        System.out.println("subMerchId = " + subMerchId);
+        String url = "https://pay.hengfupay.com/api/card/query";
+        TreeMap<String, String> params = new TreeMap<String, String>();
+        params.put("subMerchId", subMerchId);//        1. subMerchId 商户编号
+        params.put("cardId", creditCard);//        2 cardId 卡号
+        params.put("signType", "MD5");
+        params.put("sign", XTZFutil.sign(params));
+        String s = JSONObject.toJSONString(params);
+        LOG.info("绑卡查询url===="+url);
+        LOG.info("绑卡查询params===="+s);
+        String msg = null;
+        try {
+            String result = XTZFutil.post(url, s);
+            JSONObject json = JSON.parseObject(result);
+            System.out.println("绑卡查询返回信息 " + json);//转为json对象
+            String code = json.getString("code");
+            msg = json.getString("msg");
+            if ("0000".equals(code)) {
+                return ResultWrap.init(CommonConstants.SUCCESS, msg);
+            } else {
+                LOG.info("================================未绑卡成功==========================");
+                return ResultWrap.init(CommonConstants.FALIED, msg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.info("===============================绑卡异常=====================================");
+            return ResultWrap.init(CommonConstants.FALIED, msg);
+        }
+        //result = {"code":"0000","msg":"成功","sign":"06B4AC7F57A1AE8EA59EC8888C396D60","cardNo":"6225757564009232","status":"BIND"}
+    }
+
+    //绑卡成功跳转页面
+    @RequestMapping(method = {RequestMethod.GET,RequestMethod.POST}, value = "/v1.0/paymentgateway/topup/xt/bindcardsuccess")
+    public String xtBindCardSuccess(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        Map map = new HashMap();
+        request.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("text/html;charset=utf-8");
+
+        return "ffzcbindcardsuccess";
+    }
+
+}

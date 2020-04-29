@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jh.mircomall.dao.LogisticsInfoDao">
+  <resultMap id="BaseResultMap" type="com.jh.mircomall.bean.LogisticsInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="logistics_name" property="logisticsName" jdbcType="VARCHAR" />
+    <result column="logistics_num" property="logisticsNum" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_addr" property="userAddr" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_province_id" property="userProvinceId" jdbcType="VARCHAR" />
+    <result column="user_city_id" property="userCityId" jdbcType="VARCHAR" />
+    <result column="user_areas_id" property="userAreasId" jdbcType="VARCHAR" />
+    <result column="business_name" property="businessName" jdbcType="VARCHAR" />
+    <result column="business_phone" property="businessPhone" jdbcType="VARCHAR" />
+    <result column="business_province_id" property="businessProvinceId" jdbcType="VARCHAR" />
+    <result column="business_city_id" property="businessCityId" jdbcType="VARCHAR" />
+    <result column="business_areas_id" property="businessAreasId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+     <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+      <result column="shipper_code_id" jdbcType="INTEGER" property="shipperCodeId" />
+  </resultMap>
+	<insert id="addLogisticsInfo" parameterType="com.jh.mircomall.bean.LogisticsInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into t_logistics_info (goods_id,order_id,logistics_name,logistics_num,user_id,user_addr,user_phone,user_province_id,user_city_id,user_areas_id,
+		business_name,business_phone,business_province_id,business_city_id,business_areas_id,create_time) 
+		values(#{goodsId},#{orderId},#{logisticsName},#{logisticsNum},#{userId},#{userAddr},#{userPhone},#{userProvinceId},#{userCityId},#{userAreasId},
+		#{businessName},#{businessPhone},#{businessProvinceId},#{businessCityId},#{businessAreasId},now())
+	</insert>
+	<select id="listAllLogisticsInfo" resultMap="BaseResultMap">
+		select goods_id,order_id,logistics_name,logistics_num,user_id,user_addr,user_phone,user_province_id,user_city_id,
+		user_areas_id,business_name,business_phone,business_province_id,business_city_id,business_areas_id,create_time 
+		from t_logistics_info where status=0 
+		limit #{offset},#{limit}
+	</select>
+	<select id="listLogisticsInfoByUserIdAndOrderId" resultMap="BaseResultMap">
+		select goods_id,order_id,logistics_name,logistics_num,user_id,user_addr,user_phone,user_province_id,user_city_id,
+		user_areas_id,business_name,business_phone,business_province_id,business_city_id,business_areas_id,create_time 
+		from t_logistics_info 
+		where user_id=#{userId} and order_id=#{orderId} and status=0
+	</select>
+	<select id="listLogisticsInfoByUserId" resultMap="BaseResultMap">
+		select goods_id,order_id,logistics_name,logistics_num,user_id,user_addr,user_phone,user_province_id,user_city_id,
+		user_areas_id,business_name,business_phone,business_province_id,business_city_id,business_areas_id,create_time 
+		from t_logistics_info 
+		where user_id=#{userId} or user_phone=#{userPhone} or order_id=#{orderId} and status=0
+	</select>
+	<update id="updateLogisticsInfoByUserIdAndOrderId" parameterType="com.jh.mircomall.bean.LogisticsInfo">
+		update t_logistics_info set logistics_name=#{logisticsName},logistics_num=#{logisticsNum},change_time=now()
+		 where user_id=#{userId} and order_id=#{orderId} and status=0
+	</update>
+	<update id="deleteLogisticsInfoByUserIdAndOrderId" parameterType="com.jh.mircomall.bean.LogisticsInfo">
+		update t_logistics_info set change_time=now(),status=1
+		 where user_id=#{userId} and order_id=#{orderId} and status=0
+	</update>
+	<update id="updateLogisticsInfoBusiness" parameterType="com.jh.mircomall.bean.LogisticsInfo">
+		update t_logistics_info 
+		set change_time=now(),logistics_name,logistics_num,
+		business_name,business_phone,business_province_id,business_city_id,business_areas_id
+		where user_id=#{userId} and order_id=#{orderId} and status=0
+	</update>
+	<select id="listLogisticsInfoBlur" resultMap="BaseResultMap">
+		select goods_id,order_id,logistics_name,logistics_num,user_id,user_addr,user_phone,user_province_id,user_city_id,
+		user_areas_id,business_name,business_phone,business_province_id,business_city_id,business_areas_id,create_time 
+		from t_logistics_info 
+		where status=0 and 
+		<if test="userId != null">
+			user_id like '%${userId}%' 
+		</if>
+		<if test="userPhone != null">
+			user_phone like '%${userPhone}%' 
+		</if>
+		<if test="orderId != null">
+			order_id like '%${orderId}%' 
+		</if>
+		
+	</select>
+	<select id="listLogisticsInfoByOrderId" resultMap="BaseResultMap">
+		select 
+		goods_id,
+		order_id,
+		logistics_name,
+		logistics_num,
+		user_id,
+		user_addr,
+		user_phone,
+		user_province_id,
+		user_city_id,
+		user_areas_id,
+		business_name,
+		business_phone,
+		business_province_id,
+		business_city_id,
+		business_areas_id,
+		create_time 
+		from t_logistics_info 
+		where order_id = #{orderId}
+	</select>
+</mapper>

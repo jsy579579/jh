@@ -1,0 +1,92 @@
+redis:
+  host: 127.0.0.1
+  port: 6379
+  timeout: 0
+  database: 0
+  pool:
+    max-active: 8
+    max-wait: -1
+    max-idle: 8
+    min-idle: 0
+ld:
+    cerpath1: /product/deploy/ld/boqi.cer
+    cerpath2: /product/deploy/ld/1107.cer
+    jkspath: /product/deploy/ld/1107.jks   
+payment:  
+  ipAddress: http://101.132.255.217
+  
+ytjf:
+  merchantId: 888201710260125
+  datekey: Y048q1A545MZyK44
+  payUrl: http://cashier.etonepay.com
+  encode: utf-8 
+  path: /product/deploy/ytjf/rsa_public_key.pem
+  
+bq:
+    cerpath: /product/deploy/bq/boqi.cer
+    jkspath: /product/deploy/bq/1125.jks
+
+bqx:
+    cerpath: /product/deploy/bq/boqi.cer
+    jkspath: /product/deploy/bq/1126.jks
+#全民付移动c扫b 接口公共参数配置
+ys:
+  #银商平台接口地址
+  url: https://qr.chinaums.com/netpay-route-server/api/
+  #商户号
+  mid: 898310157320244
+  #终端号
+  tid: 20024328
+  #机构商户号
+  instMid: QRPAYDEFAULT
+  #来源系统
+  msgSrc: WWW.SHSLWLKJ.COM
+  #来源编号
+  msgSrcId: 4627
+  #通讯秘钥
+  key: Fi6a7PmnjhiSFA8EamQAk6KcahzFWyMEGitDXhQdkxYET2YB
+  #全民付移动c扫b 获取二维码接口参数配置
+  #消息类型:获取二维码
+  msgType_getQRCode: bills.getQRCode
+xs: 
+#新生支付通道请求地址
+  base_url: http://122.112.196.222:7000/sdk/action
+#机构号  
+  orgno: 1810185517791881
+#商户号
+  merno: 611810185517122
+#商户蜜钥
+  key: d0d366d8357078365dc678d9777013be
+#密钥路径  
+  private_path: /product/deploy/xs/1810185517791881-rsa-private.pem  
+  
+yswg: 
+  rootpath: /product/deploy/yswg/
+
+kq:
+   jkspath: '/product/deploy/kq/81231004816105690.jks'
+brandid:
+  blacklist: -蚂蚁窝-骆驼管家-轻松花-多一点卡管家-
+  inblacklisterrortip: requestError
+withdraw:
+  key: df10ef8509dc176d733d59549e7dbfaf
+gbp:
+  clientIp: '10.36.160.20'
+  language: 'zh_CN'
+  tempZipFilePath: '/product/deploy/kft_tempzip'
+  severDomain: 'merchant.kftpay.com.cn'
+  severPort: '8443'
+  keyStoreType: 'PKCS12'
+  keyStorePath: '/product/deploy/kft/pfx.pfx'
+  keyStorePassword: 'ahzf0312A'
+  alias: ''
+  keyPassword: 'ahzf0312A'
+kft:
+  clientIp: '10.36.3.43'
+  connectionTimeoutSeconds: '60'
+  responseTimeoutSeconds: '600'
+  kftSeverDomain: 'merchant.kftpay.com.cn'
+  kftSeverPort: '8443'
+  merchantId: '2019031102886456'
+  merchantIdXe: '2019031202884706'
+  version: '1.0.0-PRD'

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css"/>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('plusready', function () {
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+        });
+    </script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+        input {
+            height: 35px;
+        }
+        input[type=text] {
+            border: 0;
+            width: 62%;
+            height: 40px;
+
+        }
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=button] {
+           border: 0;
+            width: 34%;
+            margin-left: 5px;
+            height: 40px;
+
+        }
+         .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+        #phone{
+            width: 100%;
+        }
+    </style>
+</head>
+<body style="padding: 0 15px">
+<script>
+		try{
+			window.android.invokeMethod(0,["确认充值信息","true"])
+				}catch(e){
+			console.log(e)
+		}
+	</script>
+<header class="mui-bar mui-bar-nav" style="background:#37c3e7">
+    <h1 class="mui-title" style="color:#fff;">支付验证</h1>
+</header>
+ 
+<div class="mui-content" style="margin-top: 10px;">
+    <div class="dingdan">
+        <span>支付金额：<span id="amt" th:text="${amount}"></span>元</span>
+    </div> 
+        <input type="text" id="phone" placeholder="请输入手机号" readonly="readonly"/>
+        <input type="text" placeholder="请输入验证码" id="checkNo"/>
+        <input type="button" id="btn0" class=" mui-right" value="获取验证码" />
+</div>
+<div class="mui-input-row" style="width:100%;margin:0px auto;">
+    <button id="btn" class="mui-btn mui-btn-primary"
+            style="width:100%;height:40px;padding:10px 0;background:#37c3e7;border:0;">确定
+    </button>
+</div>
+  <div id="show" class="mui-input-row"
+     style="width:50%;position:fixed;top:50%;left:50%;transform: translate(-50%,-50%);z-index: 100;text-align: center;background:rgba(0,0,0,.7);color:#fff; padding: 12px 0;border-radius: 10px;display: none; font-weight: 400;font-size: 14px;"></div>
+        </div>
+<span style="display:none" id="p1" th:text="${P3_bindId}"></span>
+<span style="display:none" id="p2" th:text="${P2_customerNumber}"></span>
+<span style="display:none" id="p3" th:text="${P4_userId}"></span>
+<span style="display:none" id="p4" th:text="${P5_orderId}"></span>
+<span style="display:none" id="p5" th:text="${reqTime}"></span>
+<span style="display:none" id="p6" th:text="${P8_orderAmount}"></span>
+<span style="display:none" id="p7" th:text="${P9_phone}"></span>
+<span style="display:none" id="p8" th:text="${P9_goodsName}"></span>
+<span style="display:none" id="p9" th:text="${P13_orderIp}"></span>
+<span style="display:none" id="p10" th:text="${P16_serverCallbackUrl}"></span>
+<script  type="text/javascript">
+	$('#btn').attr("disabled","disabled");
+	var bindId = $("#p1").text();
+	var customerNumber = $("#p2").text();
+	var userId = $("#p3").text();
+	var ordercode = $("#p4").text();
+	var reqTime = $("#p5").text();
+	var amount = $("#p6").text();
+	$("#amt").text(amount);
+	var phone = $("#p7").text();
+	$("#phone").val(phone);
+	var desc = $("#p8").text();
+	var phoneIp = $("#p9").text();
+	var backUrl = $("#p10").text();
+    $(function () {
+        var wait = 60;
+        function time(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "获取验证码";
+                wait = 60;
+            } else {
+                o.setAttribute("disabled", true);
+                o.value = "重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                            time(o)
+                        },
+                        1000)
+            }
+        }
+        $("#btn0").click(function () {//获取验证码
+            var phone = $('#phone').val();
+            if (phone == '') {
+                $('#show').html('手机号码不能为空').stop().fadeIn(100)
+                $('#show').fadeOut(2000)
+            } else {
+                time(this);
+                var jsonObj = {
+					"P1_bizType":"QuickPayBindPayValidateCode",
+					"P2_customerNumber":customerNumber,
+					"P3_bindId":bindId,
+					"P4_userId":userId,
+					"P5_orderId":ordercode,
+					"P6_timestamp":reqTime,
+					"P7_currency":"CNY",
+					"P8_orderAmount":amount,
+					"P9_phone":phone
+				}
+                 $.ajax({
+                     type: 'POST',
+                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/sendPayCode',
+                     data:jsonObj,
+                     datatype: 'json',
+                     success: function (res) {
+                     	console.log(res);
+                         if("00"==res.code){
+                         	$("#btn").removeAttr("disabled");
+                         }else{
+                         	alert("请求验证码失败！");
+                         }
+                     },
+                     error: function (res) {
+                        console.log(res)
+                        alert("请求验证码失败！");
+                     }
+                 });
+            }
+        });
+
+
+        function turntopage(url){
+			mui.openWindow({
+			
+			url:url,
+			
+			});
+			
+		}
+        $('#btn').click(function () {
+        	if(""==$("#checkNo").val()||null==$("#checkNo").val()){
+				alert("请输入验证码！");
+				return;
+			}
+			$("#btn").text("支付中");
+			$('#btn').attr("disabled","disabled");
+			var jsonObj = {
+					"P1_bizType":"QuickPayBindPay",
+					"P2_customerNumber":customerNumber,
+					"P3_bindId":bindId,
+					"P4_userId":userId,
+					"P5_orderId":ordercode,
+					"P6_timestamp":reqTime,
+					"P7_currency":"CNY",
+					"P8_orderAmount":amount,
+					"P9_goodsName":desc,
+					"P10_goodsDesc":"",
+					"P11_terminalType":"IMEI",
+					"P12_terminalId":"122121212121",
+					"P13_orderIp":phoneIp,
+					"P14_period":"",
+					"P15_periodUnit":"",
+					"P16_serverCallbackUrl":backUrl,
+					"P17_validateCode":$("#checkNo").val()
+				}
+                 $.ajax({
+                     type: 'POST',
+                     async: false,
+                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/bindCardPayfirst',
+                     data:jsonObj,
+                     datatype: 'json',
+                     success: function (res) {
+                     	console.log(JSON.stringify(res));
+                         if("绑卡支付交易成功"==res.message){
+                         var jsob = {
+                         	"bindId":bindId,
+                         	"exemption":"2",
+                         	"status":"1"
+                         }
+                         console.log(JSON.stringify(jsob));
+                         	$.ajax({
+		                     type: 'POST',
+		                     async: false,
+		                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/hlregister/update',
+		                     data: jsob,
+		                     datatype: 'json',
+		                     success: function (res) {
+		                     	console.log(JSON.stringify(res));
+		                         if("000000"==res.resp_code){
+		                         }else{
+		                         	alert("修改数据失败！");
+		                         }
+		                     }
+		                 });
+                         	turntopage("http://1.xinli2017.applinzi.com/login/zhufucg.html");
+                         }else{
+                         	var jsob2 = {
+	                         	"P1_bizType":"QuickPayQuery",
+								"P2_orderId":ordercode,
+								"P3_customerNumber":customerNumber
+                         	}
+                         	$.ajax({
+		                     type: 'POST',
+		                     async: false,
+		                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/queryOrder',
+		                     data: jsob2,
+		                     datatype: 'json',
+		                     success: function (res) {
+		                     	console.log(JSON.stringify(res));
+		                         if("订单查询成功"==res.message){
+		                         	 var test = res.json;
+		                         	 var info = JSON.parse(test);
+		                         	 var orderStatus = info.rt7_orderStatus;
+		                         	 if ("SUCCESS"==orderStatus) {
+										var jsobb = {
+				                         	"bindId":bindId,
+				                         	"exemption":"2",
+				                         	"status":"1"
+				                         }
+				                        
+				                         	$.ajax({
+						                     type: 'POST',
+						                     async: false,
+						                     url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/hlregister/update',
+						                     data: jsobb,
+						                     datatype: 'json',
+						                     success: function (res) {
+						                     	console.log(JSON.stringify(res));
+						                         if("000000"==res.resp_code){
+						                         }else{
+						                         	alert("修改数据失败！");
+						                         }
+						                     }
+						                 });
+                         				turntopage("http://1.xinli2017.applinzi.com/login/zhufucg.html");
+                                        return;
+									 }else{
+                                            alert(info.rt3_retMsg);
+                                            turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                                            return;
+                                     }
+		                         }else{
+		                         	turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                                            return;
+		                         }
+		                     }
+		                 });
+                         	alert(res.message);
+                         	turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                         }
+                     },
+                     error: function (res) {
+                        turntopage("http://1.xinli2017.applinzi.com/login/zhufusb.html");
+                     }
+                 });
+        }) 
+
+    });
+</script>
+</body>
+</html>

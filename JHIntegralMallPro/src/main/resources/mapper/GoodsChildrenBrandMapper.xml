@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.GoodsChildrenBrandDao">
+  <resultMap id="BaseResultMap" type="com.jh.mircomall.bean.GoodsChildrenBrand">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="brand_name" jdbcType="VARCHAR" property="brandName" />
+    <result column="children_id" jdbcType="INTEGER" property="childrenId" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="change_time" jdbcType="DATE" property="changeTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+ 
+</mapper>

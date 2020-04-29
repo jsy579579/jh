@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jh.mircomall.dao.BusinessOrderDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.BusinessOrder">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="business_id" property="businessId" jdbcType="INTEGER" />
+		<result column="logistics_id" property="logisticsId" jdbcType="INTEGER" />
+		<result column="logistics_num" property="logisticsNum"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
+		<result column="consignee_id" property="consigneeId" jdbcType="INTEGER" />
+		<result column="out_of_pocket" property="outOfPocket" jdbcType="VARCHAR" />
+		<result column="goods_logo" property="goodsLogo" jdbcType="VARCHAR" />
+		<result column="goods_url" property="goodsUrl" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+		<association property="goods" javaType="com.jh.mircomall.bean.Goods"
+			resultMap="com.jh.mircomall.dao.GoodsDao.BaseResultMap" />
+		<association property="business" javaType="com.jh.mircomall.bean.Business"
+			resultMap="com.jh.mircomall.dao.BusinessDao.BaseResultMap" />
+		<association property="consigneeAddress"
+			javaType="com.jh.mircomall.bean.ConsigneeAddress" resultMap="com.jh.mircomall.dao.ConsigneeAddressDao.BaseResultMap" />
+		<association property="user" javaType="com.jh.mircomall.bean.User"
+			resultMap="com.jh.mircomall.dao.UserDao.BaseResultMap"></association>
+	</resultMap>
+	<!--生成商户订单 -->
+	<insert id="addBusinessOrder" parameterType="Map">
+		insert into
+		t_business_order
+		(order_code,
+		goods_id,
+		user_id,
+		business_id,
+		logistics_id,
+		logistics_num,
+		create_time,
+		change_time,
+		consignee_id,
+		out_of_pocket,
+		goods_logo,
+		goods_url,
+		status,
+		is_delete)
+		value(#{orderCode},
+		#{goodsId},
+		#{userId},
+		#{businessId},
+		#{logisticsId},
+		#{logisticsNum},
+		now(),
+		now(),
+		#{consigneeId},
+		#{outOfPocket},
+		#{goodsLogo},
+		#{goodsUrl},
+		'0',
+		'0')
+	</insert>
+	<!--商户订单分页显示 -->
+	<select id="businessOrderPage" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		t_business_order 
+		where business_id= #{businessId}
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!--商户订单修改 -->
+	<update id="updateBusinessOrder" parameterType="Map">
+		update
+		t_business_order set
+		order_code=#{orderCode},
+		goods_id=#{goodsId},
+		user_id=#{userId},
+		business_id=#{businessId},
+		logistics_id=#{logisticsId},
+		logistics_num=#{logisticsNum},
+		create_time=now(),
+		change_time=now(),
+		consignee_id=#{consigneeId},
+		out_of_pocket=#{outOfPocket},
+		goods_logo=#{goodsLogo},
+		goods_url=#{goodsUrl},
+		status=#{status},
+		is_delete='0'
+		where id=#{id}
+	</update>
+	<!--商户订单删除 -->
+	<update id="deleteBusinessOrder" parameterType="Integer">
+		update
+		t_business_order set is_delete='1'
+	</update>
+</mapper>

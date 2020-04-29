@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css"/>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body {
+        font-size: 16px;
+        }
+        input {
+        height: 35px;
+        }
+        input[type=text] {
+        border: 0;
+        }
+        input[placeholder] {
+        font-size: 14px;
+        }
+        input[type=password] {
+        border: 0;
+        }
+        input[type=button] {
+        border: 0;
+        }
+        #mis h3 {
+        text-align: center;
+        padding: 10px 5px;
+        font-size: 20px;
+        }
+        .city {
+        height: auto;
+        margin-bottom: 10px;
+        background: #fff;
+        }
+        .city input[type=text] {
+        margin: 0;
+
+        }
+        .city input:nth-child(2) {
+        border-bottom: 1px solid #ebebeb;
+
+        }
+
+        .text {
+        width: 100%;
+        color: #FF9A4A;
+        font-size: 14px;
+        margin-top: 15px;
+        }
+
+        .dingdan {
+        text-align: center;
+        height: 50px;
+        line-height: 50px;
+        }
+
+        .dingdan span {
+        font-size: 14px;
+        }
+
+        .dingdan span > span {
+        font-size: 18px;
+        color: #FF9A4A;
+        font-weight: bold;
+        }
+
+        .select {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        }
+
+        .select select {
+        width: 49%;
+        color: #333;
+        font-size: 14px;
+        }
+        .mui-table-view:after {
+        background-color: #fff;
+        }
+        .mui-table-view:before {
+        background-color: #fff;
+        }
+           .mui-input-row label{
+              width: 26%;
+            font-size: 14px;
+            color: #333;
+            padding:13px 15px;
+        }
+        .mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea{
+             width: 74%;
+             color:#666;
+        }
+        .mui-input-group:before{
+            background: none;
+        }
+        .mui-input-group .mui-input-row:after{
+             background: none;
+        }
+        .mui-input-group:after{
+            background: none;
+        }
+        .bg{
+            width: 100%;
+            height: 20px;
+            background: #efeff4
+        }
+    </style>
+</head>
+<body style="padding: 0 15px">
+    <script>
+        try{
+            window.android.invokeMethod(0,["确认绑定信息","true"])
+        }catch(e){
+            console.log(e)
+        }
+    </script>
+    <!-- <header class="mui-bar mui-bar-nav" style="background:#37c3e7">
+        <h1 class="mui-title" style="color:#fff;">确认绑定信息</h1>
+    </header> -->
+    <div class="mui-content">
+        <div class="mui-table-view-cell" >
+            <div style="border-radius:5px;background: none;">
+                <div class="mui-input-row">
+                    <input id="cardName" type="text" th:value="${cardName}" disabled="disabled" placeholder="充值卡银行名称"/>
+                    <input id="bname" style="display:none" type="text" name="bankBranchName" th:value="${bankBranchName}" />
+                </div>
+            </div>
+        <div>
+        <ul class="mui-table-view" style="margin-bottom: 20px;">
+            <li class="mui-table-view-cell mui-media">
+                <img class="mui-media-object mui-pull-left"
+                src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png"/>
+                <div class="mui-media-body">
+                    充值卡卡号
+                    <p class='mui-ellipsis'> 
+                        <span th:text="${bankCard}" id="carno1" ></span>
+                        ****&nbsp;&nbsp;**** 
+                        <span th:text="${bankCard}"  id="carno2"></span>
+                    </p>
+                    <input id="bankCard" type="hidden"  th:value="${bankCard}" placeholder=""/>
+                </div>
+            </li>
+        </ul>
+        </div>
+        <div>
+         <input style="display:none" type="text" th:value="${provinceOfBank}" id="provinceOfBank"/>
+        <input style="display:none" type="text" th:value="${cityOfBank}" id="cityOfBank"/>
+        <input style="display:none" type="text" th:value="${bankBranchName}" id="bankBranchName"/>
+        <input style="display:none" type="text" th:value="${ordercode}" id="ordercode"/>
+            <input style="display:none" type="text"  name="expiredTime" th:value="${expiredTime}" id="exp"/>
+            <input style="display:none" type="text"  name="isRegister" th:value="${isRegister}" id="isregister"/>
+        </div>
+        <div>
+            <input style="display:none" type="text" name="securityCode"  th:value="${securityCode}" id="sec"/>
+
+        </div>
+        <!-- 有效期安全码 -->
+        <div class="mui-input-group">
+            <div class="mui-input-row">
+                <label> 有效期</label>
+            <input type="number" placeholder="示例：09/15,输入0915"  id="expiredTime"/>
+            </div>
+            <div class="bg"></div>
+            <div class="mui-input-row">
+                <label>安全码</label>
+               <input type="number" placeholder="卡背面末三位"  id="securityCode"/>
+            </div>
+        </div>
+           <!-- 有效期安全码 -->
+         <div>
+             <button id="btn" class="mui-btn"
+            style="width:100%;height:40px;background:#37c3e7;border:0; color: #fff;margin-top: 20px;">确定并绑定
+   			 </button>
+   			  <p class="text">提醒：您正在进行绑定，请认真核实并确保银行卡信息不能透露给别人！</p>
+        </div>
+        </div>
+    </div>
+    <script  type="text/javascript">
+        $(function () {
+            var sec = $("#sec").val();
+            var exp = $("#exp").val();
+          
+        
+            console.log(sec)
+            console.log(exp)
+            if(exp != "null"){
+                $("#securityCode").val(sec);
+                $("#expiredTime").val(exp);
+            }
+            if(exp == ""){
+                $("#securityCode").attr("placeholder","卡背面末三位");
+                $("#expiredTime").attr("placeholder","示例：09/15,输入0915");
+            }
+            // 加密
+            var str = $('#carno1').text()
+            var str2 = $('#carno2').text()
+            function fun(str,str2) {
+                var str=str.substring(0,4)
+                var str2=str2.substring(str2.length - 4, str2.length)
+                $('#carno1').text(str)
+                $('#carno2').text(str2)
+            }
+            fun(str,str2);
+            // 加密
+            $("#btn").click(function () {
+            	
+            	  var expstr=$("#expiredTime").val()
+                  expstr=expstr.substring(0,2)
+                  console.log(expstr)
+                  if(expstr>12){
+                 	 alert("有效期：请先输入月份再输入年份")
+                 	 $("#expiredTime").val("")
+                 	 return
+                  }
+            	var expiredTime,ordercode,isRegister,securityCode,provinceOfBank,cityOfBank,bankBranchName;
+            	expiredTime = $("#expiredTime").val();
+            	securityCode = $("#securityCode").val();
+            
+                ordercode = $("#ordercode").val();
+                provinceOfBank = $("#provinceOfBank").val();
+                cityOfBank = $("#cityOfBank").val();
+                bankBranchName = $("#bankBranchName").val();
+                $("#btn").attr("disabled", "disabled");
+                $("#btn").css({background:'#999'})
+                $("#btn")[0].innerText="正在加载中..."
+                isRegister= $("#isregister").val();
+                console.log(ordercode)
+	 			console.log(expiredTime)
+	 			console.log(securityCode)
+	 		
+	 			if(isRegister==1){
+	 				var url="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/jfcoin/pay";
+	 				var type="POST";
+	 				$.ajax({
+	 	                url: url,
+	 	                type: type,
+	 	                dataType: 'JSON', 
+	 	                data: {
+	 	                	ordercode: ordercode,
+	 	                	bankBranchName: bankBranchName,
+	 	                	provinceOfBank: provinceOfBank,
+			                cityOfBank: cityOfBank,
+	 	                	expiredTime:expiredTime,
+	 	                	securityCode:securityCode,
+	 	             
+	 	                },
+	 	                success: function (data) {
+	 	                	console.log(data)
+	 	             	if(data.resp_code=="success"){
+	 	                		turntopage(data.redirect_url)
+
+	 	                	}else{
+	 	                		turntopage(data.redirect_url)
+	 	                	} 
+	 	                },
+	 				})
+	  
+	 			}else{
+	 				var url="http://ds.jiepaypal.cn:80/v1.0/paymentchannel/topup/jfcoin/register";
+	 				var type="POST";
+	 				  $.ajax({
+	 		                url: url,
+	 		                type: type,
+	 		                dataType: 'JSON', 
+	 		                data: {
+	 		                	ordercode: ordercode,
+	 		                	provinceOfBank: provinceOfBank,
+	 		                	cityOfBank: cityOfBank,
+	 		                	bankBranchName: bankBranchName, 
+	 		                	expiredTime:expiredTime,
+		 	                	securityCode:securityCode,
+	 		                },
+	 		                success: function (data) {
+	 		                	console.log(data)
+	 		                if(data.resp_code=="success"){
+	 		            		turntopage(data.redirect_url)
+	 		            	}else{
+	 		            		alert("商户注册失败:请确认有效期和安全码是否正确")
+	 		            		  $("#btn").attr("disabled", "disabled");
+					                $("#btn").css({background:'#999'})
+					                $("#btn")[0].innerText="正在加载中..."
+	 		            	} 
+	 		                },
+	 		                error: function (data) {
+	 		                	console.log(data)
+	 		                    alert("充值失败");
+	 		                    $('#btn').removeAttr("disabled");
+	 		                    $("#btn").css({background:'#37c3e7'})
+	 							$("#btn")[0].innerText="确定并充值"
+	 		                }
+	 		            });
+	 			}
+
+            });  
+            function turntopage(url){
+                mui.openWindow({
+                    url:url,
+                });
+            }
+        }); 
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.GoodsDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Goods">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+		<result column="goods_logo" jdbcType="VARCHAR" property="goodsLogo" />
+		<result column="goods_details" jdbcType="VARCHAR" property="goodsDetails" />
+		<result column="goods_context" jdbcType="VARCHAR" property="goodsContext" />
+		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+		<result column="goods_coin" jdbcType="INTEGER" property="goodsCoin" />
+		<result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+		<result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="oodsg_type_id" jdbcType="INTEGER" property="oodsgTypeId" />
+		<result column="business_id" jdbcType="INTEGER" property="businessId" />
+		<result column="merchat" jdbcType="INTEGER" property="merchat" />
+		<result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+		<association property="groups" javaType="com.jh.mircomall.bean.Groups"
+			resultMap="com.jh.mircomall.dao.GroupsDao.BaseResultMap"></association>
+		<!-- <association property="taobao" javaType="com.jh.mircomall.bean.Taobao" 
+			resultMap="com.jh.mircomall.dao.TaobaoDao.BaseResultMap"></association> -->
+	</resultMap>
+	<!--新增商品 -->
+	<insert id="addGoods" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jh.mircomall.bean.Goods">
+		insert into
+		t_goods(goods_name,goods_logo,goods_details,goods_context,goods_price,goods_coin,goods_num,create_time,change_time,is_delete,status,oodsg_type_id,business_id,original_price)
+		values
+		(#{goodsName},'null','null',#{goodsContext},#{goodsPrice},#{goodsCoin},#{goodsNum},now(),now(),0,0,#{oodsgTypeId},#{businessId},#{originalPrice})
+	</insert>
+	<!--删除商品 -->
+	<delete id="deleteGoods">
+		delete from t_goods where id=#{id}
+	</delete>
+	<!--查询全部商品 -->
+	<select id="selectAllGoods" parameterType="Map" resultMap="BaseResultMap">
+		select *
+		from t_goods where business_id=#{businessId}
+	</select>
+	<!--根据商品id查询商品信息 -->
+	<select id="selectGoodsById" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		goods_name,
+		goods_logo,
+		goods_details,
+		goods_context,
+		goods_price,
+		goods_coin,
+		goods_num,
+		business_id,
+		original_price,
+		status,
+		id
+		from t_goods
+		where id=#{id}
+	</select>
+	<select id="getGoodsByGroups" parameterType="Integer" resultMap="BaseResultMap">
+		select
+		goods_name,
+		goods_logo,
+		goods_details,
+		goods_context,
+		goods_price,
+		goods_coin,
+		goods_num,
+		business_id,
+		status,
+		original_price,
+		id
+		from t_goods
+		where
+		oodsg_type_id=#{id}
+	</select>
+	<!--商品首页分页显示 -->
+	<select id="selectGoodsPage" resultMap="BaseResultMap">
+		SELECT
+		g.goods_name,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_context,
+		g.goods_price,
+		g.goods_coin,
+		g.goods_num,
+		g.business_id,
+		g.status,
+		g.oodsg_type_id,
+		g.original_price,
+		g.id,
+		tg.groups_name
+		FROM
+		t_goods g
+		left join t_groups tg
+		on g.oodsg_type_id = tg.id
+		where
+		g.business_id=#{businessId} and
+		g.status='0'
+		order by g.id desc
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!--商品2级分类分页显示 -->
+	<select id="selectGoodsPageByParentId" resultMap="BaseResultMap">
+		SELECT
+		g.goods_name,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_context,
+		g.goods_price,
+		g.goods_coin,
+		g.goods_num,
+		g.business_id,
+		g.original_price,
+		g.status,
+		g.id,
+		t.groups_name
+		FROM
+		t_goods
+		g
+		LEFT JOIN
+		t_groups t ON (t.id
+		= g.oodsg_type_id)
+		where
+		g.business_id=#{businessId}
+		and
+		g.oodsg_type_id=#{oodsgTypeId}
+		and
+		g.status='0'
+		LIMIT
+		#{offset},#{limit}
+	</select>
+   <!--根据商品名条件查询  -->
+	<select id="selectGoodsPageBycondition1" resultMap="BaseResultMap">
+		SELECT
+		g.goods_name,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_context,
+		g.goods_price,
+		g.goods_coin,
+		g.goods_num,
+		g.business_id,
+		g.original_price,
+		g.status,
+		g.id,
+		t.groups_name
+		FROM
+		t_goods
+		g
+		LEFT JOIN
+		t_groups t ON (t.id
+		= g.oodsg_type_id)
+		where
+		g.business_id=#{businessId}
+		and
+		goods_name like
+		concat('%',#{goodsName},'%')
+		and
+		g.status='0'
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!--根据商品分组条件查询  -->
+	<select id="selectGoodsPageBycondition2" resultMap="BaseResultMap">
+		SELECT
+		g.goods_name,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_context,
+		g.goods_price,
+		g.goods_coin,
+		g.goods_num,
+		g.business_id,
+		g.original_price,
+		g.status,
+		g.id,
+		t.groups_name
+		FROM
+		t_goods
+		g
+		LEFT JOIN
+		t_groups t ON (t.id
+		= g.oodsg_type_id)
+		where
+		g.business_id=#{businessId}
+		and
+		g.oodsg_type_id=#{oodsgTypeId}
+		and
+		goods_name like
+		concat('%',#{goodsName},'%')
+		and
+		g.status='0'
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!--商品模糊查询 -->
+	<select id="selectLikeGoods" resultMap="BaseResultMap">
+		SELECT
+		goods_name,
+		goods_logo,
+		goods_details,
+		goods_context,
+		goods_price,
+		goods_coin,
+		goods_num,
+		business_id,
+		status,
+		original_price,
+		id
+		FROM
+		t_goods
+		where
+		business_id=#{businessId}
+		and
+		goods_name like
+		concat('%',#{text},'%')
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!-- 修改商品 -->
+	<update id="updateGoodsTest" parameterType="com.jh.mircomall.bean.Goods">
+		update t_goods
+		<set>
+			<if test="goodsName != null">
+				goods_name = #{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsLogo != null">
+				goods_logo = #{goodsLogo,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsDetails != null">
+				goods_details = #{goodsDetails,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsContext != null">
+				goods_context = #{goodsContext,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsPrice != null">
+				goods_price = #{goodsPrice,jdbcType=REAL},
+			</if>
+			<if test="goodsCoin != null">
+				goods_coin = #{goodsCoin,jdbcType=INTEGER},
+			</if>
+			<if test="goodsNum != null">
+				goods_num = #{goodsNum,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="changeTime != null">
+				change_time = #{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="oodsgTypeId != null">
+				oodsg_type_id = #{oodsgTypeId,jdbcType=INTEGER},
+			</if>
+			<if test="businessId != null">
+				business_id = #{businessId,jdbcType=INTEGER},
+			</if>
+			<if test="merchat != null">
+				merchat = #{merchat,jdbcType=INTEGER},
+			</if>
+			<if test="originalPrice != null">
+				original_price = #{originalPrice,jdbcType=REAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<!-- 查询分类商品总条数 -->
+	<select id="selectLeveCount" resultType="Integer">
+		select count(*) from
+		t_goods where business_id = #{businessId} and
+		oodsg_type_id=
+		#{oodsgTypeId} and status='0'
+	</select>
+	<!-- 查询全部商品总条数 -->
+	<select id="selectGoodsCount" resultType="Integer">
+		select count(*) from
+		t_goods where business_id = #{businessId}
+		and status='0'
+	</select>
+	<!-- 搜索商品条数 -->
+	<select id="selectLikeCount" resultType="Integer">
+		select count(*) from
+		t_goods where
+		goods_name like concat('%',#{text},'%')
+		and business_id =
+		#{businessId}
+
+	</select>
+	<!-- 获取分组名下的产品 -->
+	<select id="selectGroupsByName" resultMap="BaseResultMap">
+		select
+		*
+		from
+		t_goods g
+		left join t_groups p
+		on p.id=g.oodsg_type_id
+		where
+		p.brand_id=#{brandId}
+		and p.groups_name=#{groupsName}
+	</select>
+</mapper>

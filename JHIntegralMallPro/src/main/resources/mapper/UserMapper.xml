@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jh.mircomall.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="pay_password" property="payPassword" jdbcType="VARCHAR" />
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+		<result column="fullname" property="fullname" jdbcType="VARCHAR" />
+		<result column="origcode" property="origcode" jdbcType="VARCHAR" />
+		<result column="signcode" property="signcode" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="contactname" property="contactname" jdbcType="VARCHAR" />
+		<result column="zipcode" property="zipcode" jdbcType="VARCHAR" />
+		<result column="user_head_url" property="userHeadUrl" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="cou		nty" property="county" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="profession" property="profession" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+		<result column="openid" property="openid" jdbcType="VARCHAR" />
+		<result column="unionid" property="unionid" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="VARCHAR" />
+		<result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+		<result column="brand_id" property="brandId" jdbcType="INTEGER" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="brand_name" property="brandName" jdbcType="VARCHAR" />
+		<result column="pre_user_id" property="preUserId" jdbcType="INTEGER" />
+		<result column="pre_user_phone" property="preUserPhone"
+			jdbcType="VARCHAR" />
+		<result column="valid_status" property="validStatus" jdbcType="INTEGER" />
+		<result column="real_name_status" property="realNameStatus"
+			jdbcType="VARCHAR" />
+		<result column="verify_status" property="verifyStatus"
+			jdbcType="VARCHAR" />
+		<result column="vdynast_type" property="vdynastType" jdbcType="VARCHAR" />
+		<result column="encourage_num" property="encourageNum"
+			jdbcType="INTEGER" />
+		<result column="bank_card_manager_status" property="bankCardManagerStatus"
+			jdbcType="INTEGER" />
+		<result column="shops_status" property="shopsStatus" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="getUserInfo" resultMap="BaseResultMap">
+		SELECT
+		nick_name,
+		phone,
+		pay_password
+		FROM
+		t_user
+		WHERE
+		id = #{id}
+	</select>
+</mapper>

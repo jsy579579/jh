@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.ShoppingCartDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.ShoppingCart">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="goods_logo" jdbcType="VARCHAR" property="goodsLogo" />
+		<result column="goods_price" jdbcType="VARCHAR" property="goodsPrice" />
+		<result column="business_id" jdbcType="INTEGER" property="businessId" />
+		<result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+		<result column="goods_coin" jdbcType="INTEGER" property="goodsCoin" />
+		<association property="goods" javaType="com.jh.mircomall.bean.Goods"
+			resultMap="com.jh.mircomall.dao.GoodsDao.BaseResultMap" />
+	</resultMap>
+	<!-- 更新购物车商品数量 -->
+	<update id="updategoodsNum" parameterType="Map">
+		update t_shopping_cart
+		set goods_num = #{Num} where id=#{id}
+	</update>
+	<!--查询购物车商品是否存在 -->
+	<select id="selectgoods" resultMap="BaseResultMap">
+		select id,goods_num
+		from
+		t_shopping_cart
+		where user_id=#{userId} and goods_id=#{goodsId}
+	</select>
+	<!--添加商品到购物车 -->
+	<insert id="intsertgoods">
+		insert into
+		t_shopping_cart
+		(goods_id,user_id,goods_logo,goods_price,business_id,goods_num,create_time,change_time,status,is_delete,goods_coin
+		) VALUES (#{goodsId}, #{userId}, #{goodsLogo}, #{goodsPrice},
+		#{businessId}, #{goodsNum}, now(),now(),0 ,0,#{goodsCoin})
+	</insert>
+	<!--购物车分页 -->
+	<select id="selectgoodsPage" resultMap="BaseResultMap">
+		select
+		s.id,
+		s.goods_id,
+		s.user_id,
+		s.goods_logo,
+		s.business_id,
+		s.goods_num,
+		s.create_time,
+		s.change_time,
+		s.status,
+		s.is_delete,
+		g.original_price,
+		g.goods_name,
+		g.goods_details,
+		g.goods_context,
+		g.goods_coin,
+		g.id
+		from
+		t_shopping_cart
+		s
+		LEFT JOIN t_goods
+		g ON (g.id = s.goods_id)
+		where
+		s.business_id=#{businessId} and
+		s.user_id=#{userId}
+		order by s.id desc
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<!--删除购物车中的商品 -->
+	<delete id="deleteshoppingcartgoods" parameterType="Integer">
+		delete from
+		t_shopping_cart where id = #{id}
+	</delete>
+	<!--修改购物车商品数量 -->
+	<update id="updateShoppingCartGoodsNum" parameterType="Integer">
+		update
+		t_shopping_cart set goods_num =#{goodsNum} where id = #{id}
+	</update>
+	<!--查询购车商品总条数 -->
+	<select id="selectShopCartCount" resultType="Integer">
+		select count(*) from
+		t_shopping_cart where user_id = #{userId}
+	</select>
+</mapper>

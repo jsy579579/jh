@@ -1,0 +1,25 @@
+server: 
+  port: 8099
+
+---
+spring: 
+  profiles: dev
+  application: 
+    name: config-server
+  cloud: 
+    config:
+      server: 
+        native:
+          search-locations: classpath:/devconfig/
+
+---
+spring: 
+  profiles: prod
+  application: 
+    name: config-server
+  cloud: 
+    config:
+      server: 
+        native:
+          search-locations: /product/bin/config/{label}/
+

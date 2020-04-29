@@ -1,0 +1,24 @@
+user:
+    realname:
+          uploadpath: /usr/local/nginx/html/mall/
+          downloadpath: http://106.15.56.208:8888/mall/
+
+
+alioss:
+  endpoint: http://oss-cn-shanghai-internal.aliyuncs.com
+  out-endpoint: http://oss-cn-shanghai.aliyuncs.com
+  access_key_id: LTAIyhzaaWidVwG7
+  access_key_secret: wd2LXSDJtfREVRGY2BNeyVf9GGU0ke
+  bucket_name: xinli-juhe
+       
+server: 
+  tomcat: 
+    max-threads: 1000
+
+logging: 
+    level:
+        tk.mybatis: ERROR
+
+spring.jpa.show-sql: false
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 

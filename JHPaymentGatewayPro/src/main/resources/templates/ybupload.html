@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>上传图片</title>
+    <link href="http://fzjobofo.com/link/css/mui.min.css" rel="stylesheet">
+    <style type="text/css">
+        *{padding: 0;margin: 0;}
+        .upload_bg{height: 160px;width: 100%;background:url("http://fzjobofo.com/img/card_two_bg.png") center no-repeat;background-size: 100% 100%;padding: 20px 30px;}
+        .upload_list{background-color: #fff;margin: -100px 15px 0 15px;border-radius: 8px;}
+        .upload_list_title{text-align: center;padding-top: 25px;}
+        .form_list{padding: 20px 10px;}
+        .form_list_label label{width: 50%;padding: 15px 15px 20px 15px;}
+        .upload_input_one {padding: 15px 0 10px 0;border: 1px dashed #d2cccc; width: 170px; text-align: center;margin: 0 auto;}
+        .upload_input_one_des{color: #999;font-size: 14px;}
+        .upload_btn {padding: 30px 0 50px 0;text-align: center;}
+        .upload_btn_submit{background-color: #2f3d58;color: #fff;border-radius: 5px;width: 82%;padding: 7px 0;margin-left: 9%;}
+        .codeBottom{font-size: 12px;color: #999;padding: 10px 15px;}
+    </style>
+</head>
+<body> 
+	<div class="upload">
+        <div class="upload_bg"></div>
+        <div class="upload_list">
+            <div class="upload_list_title">实名认证资质审核</div>
+            <form class="form_list" id="uploadForm" accept-charset="utf-8" onsubmit="document.charset='utf-8';" enctype="multipart/form-data;charset=utf-8">
+                <div class="mui-input-row">
+                    <label>身份证号</label>
+                    <input type="text" class="mui-input-clear" name="idCard" id="idCard" th:value="${idCard}" placeholder="请输入身份证号">
+                </div>
+                <div class="mui-input-row form_list_label">
+                    <label>身份证正面照</label> 
+                    <input type="text" name="positiveURL" id="positiveFile" style="display: none">
+                </div>
+                <div class="upload_input_one">
+                    <img id="headPicOne" src="http://fzjobofo.com/img/idcard_bg.png" width="140px" height="100px"> 
+                    <input type="file" name="positiveFile" accept="image/*" id="imageOne" style="display: none;">
+                    <!-- <div class="upload_input_one_des">点击上传正面图片</div> -->
+                </div>
+                <!-- <div class="mui-input-row form_list_label">
+                    <label>身份证反面照</label> 
+                    <input type="text" name="oppositeURL" id="oppositeFile" style="display: none">
+                </div> -->
+                <!-- <div class="upload_input_one">
+                    <img id="headPicTwo" src="" width="100px" height="100px"> 
+                    <input type="file" name="oppositeFile" accept="image/*" id="imageTwo" style="display: none;">
+                    <div class="upload_input_one_des">点击上传反面图片</div>
+                </div> -->
+                <!-- 参数 -->
+                <input type="text" name="orderCode" id="orderCode" th:value="${orderCode}" style="display: none"> 
+                <input type="text" name="ips" id="ips" th:value="${ips}" style="display: none">
+                <!-- <input type="text" name="key" id="key" th:value="${key}"style="display: none"> -->
+                <!-- <input type="text" name="mainCustomerNumber" id="mainCustomerNumber" th:value="${mainCustomerNumber}" style="display: none"> -->
+            </form>
+            <div class="upload_btn">
+                <div id="submit_btn" class="upload_btn_submit">提交</div>
+            </div>
+        </div>
+        <div class="codeBottom">提醒：为了确保您可以进行交易，请补充实名认证资质！</div>
+	</div>
+    <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+    <script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+	<script type="text/javascript">
+        $(function() {
+            //第一张图片预览
+            $("#headPicOne").click(function () {
+                $("#imageOne").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+                $("#imageOne").on("change",function(e){
+                    var imgurloOne = document.getElementById("imageOne").value;
+                    console.log(imgurloOne)
+                    var objUrlOne = window.URL.createObjectURL(e.target.files[0]) //获取图片的路径，该路径不是图片在本地的路径
+                    console.log(objUrlOne,"1")
+                    $("#positiveFile").val(imgurloOne)
+                    if (objUrlOne) {
+                        $("#headPicOne").attr("src", objUrlOne) ; //将图片路径存入src中，显示出图片
+                    }
+                });
+            });
+            // 第二张图片预览
+        //    $("#headPicTwo").click(function () {
+        //         $("#imageTwo").click(); //隐藏了input:file样式后，点击头像就可以本地上传
+        //         $("#imageTwo").on("change",function(v){
+        //             var objUrlTwo = window.URL.createObjectURL(v.target.files[0])//获取图片的路径，该路径不是图片在本地的路径
+        //             var imgurloTwo = document.getElementById("imageTwo").value;
+        //             console.log(imgurloTwo)
+        //             console.log(objUrlTwo,"2")
+        //             $("#oppositeFile").val(imgurloTwo)
+        //             if (objUrlTwo) {
+        //                 $("#headPicTwo").attr("src", objUrlTwo) ; //将图片路径存入src中，显示出图片
+        //             }
+        //         });
+        //     }); 
+             //图片上传
+            $("#submit_btn").click(function () {
+                var formData = new FormData($('#uploadForm')[0]);
+                console.log(formData,"formData")
+                if($("#idCard").val() == ""){
+                    mui.toast("身份证号不能为空")
+                    return
+                }
+                if($("#idCard").val().length != 18){
+                    mui.toast("身份证号输入有误")
+                    return
+                }
+                if($("#positiveFile").val() == ""){
+                    mui.toast("身份证正面照不能为空")
+                    return
+                }
+                // if($("#oppositeFile").val() == ""){
+                //     mui.toast("身份证反面照不能为空")
+                //     return
+                // }
+                $("#submit_btn").attr("disabled", "disabled");
+                $("#submit_btn").css({background:'#999'})
+                $("#submit_btn")[0].innerText="正在加载中..."
+               $.ajax({
+                    type: "POST",//请求方式
+                    url:$("#ips").val()+"/v1.0/paymentgateway/topup/ybs/register",//接口
+                    dataType: "json",//数据类型
+                    data: formData,
+                    processData: false,  // 关键点
+                    contentType: false,  // 关键点
+                    success: function(res){
+                        console.log(res)
+                        if(res.resp_code=="000000"){
+                        	turntopage(res.result)
+                        }else{
+                            mui.toast(res.resp_message)
+                        }
+                    }, 
+                    error: function (err) {
+                        console.log(err)
+                        mui.toast("网络走失了吆，请稍后重试")
+                        $("#submit_btn").attr("disabled", true);
+                        $("#submit_btn").css({background:'#2f3d58'})
+                        $("#submit_btn")[0].innerText="提交"
+                    }
+                 });
+            });
+          //跳转页面专用
+            function turntopage(url){
+    			mui.openWindow({
+    			url:url,
+    			});
+    		}
+        });
+    </script>
+</body>
+</html>

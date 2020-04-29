@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.BrandDao">
+  <resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Brand">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="brand_type" jdbcType="VARCHAR" property="brandType" />
+    <result column="version_android" jdbcType="VARCHAR" property="versionAndroid" />
+    <result column="android_content" jdbcType="VARCHAR" property="androidContent" />
+    <result column="download_android" jdbcType="VARCHAR" property="downloadAndroid" />
+    <result column="version_ios" jdbcType="VARCHAR" property="versionIos" />
+    <result column="download_ios" jdbcType="VARCHAR" property="downloadIos" />
+    <result column="ios_content" jdbcType="VARCHAR" property="iosContent" />
+    <result column="we_chat_name" jdbcType="VARCHAR" property="weChatName" />
+    <result column="we_chat_url" jdbcType="VARCHAR" property="weChatUrl" />
+    <result column="share_title" jdbcType="VARCHAR" property="shareTitle" />
+    <result column="share_logo_address" jdbcType="VARCHAR" property="shareLogoAddress" />
+    <result column="share_main_address" jdbcType="VARCHAR" property="shareMainAddress" />
+    <result column="share_content" jdbcType="VARCHAR" property="shareContent" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="auto_upgrade" jdbcType="VARCHAR" property="autoUpgrade" />
+    <result column="activate_the_upgrade" jdbcType="VARCHAR" property="activateTheUpgrade" />
+    <result column="jd_appkey" jdbcType="VARCHAR" property="jdAppkey" />
+    <result column="brand_phone" jdbcType="VARCHAR" property="brandPhone" />
+    <result column="brand_qq" jdbcType="VARCHAR" property="brandQq" />
+    <result column="brand_weixin" jdbcType="VARCHAR" property="brandWeixin" />
+    <result column="juhe_bill_key" jdbcType="VARCHAR" property="juheBillKey" />
+    <result column="juhe_openid" jdbcType="VARCHAR" property="juheOpenid" />
+    <result column="jd_mastersecret" jdbcType="VARCHAR" property="jdMastersecret" />
+    <result column="juhe_wzdj_key" jdbcType="VARCHAR" property="juheWzdjKey" />
+    <result column="tpl_id" jdbcType="VARCHAR" property="tplId" />
+    <result column="level_name" jdbcType="VARCHAR" property="levelName" />
+    <result column="rebate_count" jdbcType="INTEGER" property="rebateCount" />
+    <result column="is_new_rebate" jdbcType="INTEGER" property="isNewRebate" />
+    <result column="equal_rebate_rate" jdbcType="DECIMAL" property="equalRebateRate" />
+    <result column="auto_rebate_config_on_off" jdbcType="INTEGER" property="autoRebateConfigOnOff" />
+    <result column="auto_upgrade_people" jdbcType="INTEGER" property="autoUpgradePeople" />
+    <result column="manage_id" jdbcType="INTEGER" property="manageId" />
+    <result column="brand_description" jdbcType="VARCHAR" property="brandDescription" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+ <select id="findbusinessById" resultType="com.jh.mircomall.bean.Brand">
+ 	select * from t_brand where id=#{brandId}
+ </select>
+
+</mapper>

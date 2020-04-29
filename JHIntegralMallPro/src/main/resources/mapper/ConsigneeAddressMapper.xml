@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.ConsigneeAddressDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.ConsigneeAddress">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="provinceid" property="provinceid" jdbcType="VARCHAR" />
+		<result column="cityid" property="cityid" jdbcType="VARCHAR" />
+		<result column="areaid" property="areaid" jdbcType="VARCHAR" />
+		<result column="detailed_addr" property="detailedAddr"
+			jdbcType="VARCHAR" />
+		<result column="consignee_phone" property="consigneePhone"
+			jdbcType="VARCHAR" />
+		<result column="default_addr" property="defaultAddr" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
+		<result column="consignee_name" property="consigneeName"
+			jdbcType="VARCHAR" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+			<association property="provinces" javaType="com.jh.mircomall.bean.Provinces"
+			resultMap="com.jh.mircomall.dao.ProvincesDao.BaseResultMap" />
+			<association property="cities" javaType="com.jh.mircomall.bean.Cities"
+			resultMap="com.jh.mircomall.dao.CitiesDao.BaseResultMap" />
+			<association property="areas" javaType="com.jh.mircomall.bean.Areas"
+			resultMap="com.jh.mircomall.dao.AreasDao.BaseResultMap" />
+	</resultMap>
+	<insert id="insertConsigneeAddress" parameterType="com.jh.mircomall.bean.ConsigneeAddress">
+		INSERT into
+		`t_consignee_address`
+		(user_id,provinceid,cityid,areaid,detailed_addr,consignee_phone,default_addr,consignee_name,create_time,change_time)
+		VALUES(#{userId},#{provinceid},#{cityid},#{areaid},#{detailedAddr},#{consigneePhone},${defaultAddr},#{consigneeName},#{createTime,jdbcType=TIMESTAMP},#{changeTime,jdbcType=TIMESTAMP});
+	</insert>
+	<delete id="deleteConsigneeAddress" parameterType="java.lang.Integer">
+		DELETE from
+		`t_consignee_address` where id=#{id}
+	</delete>
+	<select id="countConsigneeAddressByUserId" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select count(1) from `t_consignee_address` where
+		user_id=#{userid}
+	</select>
+	<select id="selectAllConsigneeAddress" resultMap="BaseResultMap">
+		SELECT
+		a.id,
+		a.user_id,
+		c.city,
+		p.province,
+		ar.area,
+		a.cityid,
+		a.provinceid,
+		a.areaid,
+		a.detailed_addr,
+		a.consignee_phone,
+		a.default_addr,
+		a.create_time,
+		a.change_time,
+		a.consignee_name
+		FROM
+		`t_consignee_address` a
+		LEFT JOIN t_cities c ON(c.cityid=a.cityid)
+		LEFT JOIN t_provinces p ON(p.provinceid=a.provinceid)
+		LEFT JOIN t_areas ar ON(ar.areaid=a.areaid)
+		WHERE
+		a.user_id = #{userid}
+		<if test="istimeorderby ==0">
+			ORDER BY
+			a.default_addr DESC,a.create_time DESC
+		</if>
+		<if test="istimeorderby ==1">
+			ORDER BY
+		a.change_time DESC
+		</if>
+		
+	</select>
+	<select id="selectConsigneeAddress" resultMap="BaseResultMap">
+		SELECT
+		a.id,
+		a.user_id,
+		c.city,
+		p.province,
+		ar.area,
+		a.detailed_addr,
+		a.consignee_phone,
+		a.default_addr,
+		a.create_time,
+		a.change_time,
+		a.consignee_name
+		FROM
+		`t_consignee_address` a
+		LEFT JOIN t_cities c ON(c.cityid=a.cityid)
+		LEFT JOIN t_provinces p ON(p.provinceid=a.provinceid)
+		LEFT JOIN t_areas ar ON(ar.areaid=a.areaid)
+		WHERE
+		a.user_id = #{userid}
+		and a.default_addr=#{defalutaddr}
+	</select>
+	<update id="updateConsigneeAddress" parameterType="com.jh.mircomall.bean.ConsigneeAddress">
+		  update `t_consignee_address`
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="provinceid != null" >
+        provinceid = #{provinceid,jdbcType=VARCHAR},
+      </if>
+      <if test="cityid != null" >
+        cityid = #{cityid,jdbcType=VARCHAR},
+      </if>
+      <if test="areaid != null" >
+        areaid = #{areaid,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedAddr != null" >
+        detailed_addr = #{detailedAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="consigneePhone != null" >
+        consignee_phone = #{consigneePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultAddr != null" >
+        default_addr = #{defaultAddr,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changeTime != null" >
+        change_time = #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consigneeName != null" >
+        consignee_name = #{consigneeName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <where>
+    	   id = #{id,jdbcType=INTEGER}
+    </where>
+	</update>
+	<select id="selectConsigneeAddressById" resultMap="BaseResultMap">
+		SELECT
+		a.id,
+		a.user_id,
+		c.city,
+		p.province,
+		ar.area,
+		a.detailed_addr,
+		a.consignee_phone,
+		a.default_addr,
+		a.create_time,
+		a.change_time,
+		a.consignee_name
+		FROM
+		`t_consignee_address` a
+		LEFT JOIN t_cities c ON(c.cityid=a.cityid)
+		LEFT JOIN t_provinces p ON(p.provinceid=a.provinceid)
+		LEFT JOIN t_areas ar ON(ar.areaid=a.areaid)
+		WHERE
+		a.id=#{id}
+	</select>
+</mapper>

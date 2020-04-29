@@ -1,0 +1,81 @@
+<!DOCTYPE HTML> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<title>交易结果返回</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+<style>
+	p{
+		width:100%;
+		height:40px;
+		text-align: center;
+		margin:150px auto;
+		font-size:20px;
+		line-height: 40px;
+	}
+	#btn{
+		width:55%;
+		height:70px;
+		display:block;
+		margin:0 auto;
+		background:#007aff;
+		border:0;
+		font-size:34px;
+		color:#fff;
+		line-height:70px;
+		border-radius:20px;
+	}
+	#ik{
+		width:200px;
+		height:200px;
+		margin:150px auto;
+	}
+</style>
+<script>
+
+		$(function(){			
+			var txt = $('#txt').val();
+			console.log(txt);
+			if(txt == 1001){
+					$('#btn').click(function(){
+						var txt = $('#txt').val();
+						console.log(txt)
+						if(txt == 1001){					
+							try{
+								window.android.invokeMethod(1,["true"])
+									}catch(e){
+								console.log(e)
+							}
+						}else{							
+							window.history.go(-1);
+						}
+					})
+			}else{
+				$('#btn').click(function(){
+						var txt = $('#txt').val();
+						console.log(txt)						
+						try{
+							window.android.invokeMethod(1,["false"])
+								}catch(e){
+							console.log(e)
+						}
+					})
+			}
+			
+		});
+	</script>
+</head>
+<body>
+	<script>
+	try{
+		window.android.invokeMethod(0,["支付结果","true"])
+			}catch(e){
+		console.log(e)
+	}
+	</script>
+	<input id="txt" type="text" th:value="${RespCode}" style="display:none" />
+	<p th:text="${RespMsg}" ></p>
+	<button id="btn">返回</button>
+	
+</body>
+</html>

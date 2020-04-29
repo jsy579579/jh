@@ -1,0 +1,82 @@
+
+<!DOCTYPE HTML> 
+<html xmlns:th="http://www.thymeleaf.org"> 
+<head> 
+<title>资质审核中</title> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<link rel="stylesheet" href="http://fzjobofo.com/link/css/mui.min.css">
+<link rel="stylesheet" href="http://1.xinli2017.applinzi.com/login/iconfont/iconfont.css">
+<script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>
+ <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+ <script>
+		$(function(){
+	        $('#btn').click(function(){
+	            try{
+	                window.android.invokeMethod(1,["true"])
+	            }catch(e){
+	                console.log(e)
+	            }
+
+	        })
+	    })
+	</script>
+<style>
+body {
+	margin: 0;
+	background: #fff;
+}
+.mui-table-view:after{
+	background: none;
+}
+.mui-table-view:before{
+	background: none;
+}
+.img{
+	max-width: 100%;
+	height: 150px
+}
+.title{
+	height: auto;
+	width: 64%;
+	text-align: center;
+	margin: 0 auto;
+
+}
+.mui-content{
+	background: #fff;
+}
+.title p{
+	font-size: 14px;
+	color: #666;
+
+}
+#smsCode[placeholder]{
+	font-size: 14px;
+}
+</style>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav" style="background: #2f3d58;">
+		<button id="btns" style="position:absolute;left:0;top:0;height:44px;background:#000;z-index:1000;opacity:0">返回</button>
+   <a class="mui-action-back iconfont icon-fanhui mui-pull-left" style="color: #fff;font-size: 18px;line-height:44px;"></a>
+    <h1 class="mui-title" style="color: #fff;">资质审核中</h1>
+</header>>
+	<div class="mui-content">
+		<div style="width: 100%;height: 180px;margin:0 auto;background: #fff; text-align: center;padding-top: 20px;">
+				<img class="img" src="http://1.xinli2017.applinzi.com/login/img/payback.png">
+			</div>
+			<div class="title">
+				<p>为了确保您可以进行支付，保障合法权益，正在资质审核验证中，该审核将再5分钟内完成。点击返回重新发起交易。</p>
+				<input type="button" id="btn" value="返回"/>
+			</div>
+		<div id="input" class="mui-table-view" style="border-radius:10px;border:0">
+			<form  class="mui-table-view-cell"  style="padding:11px 15px 25px 15px;border:0">
+				<div style="display: none">
+					受理订单号:<input type="hidden" name="ordercode"  id="ordercode" th:value="${ordercode}"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

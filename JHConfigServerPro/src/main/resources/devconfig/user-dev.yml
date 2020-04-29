@@ -1,0 +1,43 @@
+user: 
+    realname:
+         uploadpath: d:/123
+         downloadpath: d:/123
+    shops:
+          uploadpath: d:/123/shops/
+          downloadpath: d:/123/shops/
+    app:
+         dowanloadurl: http://localhost/v1.0/user/download/app
+         uploadpath: d:/123/app/
+         downloadpath: file:///d:/123/app/
+         
+    pay:
+        url: http://ds.jiepaypal.cn:8765/v1.0/facade/fixedcode/topup
+    appsys:
+           uploadpath: e:/123/appsys/
+           downloadpath: file:///e:/123/appsys/
+           
+    background:
+           uploadpath: d:/123/background/img/
+           downloadpath: d:/123/background/img/
+    exchangecoin: 
+      uploadpath: D:/coinExchange
+      downloadpath: D:/coinExchange
+      
+version:
+    ios:
+       number: 3.0.1
+    android:
+       number: 3.0.5
+       url: http://106.15.47.73/androidway/zhuandaoqianbao.apk
+
+alioss:
+  endpoint: http://oss-cn-shanghai.aliyuncs.com
+  out-endpoint: http://oss-cn-shanghai.aliyuncs.com
+  access_key_id: LTAIyhzaaWidVwG7
+  access_key_secret: wd2LXSDJtfREVRGY2BNeyVf9GGU0ke
+  bucket_name: xinli-juhe
+
+baidu:
+  url: https://aip.baidubce.com/rest/2.0/face/v3/match
+  ak: 1BnCXjjspgpQI2lppkOqdfCm
+  sk: 3tD35EZLoEQfs6yV6vVhg4zAGbmiXpRL

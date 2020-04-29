@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html class="ui-page-btn">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+	<link href="http://1.xinli2017.applinzi.com/weixin/css/mui.min.css" rel="stylesheet" />
+	<!--<link href="css/style.css" rel="stylesheet" />-->
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			
+			.mui-input-group {
+				margin-top: 10px;
+			}
+			
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			
+			.mui-input-group label {
+				width: 22%;
+			}
+			
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			
+			.mui-btn {
+				padding: 10px;
+			}
+			
+			.link-area {
+				display: block;
+				margin-top: 25px;
+				text-align: center;
+			}
+			
+			.spliter {
+				color: #bbb;
+				padding: 0px 8px;
+			}
+			
+			.oauth-area {
+				position: absolute;
+				bottom: 20px;
+				left: 0px;
+				text-align: center;
+				width: 100%;
+				padding: 0px;
+				margin: 0px;
+			}
+			
+			.oauth-area .oauth-btn {
+				display: inline-block;
+				width: 50px;
+				height: 50px;
+				background-size: 30px 30px;
+				background-position: center center;
+				background-repeat: no-repeat;
+				margin: 0px 20px;
+				/*-webkit-filter: grayscale(100%); */
+				border: solid 1px #ddd;
+				border-radius: 25px;
+			}
+			
+			.oauth-area .oauth-btn:active {
+				border: solid 1px #aaa;
+			}
+			
+			.oauth-area .oauth-btn.disabled {
+				background-color: #ddd;
+			}
+			.mui-input-group:before{
+				height:0
+			}
+			.mui-input-group:after{
+				height:0
+			}
+			.mui-input-group .mui-input-row:after{
+				height:0
+			}
+		</style>
+		<script src="http://1.xinli2017.applinzi.com/%E5%B9%B3%E5%8F%B0%E5%BA%94%E7%94%A8/jquery-1.11.0.js"></script>
+		<script src="http://pub.idqqimg.com/qqmobile/qqapi.js?_bid=152"></script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background-color:#448CF6;">
+			<h1 class="mui-title" style="color:#fff">QQ支付</h1>
+		</header>
+		
+		<div class="mui-content" style="padding:20px;">
+			<!--<p style="margin-top:34px;color:red"
+				>友情提示：</p>-->
+				<img style="width:50%;margin-top:50px;"
+					 src="http://1.xinli2017.applinzi.com/img/QQ%E6%94%AF%E4%BB%98.png"/>
+					  <div style="height:50px;text-align:center;color:#448CF6;line-height:50px;font-weight:600">
+					 		<span>收款商家:</span>
+					 		<span id="shop" th:text="${shopname}">加载中...</span>
+					 </div>
+			<form method="post" id="topupform" class="mui-input-group" style="border:1px solid #ccc;margin-top:20px;border-radius:15px;">
+				<input type="hidden" id="phone"       name="phone" th:value="${phone}"/>
+				<!-- <input type="hidden" id="shopname"       name="shopname" th:value="${shopname}"/> -->
+				<input type="hidden" id="channe_tag"  name="channe_tag" value="GONGZHONGHAO_QQ"/>
+				<input type="hidden" id="order_desc"  name="order_desc" value="商家收款【QQ】"/>	
+				<div class="mui-input-row" style="margin:0 15px;border-bottom:1px solid #ccc;height:60px;">
+					<label style="font-size:25px;
+						height:60px;line-height:60px;padding:0;
+						margin:0;text-align:center;
+						color:#ccc">￥</label>
+					<input name="amount" style="height:60px;" id='m1' type="number" class="mui-input-clear mui-input" placeholder="消费金额" min="1" max="50000"/>
+				</div>
+				<div class="mui-input-row" style="margin:0 15px;height:60px;">
+					<label style="font-size:16px;
+						height:60px;line-height:60px;padding:0;
+						margin:0;text-align:center;
+						color:#ccc">备注</label>
+					<input style="height:60px" id='remark' type="text" class="mui-input-clear mui-input" placeholder="20字以内"/>
+				</div>
+			</form>
+			<p style="padding-top:10px;"
+				>温馨提醒：付款前请仔细核实收款人的信息，避免上当受骗。</p>
+			<p>官方热线：<a th:text="${brandPhone}"></a></p>	
+			<div class="mui-content-padded">
+				<button id='btn' style="background-color:#448CF6;border:0" class="mui-btn mui-btn-block mui-btn-primary" >确认支付</button>
+			</div>
+			<div class="mui-content-padded oauth-area">
+
+			</div>
+		</div>
+		
+
+	</body>
+		<script language="javascript">
+			$(function(){
+				$('#m1').focus();//获取焦点调用键盘
+				
+				$('#m1').keyup(function(){
+					if($('#m1').val().length>0){
+						$('#btn').css({background:'red',border:'0'})
+					}else{
+						$('#btn').css('background','#12cc0d')
+					}
+				})
+				/* var name = $('#shopname').val();
+				$('#shop').val(name); */
+
+				$('#btn').click(function(){
+					topup();
+				})
+				function topup(){
+		
+						var amount = document.getElementById('m1').value;
+						if(amount == ''){
+							document.getElementById('m1').focus();
+							return;
+						}
+						/*var formData = new FormData($("#topupform")[0]);*/
+						
+						var formData1 = {
+							channel_tag:$('#channe_tag').val(),
+						};
+						$.ajax({
+				            url:'http://www.juhepal.cn/v1.0/user/channel/query',
+				            type: "POST",
+							cache: false,
+							async: false,
+							dataType: 'json',
+							data: formData1,
+				            success: function (data) {
+				            	var singleMinLimit=data.result.singleMinLimit;
+				            	var singleMaxLimit=data.result.singleMaxLimit;
+								var amount=$('#m1').val();
+								if(singleMinLimit>amount){
+										alert("最低消费金额为"+singleMinLimit+"￥");
+										
+								}else if( amount>singleMaxLimit){
+										alert("最高消费金额为"+singleMaxLimit+"￥");
+									
+								}else{
+									$("#btn").attr({"disabled":"disabled"});
+									gotopup();
+								}
+				         	},
+				            error: function (xhr, status, err) {
+				               alert("服务器繁忙，请稍后重试...");
+				            }
+						}); 
+						
+					}
+				function gotopup(){
+					
+					var amount = document.getElementById('m1').value;
+					if(amount == ''){
+						document.getElementById('m1').focus();
+						return;
+					}
+					/*var formData = new FormData($("#topupform")[0]);*/
+					var formData ={
+							phone:$('#phone').val(),
+							channe_tag:$('#channe_tag').val(),
+							order_desc:$('#order_desc').val(),
+							amount:$('#m1').val(),
+							remark:$('#remark').val()
+						};
+						 $.ajax({
+				            url:'http://www.juhepal.cn/v1.0/facade/topup',
+				            type: "POST",
+							async: false,
+							dataType:'json',
+							data: formData,
+				            success: function (data, status) {
+				            	console.log(data)
+				            	var data1 = data.result;
+				            	console.log(data1)
+				            	$('#btn').text('正在支付...');
+				            	/**调*/
+				            	location.href=  data1;
+				            	
+				         		},
+				            error: function (xhr, status, err) {
+				                alert("服务器繁忙，请稍后重试...");
+				            }
+						}); 
+				}
+				
+			})
+		</script>
+</html>

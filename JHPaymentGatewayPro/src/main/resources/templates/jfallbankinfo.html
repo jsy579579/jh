@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="http://fzjobofo.com/link/css/mui.min.css"/>
+    <script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+    <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        label {
+            width: 10%;
+        !important
+        }
+
+        input {
+            height: 35px;
+        }
+
+        input[type=text] {
+            border: 0;
+
+        }
+
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=password] {
+            border: 0;
+        }
+
+        input[type=button] {
+            border: 0;
+        }
+
+        #mis h3 {
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 20px;
+        }
+
+        .city {
+            height: auto;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        .city input[type=text] {
+            margin: 0;
+
+        }
+
+        .city input:nth-child(2) {
+            border-bottom: 1px solid #ebebeb;
+
+        }
+
+        .text {
+            width: 100%;
+            color: #FF9A4A;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+
+        .select {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .select select {
+            width: 49%;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .mui-table-view:after {
+            background-color: #fff;
+        }
+
+        .mui-table-view:before {
+            background-color: #fff;
+        }
+      
+          .showCard {
+            width: 100%;
+                background: url("http://1.xinli2017.applinzi.com/login/img/box_top_bg.png") center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .cardStyle {
+               padding: 0px 15px;
+                border-radius: 8px;
+                position: relative;
+                padding-left: 65px;
+                padding-bottom: 47px;
+                background-size: 100% 100%;
+        }
+        .bankLogo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #DAE3EC;
+            padding: 5px;
+            position: absolute;
+            left: 15px;
+            top: 26px;
+        }
+
+        .bankLogo img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .cardStyle .cardNum {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cardStyle > div:last-child {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 0 40px;
+            height: 41px;
+            line-height: 41px;
+        }
+          .bankText h4 {
+            color: #fff;
+      
+        }
+        .bankText{
+            padding-top: 20px;
+        }
+
+        .bankText > p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+        .cardStyle .cardNum > div:nth-child(1){
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        #carno2{
+             color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div:last-child {
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cardStyle > div:last-child > div {
+            width: 100%;
+            height: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .newTask {
+            position: fixed;
+            bottom: 0;
+            z-index: 9;
+            height: 40px;
+            line-height: 40px;
+            background-color: #eee;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #00aaee;
+        }
+        .confirm{
+            height: 44px;
+            width: 100%;
+            color: #fff;
+            background: #6f43bf;
+            text-align:center;
+            font-size: 16px;
+            border-radius: 40px;
+            margin-top: 30px;
+        }
+
+        .bg{
+            width: 100%;
+            height: 10px;
+            background: #efeff4
+        }
+        .money{
+            height: 44px;
+            width: 100%;
+            line-height: 44px;
+            font-size: 16px;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .money_number{
+            font-size:20px;
+            font-weight: 600;
+            color: #6f43bf
+        }
+         #show{
+            width: 68%;
+            height: 41px;
+            text-align: center;
+            background: rgba(0,0,0,.6);
+            color: #fff;
+            border-radius: 10px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -58px;
+            bottom: 0;
+            margin: auto;
+            font-size: 14px;
+            line-height: 40px;
+            z-index: 50;
+        display: none;
+        }
+        .callback {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	background: #fff;
+	left: 0;
+	top: 0;
+	z-index: 99;
+	display: none;
+}
+    </style>
+</head>
+<body style="padding: 20px 15px">
+<!-- <script>
+		try{
+			window.android.invokeMethod(0,["确认充值信息","true"])
+				}catch(e){
+			console.log(e)
+            
+		}
+</script> -->
+<div>
+    <div class="money">订单金额： <span class="money_number"  th:text="${amount}">110</span>元</div>
+    <span style="display: none" id="ordercode" th:text="${ordercode}"></span>
+    <span style="display: none" id="isRegister" th:text="${isRegister}"></span>
+    <span style="display: none" id="ipAddress" th:text="${ipAddress}"></span>
+    <span style="display: none" id="cardName" th:text="${cardName}"></span>
+    <span style="display: none" id="expiredTime" th:text="${expiredTime}"></span>
+    <span style="display: none" id="securityCode" th:text="${securityCode}"></span>
+    <!-- 显示银行卡 -->
+    <div class="showCard">
+        <div class="cardStyle">
+            <div class="bankLogo">
+                <img  src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png"/>
+            </div>
+            <div class="bankText">
+                <h4 id="bankName" th:text="${bankName}" >收款卡银行卡名称</h4>
+               	<p th:text="${cardType}"  style="color:#fff;font-size:14px;">借记卡 </p>
+            </div>
+            <div>
+                <div>
+                     <div class="cardNum">
+                        <div th:text="${bankNo}" id="carno1" >41273619960316</div>
+                        <div>* * * *</div>
+                        <div>* * * *</div>
+                        <div th:text="${bankNo}" id="carno2" >41273619960316</div>
+                        <input id="ka2" type="hidden" th:value="${bankCard}" placeholder=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 显示银行卡 -->
+<!-- 隐藏接参数 -->
+    <div >
+        <input style="display:none" type="text" th:value="${cardtype}" id="cardtype"/>
+    </div>
+<!-- 隐藏接参数 -->
+    <!-- 提示信息 -->
+     <div id="show" class="mui-input-row"></div>
+     <!-- 提示信息 -->
+    <div class="mui-input-row" style="width:100%;">
+          <button class="confirm" id="btn">确定并充值</button>
+    </div>
+    <div class="callback"></div>
+<p class="text">提醒：您正在进行一笔充值，请认真核实并确保银行卡信息不能透露给别人！</p>
+<script  type="text/javascript">
+    $(function () {
+	    // 银行卡加密显示
+        var str = $('#carno1').text()
+        var str2 = $('#carno2').text()
+        function fun(str,str2) {
+            console.log(str)
+            console.log(str2)
+           var str=str.substring(0,4)
+           var str2=str2.substring(str2.length - 4, str2.length)
+            $('#carno1').text(str)
+            $('#carno2').text(str2)
+        }
+        fun(str,str2);
+        // 银行卡加密显示
+         // 点击充值按钮
+        $("#btn").click(function () {
+            // 这是获取所传val的写法
+            var ordercode = $("#ordercode").text();
+            var isRegister = $("#isRegister").text();
+            var ipAddress = $("#ipAddress").text();
+            var expiredTime = $("#expiredTime").text();
+            var securityCode = $("#securityCode").text();
+            // 这是获取所传val的写法end
+	        $("#btn").attr("disabled", "disabled");
+	 		$("#btn").css({background:'#999'})
+			$("#btn")[0].innerText="正在加载中..."
+			if(isRegister==0){
+				
+				$.ajax({
+	                url: ipAddress+"/v1.0/paymentgateway/quick/jfall/register",
+	                type: "POST",
+	                dataType: 'JSON', 
+	                data: {
+	                	ordercode: ordercode,
+	                	expiredTime: expiredTime,
+	                	securityCode: securityCode,
+	                },
+	                success: function (res) {
+	                	console.log(res)
+	                	  if(res.resp_code=="000000"){
+	                		  turntopage(res.redirect_url)  
+	                       }else{
+	                    	   mui.alert(res.resp_message, '提示信息', function() {
+                                   try{
+                                     window.android.invokeMethod(1,["true"])
+                                      }catch(e){
+                                          console.log(e)
+                                      }
+                                  });
+	                    	   // $('#show').stop().fadeIn(100).html(res.resp_message)
+	                        //    $('#show').fadeOut(4000).html(res.resp_message)
+	                       }
+	                	
+	                },
+	                error:function(err){
+	                	console.log(err)
+	                	alert("交易排队中，请稍后重试！");
+	                }
+				})
+				
+			}else if(isRegister==1){
+				
+				$.ajax({
+	                url: ipAddress+"/v1.0/paymentgateway/quick/jfall/transfer",
+	                type: "POST",
+	                dataType: 'JSON', 
+	                data: {
+	                	ordercode: ordercode,
+	                	expiredTime: expiredTime,
+	                	securityCode: securityCode,
+	                	ipAddress:ipAddress
+	                },
+	                success: function (res) {
+	                	console.log(res)
+	                	  if(res.resp_code=="000000"){
+	                		  turntopage(res.redirect_url) 
+	                       }else{
+	                    	   mui.alert(res.resp_message, '提示信息', function() {
+                                   try{
+                                     window.android.invokeMethod(1,["true"])
+                                      }catch(e){
+                                          console.log(e)
+                                      }
+                                  });
+	                    	  
+	                       }
+	                	
+	                },
+	                error:function(err){
+	                	console.log(err)
+	                	alert("交易排队中，请稍后重试！");
+	                }
+				})
+				
+			}else if(isRegister==2){
+				
+				$.ajax({
+	                url: ipAddress+"/v1.0/paymentgateway/quick/jfall/pay-transfer",
+	                type: "POST",
+	                dataType: 'JSON', 
+	                data: {
+	                	ordercode: ordercode
+	       
+	                },
+	                success: function (res) {
+	                	console.log(res)
+	                	  if(res.resp_code=="000000"){
+	                		  turntopage(res.redirect_url) 
+	                       }else{
+	                    	   mui.alert(res.resp_message, '提示信息', function() {
+                                   try{
+                                     window.android.invokeMethod(1,["true"])
+                                      }catch(e){
+                                          console.log(e)
+                                      }
+                                  });
+	                    	   // $('#show').stop().fadeIn(100).html(res.resp_message)
+	                        //      $('#show').fadeOut(4000).html(res.resp_message) 
+	                       }
+	                	
+	                },
+	                error:function(err){
+	                	console.log(err)
+	                	alert("交易排队中，请稍后重试！");
+	                }
+				})
+			}
+			
+	        
+        });
+        
+      //跳转页面专用
+        function turntopage(url){
+			mui.openWindow({
+			url:url,
+			});
+		}
+    });
+</script>
+</body>
+</html>

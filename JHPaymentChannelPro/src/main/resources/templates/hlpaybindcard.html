@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css"/>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        label {
+            width: 10%;
+        !important
+        }
+
+        input {
+            height: 35px;
+        }
+
+        input[type=text] {
+            border: 0;
+
+        }
+
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=password] {
+            border: 0;
+        }
+
+        input[type=button] {
+            border: 0;
+        }
+
+        #mis h3 {
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 20px;
+        }
+
+        .city {
+            height: auto;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        .city input[type=text] {
+            margin: 0;
+
+        }
+
+        .city input:nth-child(2) {
+            border-bottom: 1px solid #ebebeb;
+
+        }
+
+        .text {
+            width: 100%;
+            color: #FF9A4A;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+
+        .select {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .select select {
+            width: 49%;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .mui-table-view:after {
+            background-color: #fff;
+        }
+
+        .mui-table-view:before {
+            background-color: #fff;
+        }
+      
+          .showCard {
+            width: 100%;
+                background: url("http://1.xinli2017.applinzi.com/img/bankcard_blue.png") center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .cardStyle {
+            padding: 10px 15px;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 65px;
+            padding-bottom: 60px;
+            background-size: 100% 100%;
+        }
+        .bankLogo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #DAE3EC;
+            padding: 5px;
+            position: absolute;
+            left: 15px;
+            top: 22px;
+        }
+
+        .bankLogo img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .cardStyle .cardNum {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cardStyle > div:last-child {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 0 40px;
+            height: 41px;
+            line-height: 41px;
+        } 
+          .bankText h4 {
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .bankText > p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+        .cardStyle .cardNum > div:nth-child(1){
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        #carno2{
+             color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div:last-child {
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cardStyle > div:last-child > div {
+            width: 100%;
+            height: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .newTask {
+            position: fixed;
+            bottom: 0;
+            z-index: 9;
+            height: 40px;
+            line-height: 40px;
+            background-color: #eee;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #00aaee;
+        }
+        .confirm{
+            height: 44px;
+            width: 100%;
+            color: #fff;
+            background: #005da4;
+            text-align:center;
+            font-size: 16px;
+            border-radius: 40px;
+            margin-top: 10px;
+        }
+        .mui-table-view:after {
+        background-color: #fff;
+        }
+        .mui-table-view:before {
+        background-color: #fff;
+        }
+        .mui-input-row label{
+            width: 26%;
+            font-size: 14px;
+            color: #333;
+            line-height:18px;
+        }
+        .mui-input-row label~input, .mui-input-row label~select, .mui-input-row label~textarea{
+             width: 71%;
+             color:#666;
+        }
+        .mui-input-group:before{
+            background: none;
+        }
+        .mui-input-group .mui-input-row:after{
+             background: none;
+        }
+        .mui-input-group:after{
+            background: none;
+        }
+        .bg{
+            width: 100%;
+            height: 10px;
+            background: #efeff4
+        }
+          #show{
+        width: 50%;
+        height: 40px;
+        text-align: center;
+        background: #555555;
+        color: #fff;
+        border-radius: 10px;
+        opacity: 0.8;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -58px;
+        bottom: 0;
+        margin: auto;
+        font-size: 12px;
+        line-height: 40px;
+        display: none;
+        }
+    </style>
+</head>
+<body style="padding: 20px 15px">
+<script>
+		try{
+			window.android.invokeMethod(0,["确认绑卡信息","true"])
+				}catch(e){
+			console.log(e)
+            
+		}
+	</script>
+<div>
+    <div class="showCard">
+        <div class="cardStyle">
+            <div class="bankLogo">
+                <img  src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png"/>
+            </div>
+            <div class="bankText">
+                <h4 id="bankName" th:text="${bankName}" ></h4>
+               	<p th:text="${cardType}"  style="color:#fff;font-size:14px;"> </p>
+                <input id="bname" style="display:none" type="text"  th:value="${bankBranchName}" />
+            </div>
+            <div>
+                <div>
+                     <div class="cardNum">
+                        <div th:text="${bankNo}" id="carno1" ></div>
+                        <div>* * * *</div>
+                        <div>* * * *</div>
+                        <div th:text="${bankNo}" id="carno2" ></div>
+                        <input id="ka2" type="hidden" th:value="${bankNo}" placeholder=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="city">
+    <div>
+      <input style="display:none" type="text" placeholder="有效期"  th:value="${expiredTime}" id="exp"/>
+      <input style="display:none" type="text" placeholder="充值卡安全码" th:value="${securityCode}" id="sec"  />
+      <input style="display:none" type="text"  th:value="${ordercode}"  id="ordercode" />
+      <input style="display:none" type="text"  th:value="${cardName}"  id="cardName" />
+      <input style="display:none" type="text"  th:value="${bankCard}"  id="bankCard" />
+      <input style="display:none" type="text"  th:value="${cardtype}"  id="cardtype" />
+    </div>
+</div>
+ <!-- 有效期安全码 -->
+<div class="mui-input-group" style="margin: 20px 0">
+    <div class="mui-input-row">
+        <label> 有效期</label>
+    <input type="number" placeholder="示例：09/15,输入0915"  id="expiredTime"/>
+    </div>
+    <div class="bg"></div>
+    <div class="mui-input-row">
+        <label>安全码</label>
+       <input type="number" placeholder="卡背面末三位"  id="securityCode"/>
+    </div>
+</div>
+   <!-- 有效期安全码 -->
+
+    <div >
+        <input style="width:60%;border-radius:10px;" type="text" name="smsCode" id="smsCode" placeholder="请输入验证码" />&nbsp;
+        <input  style="width:35%;height:40px;border-radius:10px;border:0;background: #005da4;color: #fff" id="btn_sendCode"  type="button" value="获取验证码" />
+    </div>
+
+<input style="display:none" type="text"  th:value="${isRegister}" id="isregister"/>  
+<div class="mui-input-row" style="width:100%;margin:15px auto;">
+      <button class="confirm" id="btn">确定并绑卡</button>
+</div>
+ <div id="show" class="mui-input-row"></div>
+<p class="text">提醒：您正在进行绑卡，请认真核实并确保银行卡信息不能透露给别人！</p>
+ <input style="display:none" type="text" th:value="${cardtype}" id="cardtype"/>
+<script  type="text/javascript">
+    $(function () {
+
+        var wait=60;            
+    function time(o) {  
+            if (wait == 0) {  
+                o.removeAttribute("disabled");            
+                o.value="获取验证码";  
+                wait = 60;
+            } else {  
+                o.setAttribute("disabled", true);  
+                o.value=  wait+"(s)" ;  
+                wait--;                     
+                setTimeout(function() {  
+                    time(o)  
+                },  
+                1000)  
+            }  
+        };              
+    //提交手机号码重复验证
+    $("#btn_sendCode").click(function(){
+        var ordercode=$('#ordercode').val()
+        time(this);
+        $.ajax({
+        type: "POST",
+        url: "http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/hlpay/bksendmessage",
+        dataType: "json",
+        data: {
+            ordercode:ordercode
+               },
+        success: function(res){
+            if(res.respcode=="0000"){
+                $("#btn_sendCode").attr("readonly", "readonly");
+                   $('#show').stop().fadeIn(100).html("验证码已发送")
+                $('#show').fadeOut(2000).html("验证码已发送")
+            }else{
+                $('#show').stop().fadeIn(100).html(res.respmsg)
+                $('#show').fadeOut(2000).html(res.respmsg)
+            }
+           
+        }, 
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("系统异常，请重试！");
+            }
+        }); 
+    });
+    
+    
+         var sec = $("#sec").val();
+            var exp = $("#exp").val();
+            console.log(sec)
+            console.log(exp)
+            if(exp != ""){
+                $("#securityCode").val(sec);
+                $("#expiredTime").val(exp);
+            }
+            if(exp == ""){
+                $("#securityCode").attr("placeholder","卡背面末三位");
+                $("#expiredTime").attr("placeholder","示例：09/15,输入0915");
+            }
+		 
+	    // 银行卡加密显示
+        var str = $('#carno1').text()
+        var str2 = $('#carno2').text()
+        function fun(str,str2) {
+            console.log(str)
+            console.log(str2)
+           var str=str.substring(0,4)
+           var str2=str2.substring(str2.length - 4, str2.length)
+            $('#carno1').text(str)
+            $('#carno2').text(str2)
+        }
+        fun(str,str2);
+        // 银行卡加密显示
+         // 点击充值按钮
+        $("#btn").click(function () {
+            // 这是获取所传val的写法
+            var expiredTime= $("#expiredTime").val();
+            var securityCode= $("#securityCode").val();
+            var ordercode= $("#ordercode").val();
+            var cardName= $("#cardName").val();
+            var bankCard= $("#bankCard").val();
+            var cardtype= $("#cardtype").val();
+            // 这是获取所传val的写法end
+	        $("#btn").attr("disabled", "disabled");
+	 		$("#btn").css({background:'#999'})
+			$("#btn")[0].innerText="正在加载中..."
+				$.ajax({
+		            url: 'http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/hlpay/quickpaybindcard',
+		            type: 'POST',
+		            dataType: 'JSON',
+		            data: {
+						ordercode:ordercode,
+						smsCode:smscode,
+						securityCode:securityCode,
+						expiredTime:expiredTime,
+						   },
+		            success: function (data) {
+		            	console.log(data)
+		            	if(data.resp_code=="success"){
+		            		turntopage(data.redirect_url)
+
+		            	}else{
+		            		turntopage(data.redirect_url)
+		            	}
+		            },
+		            error: function (err) {
+		            	 $('#btn').removeAttr("disabled");
+	                    $("#btn").css({background:'#35a4f5'})
+						$("#btn").val("立即验证")
+		            	console.log(err)
+		                console.log('加载数据异常，请重试!');
+		            }
+        		});
+	 		
+	        
+        });
+
+ // turntopage("http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/tojfcoincreditcard?bankName="+bankName+"&bankBranchId="+bankBranchId+
+ //                            "&bankNo="+bankNo+"&amount="+amount+"&ordercode="+ordercode+"&provinceOfBank="+provinceOfBank+"&cityOfBank="+cityOfBank+
+ //                            "&bankBranchName="+bankBranchName+"&cardtype="+cardtype+"&isRegister="+isRegister+"&bankCard="+bankCard+"&cardName="+cardName+"&expiredTime="+expiredTime+"&securityCode="+securityCode) 
+    //跳转页面专用
+        function turntopage(url){
+			mui.openWindow({
+			url:url,
+			});
+		}
+           //跳转页面专用
+    });
+</script>
+</body>
+</html>

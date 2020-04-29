@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <form action="http://pay.dingshuapay.com:9876/netrecv/merchant/unionPay" id="pay_form" method="POST">
+        <input type="hidden" name="version" th:value="${version}"/>
+        <input type="hidden" name="cust_id" th:value="${cust_id}"/>
+        <input type="hidden" name="ord_id" th:value="${ord_id}"/>
+        <input type="hidden" name="sub_mer_id" th:value="${sub_mer_id}"/>
+        <input type="hidden" name="subject" th:value="${subject}"/>
+        <input type="hidden" name="gate_id" th:value="${gate_id}"/>
+        <input type="hidden" name="trans_amt" th:value="${trans_amt}"/>
+        <input type="hidden" name="card_id" th:value="${card_id}"/>
+        <input type="hidden" name="mobile_no" th:value="${mobile_no}"/>
+        <input type="hidden" name="acct_name" th:value="${acct_name}"/>
+        <input type="hidden" name="acct_idcard" th:value="${acct_idcard}"/>
+        <input type="hidden" name="bank_num" th:value="${bank_num}"/>
+        <input type="hidden" name="acct_cardno" th:value="${acct_cardno}"/>
+        <input type="hidden" name="trade_rate" th:value="${trade_rate}"/>
+        <input type="hidden" name="draw_fee" th:value="${draw_fee}"/>
+        <input type="hidden" name="bg_ret_url" th:value="${bg_ret_url}"/>
+        <input type="hidden" name="check_value" th:value="${check_value}"/>
+    </form>
+</body>
+<script type="text/javascript">document.all.pay_form.submit();</script>
+</html>

@@ -1,0 +1,15 @@
+juhe:
+  realname:
+    url: http://op.juhe.cn/idcard/query
+    key: 2a7fc8c8e5c4d6026d1df59396ecbaa6
+  auth4:
+    url: http://v.juhe.cn/verifybankcard4/query
+    #key: f0add8418c505eda3f7a1e6865135f9e
+    key: e83760ed0afce9d6c4addad1fa567cf5
+  cardlocation:
+    url: http://v.juhe.cn/bankcardinfo/query
+    key: e6db2dc1255e580f5e001f62d5f00613
+  sms:
+    url: http://v.juhe.cn/sms/send
+    key: 53dbdd9c268feb4de0c947c5932cb2b0
+    repaymenttpl_id: 125321

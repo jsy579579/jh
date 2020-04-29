@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.CookiesDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Cookies">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="brand_id" jdbcType="INTEGER" property="brandId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="change_time" jdbcType="TIMESTAMP" property="changeTime" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+		<association property="goods" javaType="com.jh.mircomall.bean.Goods"
+			resultMap="com.jh.mircomall.dao.GoodsDao.BaseResultMap" />
+
+	</resultMap>
+	<delete id="updateCookies">
+		delete from t_cookies where user_id = #{userId} and
+		brand_id=#{brandId}
+	</delete>
+	<select id="getCookiesList" resultMap="BaseResultMap">
+		SELECT
+		c.id,
+		c.goods_id,
+		c.is_delete,
+		c.create_time,
+		c.user_id,
+		c.brand_id,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_details,
+		g.goods_logo,
+		g.goods_name,
+		g.goods_num,
+		g.original_price,
+		g.goods_price
+		FROM
+		t_cookies c
+		LEFT JOIN
+		t_goods g ON
+		(c.goods_id = g.id)
+		WHERE
+		c.user_id = #{userId}
+		AND
+		c.brand_id = #{brandId}
+		ORDER BY c.create_time DESC
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<insert id="insertCookies">
+		insert into t_cookies
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="goodsId != null">
+				goods_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="changeTime != null">
+				change_time,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="brandId != null">
+				brand_id,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="changeTime != null">
+				#{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="brandId != null">
+				#{brandId,jdbcType=INTEGER},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectCookiesCount" resultType="Integer">
+		select count(*) from
+		t_cookies where user_id = #{userId} and brand_id=#{brandId}
+	</select>
+	<select id="selectCookiesByGoodsid" resultMap="BaseResultMap">
+		select
+		c.id,
+		c.goods_id,
+		c.is_delete,
+		c.create_time,
+		c.user_id,
+		c.brand_id,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_details,
+		g.goods_logo,
+		g.goods_name,
+		g.goods_num,
+		g.original_price,
+		g.goods_price
+		FROM
+		t_cookies c
+		LEFT JOIN
+		t_goods g ON
+		(c.goods_id = g.id)
+		WHERE
+		 c.goods_id= #{goodsId}
+		 and c.user_id = #{userId}
+		 and c.brand_id = #{brandId}	
+	</select>
+</mapper>

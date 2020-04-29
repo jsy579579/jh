@@ -1,0 +1,332 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+</head>
+    <style type="text/css">
+          html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header,
+        menu, nav, output, section, summary,
+        time, mark, audio, video, input {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-weight: normal;
+        vertical-align: baseline;
+        list-style: none
+        }
+        input{
+           outline: none;
+        }
+        body{
+          background: #efeff4 ;
+          box-sizing: border-box;
+        }
+         .triangle-facing-left {  
+           display: inline-block;
+          border-left: 2px solid;
+          border-bottom: 2px solid;
+          width: 12px;
+          height: 12px;
+          transform: rotate(45deg);
+          margin-top: 12px;
+         }  
+        .header_title_fonts{
+        font-size: 12px;
+        color: #666; 
+        }
+        .header{
+        height: 44px;
+        width: 100%;
+        position: fixed;
+        line-height: 44px;
+        display: flex;
+        z-index: 44;
+        background: #fff
+        }
+        .back{
+        height: 44px;
+        width: 44px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+        line-height: 44px;
+        color: #1485f4;
+        }
+        .header_title{
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+        line-height: 44px;
+        }
+        .wrapper{
+          padding-top: 44px;
+
+        }
+        .hgweb_box{
+          background: #fff;
+          padding: 10px 15px;
+          margin-top:1px;
+        }
+       .hgweb_amount{
+          padding: 10px 0 20px 0;
+          border-bottom: .5px solid #ddd;
+          text-align: center;
+        }
+        .amount_title{
+          line-height:30px;
+          font-size: 16px;
+        }
+        .amount{
+          font-size: 26px;
+          line-height: 44px;
+        }
+        .order_list{
+          /*border-bottom: .5px solid #ddd;*/
+          padding: 8px 10px;
+        }
+        .order_list_item{
+          line-height: 28px;
+          font-size: 14px;
+          color: #666;
+          display: flex;
+        }
+        .order_item_left{
+          width: 30%;
+        }
+        .order_item_right{
+          width: 70%;
+          text-align: right;
+        }
+        .primary_button{
+          line-height: 40px;
+          text-align: center;
+          font-size: 16px;
+          color: #fff;
+          background: #1485f4;
+          border-radius: 5px;
+          margin:20px 0;
+
+        }
+        .smscode_box{
+          overflow: hidden;
+          width: 100%;
+        }
+        .smscode_left{
+          float: left;
+          width: 60%
+        }
+        .smscode_left .smscode{
+          margin:0;
+          padding:0 0 0 15px;
+          height: 36px;
+          border-radius: 15px;
+
+        }
+        .smscode_right{
+          text-align: center;
+          float: right;
+            width: 36%
+        }
+        .smscode_right .getsmscode{
+          border:none;
+          background:#1485f4;
+          color: #fff;
+          margin:3px 0 3px 0;
+          font-size: 14px;
+          height: 30px;
+          border-radius: 4px;
+          width: 108px;
+        }
+        .smscode[placeholder]{
+          font-size: 14px;
+        }
+    </style>
+<body>
+     <header class="header ">
+        <div class="back" id="back">
+            <span class=" triangle-facing-left" ></span>
+        </div>
+        <h1 class="header_title">支付订单</h1>
+     </header>
+     <div class="wrapper">
+       <div class="hgweb_box">
+        <div class="hgweb_amount">
+            <div class="amount_title">订单金额</div>
+            <div class="amount" th:text="${amount}">元</div>
+        </div>
+          <ul class="order_list">
+              <li class="order_list_item">
+                  <div class="order_item_left">商品</div>
+                  <div class="order_item_right"   th:text="${desc}">最强王者</div>
+              </li> 
+              <li class="order_list_item">
+                  <div class="order_item_left">交易时间</div>
+                  <div class="order_item_right" id="date"></div>
+              </li>
+              <li class="order_list_item">
+                  <div class="order_item_left">支付方式</div>
+                  <div class="order_item_right">银行卡</div>
+              </li>
+              <li class="order_list_item">
+                  <div class="order_item_left">交易单号</div>
+                  <div class="order_item_right" th:text="${orderCode}" >211</div>
+              </li>
+          </ul>
+          <!-- 获取验证码 -->
+          <div class="smscode_box">
+            <div class="smscode_left" >
+                 <input class="smscode" type="text" name="smsCode" id="smsCode" placeholder="请输入验证码" />
+            </div>
+           <div  class="smscode_right">
+                 <input class="getsmscode" id="btn_sendCode" type="button" value="获取验证码" />
+           </div>
+              
+          </div>
+          <!-- 获取验证码 -->
+          <!-- 隐藏接参数 -->
+          <div>
+            <input style="display: none" type="text" placeholder="订单号"
+              th:value="${orderCode}" id="orderCode" />
+               <input style="display: none" type="text" placeholder="订单号"  th:value="${ipAddress}"
+               id="ipAddress" />
+          </div>
+          <!-- 隐藏接参数 -->
+          <div>
+              <div class="primary_button" id="btn">确定</div>
+          </div>
+      </div>
+     </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        var ipAddress=$("#ipAddress").val()
+       var date = new Date();
+          var seperator1 = "-";
+          var seperator2 = ":";
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+              month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+              strDate = "0" + strDate;
+          }
+          var currentdate=date.getFullYear() + seperator1 + month + seperator1 + strDate
+                  + " " + date.getHours() + seperator2 + date.getMinutes()
+                  + seperator2 + date.getSeconds()
+          console.log(currentdate)
+          $("#date").text(currentdate)
+      $("#back").click(function () {
+          try{
+                window.android.invokeMethod(1,["true"])
+            }catch(e){
+                console.log(e)
+            }
+      })
+       // 获取验证码和发送验证码
+        var wait=60;            
+        function time(o) {  
+            if (wait == 0) {  
+              o.setAttribute("disabled", true);  
+                o.value="不可重复获取"
+                $("#btn_sendCode")[0].style.backgroundColor="#999" 
+                wait = 60;
+            } else {  
+                o.setAttribute("disabled", true);  
+                o.value= ""+ wait+"(s)" ;  
+                wait--;                     
+                setTimeout(function() {  
+                    time(o)  
+                },  
+                1000)  
+            }  
+        };              
+      // 获取验证码
+       $("#btn_sendCode").click(function(){
+
+          var orderCode=$('#orderCode').val()
+          console.log(orderCode)
+            time(this);
+            $.ajax({
+            type: "POST",
+            url: ipAddress+"/v1.0/paymentchannel/topup/yldz/paysms",
+            dataType: "json",
+            data: {
+                 orderCode:orderCode,
+                   },
+            success: function(res){
+                if(res.resp_code=="success"){
+                  
+                  mui.toast('发送验证码成功');
+                }else{
+                  mui.toast(res.resp_message)
+                }
+            }, 
+            error: function (err) {
+                console.log(err)
+                 mui.toast("交易排队中，请稍后重试！")
+                }
+            });  
+
+    });
+
+      $("#btn").click(function () {
+        var orderCode=$('#orderCode').val()
+        var smsCode=$("#smsCode").val()
+        if(smsCode==""){
+          mui.toast("请先获取验证码")
+          return
+        }
+      		$("#btn").attr("disabled", "disabled");
+          $("#btn").css({background:'#999'})
+          $("#btn")[0].innerText="正在加载中..."
+
+             $.ajax({
+            type: "POST",
+            url: ipAddress+"/v1.0/paymentchannel/topup/yldz/pay",
+            dataType: "json",
+            data: {
+                 orderCode:orderCode,
+                 smsCode:smsCode,
+                  },
+            success: function(res){
+              console.log(res)
+                if(res.resp_code=="success"){
+                 turntopage(res.redirect_url)
+                }else{
+                  mui.toast(res.resp_message)
+                }
+            }, 
+            error: function (err) {
+                console.log(err)
+                 mui.toast("交易排队中，请稍后重试！")
+                }
+            });  
+      })
+       //跳转页面专用
+        function turntopage(url){
+            mui.openWindow({
+            url:url,
+            });
+          }
+           //跳转页面专用
+    })
+</script>
+</html>

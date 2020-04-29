@@ -1,0 +1,6 @@
+server:
+  port: 0
+  tomcat:
+       max-threads: 1000
+
+spring.jpa.show-sql: true

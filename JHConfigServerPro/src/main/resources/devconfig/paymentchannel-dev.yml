@@ -1,0 +1,181 @@
+server: 
+  port: 5556
+  tomcat:
+    max-threads: 1000
+      
+withdraw:
+    secfile:
+        path: D:/123/104000000072348-Signature.pfx
+        path2: /product/deploy/yilian.pfx
+
+topup:
+    secfile:
+        merchant_no: 888440058111002
+        trans_url: https://test.zhongmaopay.com/payment-gate-web/gateway/api/backTransReq
+        public_key_path: C:/888440058111002_pub.pem
+        private_key_path: C:/888440058111002_prv.pem
+        private_key_pfx_path: C:/888440058111002.pfx
+        private_key_pwd: 218525461280
+        
+pay:
+    notify:
+        url: http://ds.jiepaypal.cn/v1.0/paymentchannel/pay/zhongmao/notify_call  
+
+payment:
+        #ipAddress: http://localhost
+        ipAddress: http://localhost
+hg:
+   merchant_id: 4000116800
+   mac_key: D88A9E19FC0036B5C1A04204FCB73C6F
+       
+guofu:
+    md5: asdfipkg123
+    syscode: 20000001
+    rsapem: D:/123/20000001_rsa_privkey.pem
+    meracct: 18575565849
+    
+swiftpass:
+    req_url: https://pay.swiftpass.cn/pay/gateway
+    download_url: https://download.swiftpass.cn/gateway
+    mercode: 7551000001
+    merkey:  9d101c97133837e13dde2d32a5054abb
+   
+wft:
+    mch_id: 7551000001
+    key: 9d101c97133837e13dde2d32a5054abb
+    req_url: https://pay.swiftpass.cn/pay/gateway
+
+mima:
+     org_no: ORGAN_XL
+     md5_key: 6D8S9A5G3D5M7C8S5P7L4J2L
+     base_url: http://wxpay.fuleme.cn/mpcctp/PAYMENT/API/
+     
+kuaijie:
+        req_url: http://dpt.51qmf.cn/ledgerApi.php?m=QuickPay&a=pay
+        merchant_key: 3o0n5123027997omywz9028u015kf1w9
+        merchant_no: 10000004
+shande:
+       form_url: https://cashier.sandpay.com.cn/qr/api
+       cerpath: E:\channel\key\sand-test.cer
+       pfxpath: E:\channel\key\mid-test.pfx 
+       pfxpsd: 123456  
+ailong:
+    mer_url: http://180.169.129.78:38280/bas/BgTrans
+    mer_pay_url: http://180.169.129.78:38280/bas/BgTrans
+    return_msg_url: http://ds.jiepaypal.cn/v1.0/paymentchannel/topup/ailong/pay
+    merId: 200000000000001
+    key: 88888888
+jifu:
+     yhPubKey: D:/123/dbq_rsa_public_key_2048.pem
+     hzfPriKey: D:/123/pkcs8_rsa_private_key_2048.pem
+ump:
+    merid: 50211
+    merprikeypath: E:\50211_.key.p8
+    platcertpath: E:\cert_2d59.crt
+ypl:
+    keystore_password: yzt20160728
+    privatekey_password: yzt20160728
+    cerpath: E:\channel\key\epaylinks_pfx.cer
+    pfxpath: E:\channel\key\yzt.pfx
+    url: http://14.23.90.100:8081/mp/trade
+sdj:
+     org_no: 8619133693
+     md5_key: sdjgroup12345678
+     base_url: https://quick-test.jiajiepay.com/online-quick-api/platform/customer-registry
+     bindcard_url: https://quick-test.jiajiepay.com/online-quick-api/bankCard/bindCard
+     pay_url: https://quick-test.jiajiepay.com/online-quick-api/quick/quickpay
+     bindcardmessage_url: https://quick-test.jiajiepay.com/online-quick-api/sms/openSMS
+     paymessage_url: https://quick-test.jiajiepay.com/online-quick-api/sms/comsumeSMS 
+     updatet0_url: https://quick-test.jiajiepay.com/online-quick-api/platform/trans-rate-modify-t0
+     updatet1_url: https://quick-test.jiajiepay.com/online-quick-api/platform/trans-rate-modify
+     cerpath: E:\sdj.cer 
+     jkspath: E:\sdj.jks
+     password: 123456    
+elong:
+       merid: 10009
+       nkey: e2aed75213e8da4fbdb0222c24060937
+       url: http://www.elongpay.com/service/GateWay.aspx
+jfapi:
+       partnerNo: XL0APID0
+       key: 0123456789abcdefghijklmnopqrstuv
+       url: http://fast.jfpays.xyz:19084
+jfcoin:
+       partnerNo: XL00HXD0
+       key: 0123456789abcdefghijklmnopqrstuv
+       url: http://fast.jfpays.xyz:19082
+jf:
+     partnerNo: XL00HXD0
+     key: 0123456789abcdefghijklmnopqrstuv
+     url: http://fast.jfpays.xyz:19082
+yh:
+     org_no: 00000000523685
+     key: bywezRZemVcR
+     registerUrl: http://www.sophiter.com/payment/synmerinfo_faci.do
+     payApplyUrl: http://www.sophiter.com/payment/UnionQuickDtPayApply.do
+cj:
+     org_no: 10000179
+     key: 34E0D9A564E74FDCC8A14A60F6B8BDF8DBD6E08B0D6B14EB
+jfm:
+     org_no: TEST001
+     key: 00000000000000000000000000000000
+     url: http://fast.jfpays.com:19087
+xjy:
+      url: http://39.106.15.18/openapi/api/plat/route/rest/getdoform
+      appid: 465367f5e8934766933d15ee26009cc2
+      publickey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDa2sJougQa+kGfwqwFjviF89+4+BYGWCFHKoZJ0pfzI6np9saLXJltZt03E0+TKCSmNtPfZBXfpqhCSqiHw10Hm6OOS/d0Jo7+BAKSCA6wwFrHHCLvoJrQ5PktmAgvJp098KVg7DRNILFFwIadi9/MCZHttNMG9oIOQfTpzGKsCwIDAQAB
+xjycoin:
+         appid: 989d801a0544427093be120f11e36f52
+         publickey: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCHd3HpKMRcIkx83Oz3YkQjw7JMgLQ5ZnQXjUAwmAZ6FVlYSPNMKQY7oCY7O9wQo/kOtjmjngIDh6biMVT70eMuNhpl6B0TOyw3v2FqswqhjvNno6LoKWl2la+/O8tHYYDQE4+ncBApCWzMfj7xIqJENElOExnxEqtTlHehv/JxYQIDAQAB
+jfshangao:
+           partnerNo: TEST001
+           key: 00000000000000000000000000000000
+           url: http://fast.jfpays.com:19087
+ld:
+    cerpath1: E:\boqi.cer
+    cerpath2: E:\1107.cer
+    jkspath: E:\1107.jks
+    newJkspath: E:\1109.jks
+lf:
+    registerUrl: http://114.55.107.88:8080/thub/merchant/create
+    modifyUrl: http://114.55.107.88:8080/thub/merchant/cardChange
+    sendUrl: http://114.55.107.88:8080/thub/fastPayRouter/consumeSMS
+    payUrl: http://114.55.107.88:8080/thub/fastPayRouter/trade
+    updateUrl: http://114.55.107.88:8080/thub/merchant/resetRate
+zx:
+    hostUrl: http://106.15.192.101:8580
+    aesKey: yj2KhWStXvu1ZrOMwDV9vVyTARQw5kJm
+    signKey: oUZ0WVNemMg0M3FKe3qmb4MFsjmkIq8x
+    corgId: TESTGROUP
+uns:
+    accountId: 2120180316165901001
+    payUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/pay
+    queryUrl: http://pay.unspay.com:8081/delegate-pay-front/delegatePay/queryOrderStatus
+    key: juhe123456
+hljc:
+     pub: E:\1001055_pub.pem
+     prv: E:\1001055_prv.pem
+zb:
+   appid: '0000002598'
+   appkey: e47c84857fde2d32b163f89347e9ace6
+   pay_url: http://api.palmf.cn/api/cash/apply
+paymentgateway:
+   url: http://localhost/v1.0/paymentgateway/pay/gateway
+   #url: http://101.132.255.217/v1.0/paymentgateway/pay/gateway
+   withdrawKey: df10ef8509dc176d733d59549e7dbfaf
+yswg:
+  #商户号
+  mid: 999361048270002
+  #秘钥
+  mkey: 7becdc37ecf17870
+  #请求地址
+  url: https://gateway.95516.com/gateway/api/frontTransReq.do 
+wx:
+  mid: 1512676921
+  AppID: wxa6625e145fcd329a
+  AppSecret: haomai527b49e34831f84ef5aad270af
+#多多生活
+alipay:
+  appId: 2019093067917773
+  privateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCErbcgUEblLDQ69LOlUCSvOb2Qc0UYN+jDAUgzXDacICtDqKNPt/g+nnTGsho0uqd5gv9LNrglop+7o7PooQt2WtiFzVIOvrCGwvvmrQ6YB+PbTyjS5BEtS6izx8VccL3qhe/XR51DnMILyT333C3NSfYVcSPja/3MuhNG/UZEMU+Wq9KyzdaZiq77EJArlDmXEWMhodQ0WEcAw/IjwWMKXSIOO+QACRlKNN1HkvVlBkJPx8bpAXocsW+VCOaFRtiuWccXLLDTT2L0NlWhHDf+wzQ6OcpLweiMcE4x7ywa+DIyedME1xp34hNWRtLHhdG5gxCXEqVgWy2O4vY32oRvAgMBAAECggEAePV2knsdZylZpLYaYYgjKazWaa7tOxsdlUrB7DERiFy7lL9VxAPQyiXkCJGu2ougy2LmJEgKsiUEwyiHiHnp3UkNRU7elJq8jN+Oj8sOFwR6cyJD8aADGOx1LRHfmFsgiYL6GaYsdcugDOa3HBUbnKDlPL8dHOUDSXYKxRl6ygdqoPdbtmnDKGwC7BkPO9ueM4jMsNyzTrV2Ywx7OP7MgA2N7NOIBrd0rQF+c/NBwXsSrsu1IVolrzvEM3hE3XfKO1bWYPj7XbcBJ0Orqk6BZZ0+UqCFSbL/1m82dYXFDC2jOHHPmjrBbd5p/rnE86C8Klim5j7APoAFG2LpI7CzgQKBgQC4eFHsIQtdJXLzN6v3XCn7+GCe8cNLrt4MMb6Gw2hozSouEAs47PaIFIK01l0DRToWyqW8eo0i/fC7PWL5dqVzT1X4a27Vl6DbPIlmlLtAWrGkfKcH8TjSp2jkxshv1eh9lSUrMWZ7iF6h0feVpd+Lfbu5X1p1V39J6Qc+lLokfwKBgQC4ID67pYgGYA+p+Q3cb3XrodkpQ3ywIZ/YKAtOLtNKJPTIYcsvyVyF6dS6nJBuONVj0ABheV/3cj78BPyGspw4rWKlLdOjXeFeRDneljczpI3nFGKvhqHK+bgoqmRWffwECxUJZWZSbQ4Cjmweabo5gODSDhmKqI5FHjBLWBXoEQKBgQCnxSYcr2D6chi9gyBvc+7rLtYROKf5qSxhwswZHJdU2WNHSWgrebgtwxmtBljJpKhUGjHp3TuHW5UZdZcScwm+eaUirfK7Z4/wVHpSRWqX+OQfSQ9Qdd7MF12a0/9vVwh/TqnjQqaGK1yFp8SY4acR4mRdD4/hsJYfzkO8ct9oWQKBgGt/8ABwka1fMmYDkdMshEVxdi+ARnEzAHccUhVwg03bq8q+Rfn9b3aD4f6d4DlqFzQyQbanPZ9j5WAQrTsbVthEar6TtefArQ7zeHH7c/lDztGmdkOSsC2ohJvBd9mDrrrRmZOlzwq6vx5A9uD+y4o9M4WQU9s/s+ioynuCzy9xAoGANKxTeW2Vkd5B4XNDVpeFzQyaukcHe6z9P1R8RBvzqJpyyAZ3j34RrZEl1vFISXX2ygptJODgQL4j4RkkJrGnOXPZcNR6IBaUU29tZdvkUcw95lfeEaKBu1yPz3rN5foYQ+MUNSCdh5xwSCP7nGIwPc9h11JUlmZUi5VmchYnh7k=
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAhJJfz6QfisJnuhd1xdpUAeV0+OD8r2PXUllJ+vHMpjCCvP7/WMemYXmwvEQ3k+ucPX81fGSfWhMCYLHrSicBdhxtVg7LIUEqz2q3eEQhNBNhiY1BkNLk0YEWNqlUSf5Mgis+ZP13yOR05QMorSo6LXgax7g7soByb1X/4R4Ka5jFW4MJe4mmNTOssr4Md+x/hBvk2Qm2J3vS3YgYjy6MyXeWmrPCEi2fg6JUmemCtyQuW5wwouwTSrLXX0N45Phb3ffI6LQMnblPYy8HtbXfqxp414akaHZJnoQ16KlqzhtUnCqr3vmRluNpB4jzSuinkh5AznpeLJN0xk6XJiEg/wIDAQAB
+

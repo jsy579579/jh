@@ -1,0 +1,63 @@
+server:
+  tomcat: 
+    max-threads: 1000
+
+  port: 8123
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 
+
+mysql: 
+  dataBaseName: user
+
+---
+spring: 
+  profiles: dev
+  application: 
+    name: user
+  jpa:
+    show-sql: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    pool:
+      max-active: 200
+      max-wait: -1
+      min-idle: 0
+      max-idle: 10
+    timeout: 0
+  cloud: 
+    config: 
+      label: xinli
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/
+      
+logging: 
+    level:
+      org: 
+        hibernate: 
+          SQL: INFO
+---
+spring: 
+  profiles: prod
+  application: 
+    name: user
+  jpa:
+    show-sql: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    pool:
+      max-active: 200
+      max-wait: -1
+      min-idle: 0
+      max-idle: 10
+    timeout: 0
+  cloud: 
+    config: 
+      label: baiyete
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/

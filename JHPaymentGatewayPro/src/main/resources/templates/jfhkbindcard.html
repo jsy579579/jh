@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>adsad</title>
+</head>
+<link rel="stylesheet"
+	href="http://fzjobofo.com/link/css/mui.min.css" />
+<script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+<script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+<body>
+<div id="index">
+
+
+</div>
+
+<div>
+		<input style="display: none" type="text" placeholder="IP地址" th:value="${bankCard}" id="bankCard" />
+		<input style="display: none" type="text" placeholder="有效期" th:value="${expiredTime}" id="expiredTime" /> 
+		<input style="display: none" type="text" placeholder="充值卡安全码" th:value="${securityCode}" id="securityCode" />
+		<input style="display: none" type="text" placeholder="用户名" th:value="${userName}" id="userName" />
+		<input style="display: none" type="text" placeholder="身份证号" th:value="${idCard}" id="idCard" />
+		<input style="display: none" type="text" placeholder="手机号" th:value="${phone}" id="phone" />
+		<input style="display: none" type="text" placeholder="费率" th:value="${rate}" id="rate" />
+		<input style="display: none" type="text" placeholder="手续费" th:value="${extraFee}" id="extraFee" />
+		<input style="display: none" type="text" placeholder="IP地址" th:value="${ip}" id="ip" />
+</div>
+</body>
+</html>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	var navCode;
+	$(function(){
+		var ip = $("#ip").val();
+		var bankCard = $("#bankCard").val();
+		var expiredTime = $("#expiredTime").val();
+		var securityCode = $("#securityCode").val();
+		var userName = $("#userName").val();
+		var idCard = $("#idCard").val();
+		var phone = $("#phone").val();
+		var rate = $("#rate").val();
+		var extraFee = $("#extraFee").val();
+// 		if(code == "000000"){
+			//var url = '/v1.0/paymentgateway/quick/xt/bindcard';
+			$.ajax({
+			// async: "true",
+		        type: "POST",
+				url: ip+'/v1.0/paymentgateway/topup/hqk/hqBindCard',
+				dataType: "json",
+	            data: {
+	            	bankCard: bankCard,
+	            	idCard: idCard,
+	            	phone: phone,
+	            	userName: userName,
+	            	securityCode: securityCode,
+	            	expiredTime: expiredTime,
+	            	// rate: rate,
+	            	// extraFee: extraFee
+	                   },
+				success: function (data) {
+					console.log(data)
+					if(data.resp_code == "999996"){
+						$("#index").append(data.html);
+
+
+					}else if(data.resp_code == "000000"){
+                        //跳转绑卡成功页面
+                        $("#index").append(data.html);
+                    }else{
+						console.log("綁卡失敗")
+						mui.toast(data.resp_message)
+					}
+				}
+			});
+// 		}
+	    //跳转页面专用
+        function turntopage(url){
+			mui.openWindow({
+				url:url,
+			});
+		}
+
+	})
+</script>

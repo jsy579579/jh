@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jh.mircomall.dao.CitiesDao" >
+  <resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Cities" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cityid" property="cityid" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="provinceid" property="provinceid" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="listCityByPrivincesId" resultType="com.jh.mircomall.bean.Cities">
+  	select id,cityid,city,provinceid from t_cities where provinceid=#{provinceid}
+  </select>
+</mapper>

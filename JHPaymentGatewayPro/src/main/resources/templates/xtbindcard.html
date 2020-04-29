@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>adsad</title>
+</head>
+<body>
+<div id="index"></div>
+
+<div>
+	<input style="display: none" type="text" placeholder="IP地址" th:value="${resp_code}" id="ipAddress" />
+	<input style="display: none" type="text" placeholder="IP地址" th:value="${orderCode}" id="ipAddress_s" />
+	<input style="display: none" type="text" placeholder="IP地址" th:value="${ip}" id="ip" />
+</div>
+</body>
+</html>
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript">
+	var navCode;
+	$(function(){
+		var code = $("#ipAddress").val();
+		var code2 = $("#ipAddress_s").val();
+		var ip = $("#ip").val();
+		if(code == "000000"){
+			//var url = '/v1.0/paymentgateway/quick/xt/bindcard';
+			$.ajax({
+				// type: "POST",
+			// async: "true",
+			// url: "localhost/v1.0/paymentgateway/quick/xt/bindcard",
+			// data:code2,
+			        type: "POST",
+					url: ip+'/v1.0/paymentgateway/quick/xt/bindcard',
+					dataType: "json",
+					data: {
+				orderCode:code2,
+				},
+				success: function (data) {
+					console.log(data)
+					$("#index").append(data.html);
+				}
+			});
+		}
+
+
+
+	})
+</script>

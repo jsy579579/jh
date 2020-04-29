@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title></title>
+    <link rel="stylesheet" href="http://fzjobofo.com/link/css/mui.min.css"/>
+    <script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+    <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        document.addEventListener('plusready', function () {
+            //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+        });
+    </script>
+    <style>
+        body {
+            font-size: 16px;
+        }
+
+        label {
+            width: 10%;
+        !important
+        }
+
+        input {
+            height: 35px;
+        }
+
+        input[type=text] {
+            border: 0;
+
+        }
+
+        input[placeholder] {
+            font-size: 14px;
+        }
+
+        input[type=password] {
+            border: 0;
+        }
+
+        input[type=button] {
+            border: 0;
+        }
+
+        #mis h3 {
+            text-align: center;
+            padding: 10px 5px;
+            font-size: 20px;
+        }
+
+        .city {
+            height: auto;
+            margin-bottom: 10px;
+            background: #fff;
+        }
+
+        .city input[type=text] {
+            margin: 0;
+
+        }
+
+        .city input:nth-child(2) {
+            border-bottom: 1px solid #ebebeb;
+
+        }
+
+        .text {
+            width: 100%;
+            color: #FF9A4A;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .dingdan {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .dingdan span {
+            font-size: 14px;
+        }
+
+        .dingdan span > span {
+            font-size: 18px;
+            color: #FF9A4A;
+            font-weight: bold;
+        }
+
+        .select {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .select select {
+            width: 49%;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .mui-table-view:after {
+            background-color: #fff;
+        }
+
+        .mui-table-view:before {
+            background-color: #fff;
+        }
+      
+          .showCard {
+            width: 100%;
+                background: url("http://1.xinli2017.applinzi.com/img/bankcard_red.png") center no-repeat;
+            background-size: 100% 100%;
+        }
+
+        .cardStyle {
+            padding: 10px 15px;
+            border-radius: 8px;
+            position: relative;
+            padding-left: 65px;
+            padding-bottom: 60px;
+            background-size: 100% 100%;
+        }
+        .bankLogo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #DAE3EC;
+            padding: 5px;
+            position: absolute;
+            left: 15px;
+            top: 22px;
+        }
+
+        .bankLogo img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .cardStyle .cardNum {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cardStyle > div:last-child {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            padding: 0 40px;
+            height: 41px;
+            line-height: 41px;
+        }
+          .bankText h4 {
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .bankText > p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+        }
+        .cardStyle .cardNum > div:nth-child(1){
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        #carno2{
+             color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div:last-child {
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .cardStyle .cardNum > div {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .cardStyle > div:last-child > div {
+            width: 100%;
+            height: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .newTask {
+            position: fixed;
+            bottom: 0;
+            z-index: 9;
+            height: 40px;
+            line-height: 40px;
+            background-color: #eee;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            color: #00aaee;
+        }
+
+    </style>
+</head>
+<body style="padding: 0 15px">
+<script>
+		try{
+			window.android.invokeMethod(0,["确认充值信息","true"])
+				}catch(e){
+			console.log(e)
+            
+		}
+	</script>
+<!-- <header class="mui-bar mui-bar-nav" style="background:#00aaee">
+    <h1 class="mui-title" style="color:#fff;">确认充值信息</h1>
+</header> -->
+<!-- 
+<div style="border-radius:5px;background: none;">
+    <div class="dingdan">
+        <span>订单金额：<span id="amt" th:text="${amount}"></span>元</span>
+        <span style="display:none" id="ordercode" th:text="${ordercode}"></span>
+    </div>
+</div>
+
+<div>
+    <div class="showCard">
+        <div class="cardStyle">
+            <div class="bankLogo">
+                <img  src="http://1.xinli2017.applinzi.com/weixin/images/src_assets_mangopay_cashier_method_unionpay.png"/>
+            </div>
+            <div class="bankText">
+                <h4 id="bankName" th:text="${bankName}" >收款卡银行卡名称</h4>
+               	<p th:text="${cardType}"  style="color:#fff;font-size:14px;">借记卡 </p>
+                <input id="bname" style="display:none" type="text"  th:value="${bankareaName}" />
+            </div>
+            <div>
+                <div>
+                     <div class="cardNum">
+                        <div th:text="${bankNo}" id="carno1" ></div>
+                        <div>* * * *</div>
+                        <div>* * * *</div>
+                        <div th:text="${bankNo}" id="carno2" ></div>
+                        <input id="ka2" type="hidden" th:value="${bankNo}" placeholder=""/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ --> 
+<div class="select">
+    
+    
+</div>
+<select name="" id="provinceOfBank"  >
+        <option id="province2" name="provinceOfBank" th:value="${provinceOfBank}" >请选择所在省份</option>
+    </select>
+<select name="" id="cityOfBank">
+        <option id="city2" name="cityOfBank"   th:value="${cityOfBank}">请选择所在市/区</option>
+    </select>
+<select name="" id="areaOfBank">
+    <option id="area2" name="areaOfBank"  th:value="${areaOfBank}" >请选择所在区</option>
+</select>
+<div class="city">
+    <div>
+        <span></span>
+        <input style="display:none" type="text" placeholder="订单号" th:value="${orderCode}" id="orderCode"/>
+        <input style="display:none" type="text" placeholder="ipAddress" th:value="${ipAddress}" id="ipAddress"/>
+    </div>
+</div>
+         <input style="display:none" type="text"  th:value="${isRegister}" id="isregister"/>  
+<div class="mui-input-row" style="width:100%;margin:15px auto;">
+    <button id="btn" class="mui-btn"
+            style="width:100%;height:40px;background:#0a80ff;border:0; color: #fff;">确定
+    </button>
+</div>
+<p class="text">提醒：您正在进行一笔消费交易，请认真核实并确保银行卡信息不能透露给别人！</p>
+ <input style="display:none" type="text" th:value="${cardtype}" id="cardtype"/>
+<script  type="text/javascript">
+    $(function () {
+    	var bname = $("#bname").val();
+    	
+    	
+   	 var province2=$("#province2").val()
+     var city2=$("#city2").val()
+     var area2=$("#area2").val()
+	 if(province2 != "" && city2 =="" && area2==""){
+		$("#province2").text()
+	}
+     if(province2 != "" && city2 !="" && area2!=""){
+        $("#province2").text(province2)
+        $("#city2").text(city2)
+        $("#area2").text(area2)
+    }
+    if(province2 != "" && city2 !="" && area2==""){
+        $("#province2").text(province2)
+        $("#city2").text(city2)
+        $("#area2").text()
+    }
+      if(province2 == "" && city2 =="" && area2==""){
+        $("#province2").text()
+        $("#city2").text()
+        $("#area2").text()
+    }
+		 
+	    // 银行卡加密显示
+        var str = $('#carno1').text()
+        var str2 = $('#carno2').text()
+        function fun(str,str2) {
+            console.log(str)
+            console.log(str2)
+           var str=str.substring(0,4)
+           var str2=str2.substring(str2.length - 4, str2.length)
+            $('#carno1').text(str)
+            $('#carno2').text(str2)
+        }
+        fun(str,str2);
+        // 银行卡加密显示
+        // 三级联动
+        // 获取省的信息
+        $.ajax({
+            url: $('#ipAddress').val()+'/v1.0/paymentgateway/kft/province/queryall',
+            type: 'POST',
+            dataType: 'JSON',
+            success: function (data) {
+                $.each(eval(data.result), function (i, item) {
+                	$("#provinceOfBank").append('<option value="'+item.id+'">'+item.name+'</option>');
+                });
+            },
+            error: function () {
+                console.log('加载数据异常，请重试!');
+            }
+        });
+        // 获取省的信息end
+        // 获取市的信息
+        //var provinceid=$("#provinceOfBank option:selected"); //获取选中省的项
+         function loadDevice(provinceid) {
+            $.ajax({
+                url: $('#ipAddress').val()+'/v1.0/paymentgateway/kft/city/queryall',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                	provinceId: provinceid
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res.resp_code == "000000") {
+
+                            $("#cityOfBank").empty();
+                            $("#cityOfBank").append('<option value="">请选择所在市/区</option>');
+                            $.each(eval(res.result), function (i, item) {
+                                $("#cityOfBank").append('<option value="' + item.id + '">' + item.name + '</option>');
+                            });
+                        } else {
+                            mui.toast(res.resp_message)
+                        }
+                },
+                error: function () {
+                    console.log('加载数据异常，请重试!');
+                }
+            });
+        }
+          $("#provinceOfBank").change(function () {
+           loadDevice($("#provinceOfBank").val());
+        });
+        // 获取市的信息end
+        // 获取地区信息
+       /*   var cityid=$("#cityOfBank option:selected"); //获取选中市的项*/
+		function loadDevicetwo(cityid) {
+            $.ajax({
+                url: $('#ipAddress').val()+'/v1.0/paymentgateway/kft/area/queryall',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                	cityId: cityid
+                },
+                success: function (res) {
+                console.log(res,"区")
+                    if (res.resp_code == "000000") {
+                        $("#areaOfBank").empty();
+                        $("#areaOfBank").append('<option value="">请选择所在区</option>');
+                        $.each(eval(res.result), function (i, item) {
+                            // console.log(item)
+                            $("#areaOfBank").append('<option value="'+item.id+'">'+item.name+'</option>');
+                        });
+                        } else {
+                        mui.toast(res.resp_message)
+                        }
+                },
+                error: function () {
+                    console.log('加载数据异常，请重试!');
+                }
+            });
+        }
+          $("#cityOfBank").change(function () {
+              loadDevicetwo($("#cityOfBank").val());
+           });
+        // 获取地区信息end
+         // 三级联动end
+         // 点击充值按钮
+        $("#btn").click(function () {
+            // 这是获取所传val的写法
+            var bankName = $("#bankName").text();
+            var amount = $("#amt").text();
+            var ordercode = $("#orderCode").val();
+            var provinceOfBank = $("#provinceOfBank option:selected").text();
+            var cityOfBank = $("#cityOfBank option:selected").text();
+            var areaOfBank = $("#areaOfBank option:selected").text();
+            
+            var provinceCode = $("#provinceOfBank option:selected").val();
+            var cityCode = $("#cityOfBank option:selected").val();
+            var areaCode = $("#areaOfBank option:selected").val();
+ 
+            // 这是获取所传val的写法end
+           
+          
+	        if(areaOfBank=="请选择所在区"||provinceOfBank=="请选择所在省份"||cityOfBank=="请选择所在市/区"){
+	                alert("请完整信息！");
+	                return;
+	            }
+	        $("#btn").attr("disabled", "disabled");
+	 		$("#btn").css({background:'#999'})
+			$("#btn")[0].innerText="正在加载中..."
+	        // alert(provinceOfBank+provinceCode+cityOfBank+cityCode+areaOfBank+areaCode+"----------"+ordercode);
+	 		$.ajax({
+                type: "POST",
+                url: $('#ipAddress').val()+"/v1.0/paymentgateway/kft/to/pay-view",
+                dataType: "json",
+                data: {
+                	orderCode: ordercode,
+                	provinceOfBank: provinceOfBank,
+                	cityOfBank: cityOfBank,
+                	areaOfBank: areaOfBank,
+                	provinceCode: provinceCode,
+                	cityCode: cityCode,
+                	areaCode: areaCode
+                },
+                success: function (res) {
+                    if (res.resp_code == "000000") {
+                    	turntopage(res.redirect_url)
+                    }else {
+                        mui.alert(res.resp_message, '提示信息', function() {
+                        try{
+                          window.android.invokeMethod(1,["true"])
+                           }catch(e){
+                            console.log(e)
+                           }
+                       });
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                    mui.toast('网络走失了吆，请稍后重试');
+                }
+            });
+	        
+        });
+    //跳转页面专用
+        function turntopage(url){
+			mui.openWindow({
+			url:url,
+			});
+		}
+           //跳转页面专用
+    });
+</script>
+</body>
+</html>

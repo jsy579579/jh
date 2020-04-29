@@ -1,0 +1,45 @@
+server:
+  tomcat: 
+    max-threads: 1000
+    
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 
+
+mysql: 
+  dataBaseName: paymentchannel
+
+---
+spring: 
+  profiles: dev
+  application: 
+    name: paymentchannel
+  jpa:
+    show-sql: false
+  thymeleaf: 
+    mode: LEGACYHTML5
+  cloud: 
+    config: 
+      label: xinli
+      name: eureka,mysql,juhe,${spring.application.name}
+      uri: http://localhost:8099/
+logging: 
+    level:
+      org: 
+        hibernate: 
+          SQL: INFO
+---
+spring: 
+  profiles: prod
+  application: 
+    name: paymentchannel
+  jpa:
+    show-sql: false
+  thymeleaf: 
+    mode: LEGACYHTML5
+  cloud: 
+    config: 
+      label: baiyete
+      name: eureka,mysql,juhe,${spring.application.name}
+      uri: http://localhost:8099/
+      #uri: http://106.15.47.73:8099/
+      

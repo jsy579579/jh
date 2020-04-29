@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.CouponsDao">
+  <resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Coupons">
+    <id column="cps_id" jdbcType="INTEGER" property="cpsId" />
+    <result column="cps_name" jdbcType="VARCHAR" property="cpsName" />
+    <result column="cps_code" jdbcType="VARCHAR" property="cpsCode" />
+    <result column="cps_price" jdbcType="REAL" property="cpsPrice" />
+    <result column="cps_time" jdbcType="VARCHAR" property="cpsTime" />
+    <result column="cps_level" jdbcType="INTEGER" property="cpsLevel" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+ 
+</mapper>

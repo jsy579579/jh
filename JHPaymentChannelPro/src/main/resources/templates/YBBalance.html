@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<script src="jquery-3.2.1.min.js"></script>-->
+    <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+    <title>查询</title>
+</head>
+<body>
+	<h1>查询银联5子商户的账户余额</h1>
+	<hr>
+
+<div>
+    <input type="text" id="customerNumber" placeholder="请输入子商户号" style="width:20%;height:20px;padding:10px 0;"/>
+</div>
+<br>
+<div>
+    <button id="btn"
+            style="width:10%;height:40px;padding:10px 0;background:#37c3e7;border:0;">查询
+    </button>
+</div>
+
+<script type="text/javascript">
+
+    $('#btn').click(function () {
+            var jsonobj = {
+                "customerNumber":$('#customerNumber').val()
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://101.132.160.107/v1.0/paymentchannel/customer/balancequery',
+                data: jsonobj,
+                datatype: 'json',
+                success: function (res) {
+                    console.log(res);
+                    if(res.resp_code=='000000'){
+                        alert("账户余额: "+res.result)
+
+                    }
+
+                },
+                error:function (err){
+                    console.log(err)
+                }
+
+            })
+
+        }
+
+    )
+
+</script>
+
+
+
+</body>
+</html>

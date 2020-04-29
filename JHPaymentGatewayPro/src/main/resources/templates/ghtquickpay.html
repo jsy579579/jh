@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="email=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <script>
+        var bw = (document.documentElement.clientWidth / 7.5) + "px";
+        var htmlTag = document.getElementsByTagName("html")[0];
+        htmlTag.style.fontSize = bw; 
+    </script>
+    <title>支付页面</title>
+    <link href="http://fzjobofo.com/link/css/mui.min.css" rel="stylesheet">
+    <script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+    <script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        li{
+            list-style: none!important;
+        }
+        body{
+            font-size: 14px;
+            background:#fff;
+        }
+        .codeHeader{
+            background:linear-gradient(#019de7,#1b70a9);
+            width:100%;
+            height:3.5rem;
+            position: relative;
+        }
+        .headercade{
+            background: linear-gradient(#0b67ca,#11375e);
+            width:80%;
+            height:2.5rem;
+            margin:0 auto;
+            position: absolute;
+            top:1.5rem;
+            left:0;
+            right:0;
+            color:#fff;
+            box-sizing: border-box;
+            padding:0.5rem 0.7rem;
+            border-radius: 0.1rem;
+        }
+        .headercade>h4{
+            font-size: 0.3rem;
+            text-align: right;
+            font-weight: 400;
+        }
+        .cadeNum{
+            display: flex;
+            justify-content: space-between;
+            margin: 0.65rem 0rem;
+        }
+        .cadeNum>span{
+            font-size: 0.3rem;
+            letter-spacing: 0.06rem;
+            color:#c4d5e5;
+        }
+        .cadeItd{
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.2rem;
+            margin:0 0.2rem;
+            color:#719ec5;
+        }
+        .codeMain{
+            padding: 1rem 0.5rem;
+        }
+        .middle{
+            padding:1rem 0.2rem;
+        }
+        .middle_bg{
+            background: #fff;
+            /* height: 200px; */
+            width: 100%;
+            padding:0 10px 20px 10px;
+        }
+        .middle_amount_box{
+            text-align: center;
+            padding:25px 0 25px 0;
+        }
+        .middle_amount{
+            font-size: 26px;
+            color:#2c2c2c;
+        }
+        .middle_dec{
+            font-size: 14px;
+            color:#999;
+            line-height: 32px;
+        }
+        .middle_input_box{
+            padding-bottom: 15px;
+
+        }
+        .middle_input .input{
+            border:none;
+        }
+        .middle_input{
+            /* background-color:#faf9fe !important; */
+            /* margin-bottom: 13px; */
+            border-bottom: 1px solid #ddd;
+        }
+        .smscode_box .input{
+            border:none;
+            margin:0;
+        }
+        .smscode_box{
+            overflow: hidden;
+            border-bottom: 1px solid #ddd;
+        }
+        .smscode_box .left{
+            float: left;
+            width: 65%;
+            font-size: 15px;
+            /* background-color:#faf9fe !important; */
+        }
+        .smscode_box .right{
+            float: left;
+            width: 35%;;
+            /* background-color:#faf9fe !important; */
+            padding:10px 15px;
+            color: #54b8f4;
+            cursor: pointer;
+        }
+        .btn{
+            width: 100%;
+            border:none;
+            background: #35c556;
+            color:#fff;
+            padding:10px 0;
+            border-radius: 30px;
+            margin-top: 0.3rem;
+        }
+        .text {
+            width: 100%;
+            color: #54b8f4;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .callback {
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            background: #fff;
+            left: 0;
+            top: 0;
+            z-index: 99;
+            display: none;
+        }
+        .codeStep{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.35rem;
+        }
+        .radio{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            padding:0;
+            line-height: 0.3rem;
+            width:0.3rem;
+            height:0.3rem;
+            border:1px solid #ccc;
+            box-sizing: border-box;
+            position: relative;
+        }
+        .radio:nth-of-type(1){
+            background:#54b8f4;
+        }   
+        .hongdian{
+            width:0.1rem;
+            height:0.1rem;
+            border-radius: 50%;
+            background:red;
+            position: absolute;
+        }
+        .StepHeng{
+            background: #54b8f4;
+            height:0.1rem;
+            width:2rem;
+            position: relative;
+        }
+        .codeStep .StepHengNo{
+            background: #ccc;
+        }
+        .miaoshu{
+            position: absolute;
+            top:0.4rem;
+            width:2rem;
+            text-align: center;
+        }
+        .inputRight{
+            text-align: right;
+            font-size: 15px;
+        }
+        .sendcode_item {
+            height: 40px;
+            background: #fff;
+            /* margin-bottom: 13px; */
+            overflow: hidden;
+            padding: 0 15px;
+            line-height: 40px;
+            position: relative;
+            border-bottom: 1px solid #ddd;
+        }
+        .nav_icon {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%)
+        }
+        .sendcode_item_left { 
+            float: left;
+            width: 20%;
+            font-size: 15px;
+            color: #333
+        }
+        .sendcode_item_right {
+            float: right;
+            width: 80%;
+            font-size: 16px;
+            color: #333;
+            overflow: hidden;
+            display: flex;
+        }
+        .sendcode_item_right>select {
+            margin: 0;
+            font-size: 15px;
+            color:#777;
+        }
+
+        input.sendcode_item_right {
+            margin: 0;
+            border: none;
+            float: right;
+            width: 80%;
+            font-size: 16px;
+        }
+        input.sendcode_item_right[placeholder] {
+            font-size: 14px;
+        }
+
+        input.sendcode_item_code_left[placeholder] {
+            font-size: 14px;
+        }
+        input.sendcode_item_code_left {
+            border: none;
+            margin: 0;
+            padding: 0;
+            line-height: 44px;
+            float: left;
+            width: 50%;
+            text-align: center;
+            border-right: 1px solid #ddd;
+        }
+        input.sendcode_item_code_right {
+            border: none;
+            margin: 0;
+            padding: 0;
+            line-height: 44px;
+            float: left;
+            width: 50%;
+            color: #238af3;
+        }
+        #provinceOfBank,#cityOfBank,#merchant{
+            direction:rtl;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="code">
+        <!-- 头部 -->
+        <div class="codeHeader">
+            <!-- 银行卡 -->
+            <div class="headercade">
+                <h4 th:text="${bankName}">建设银行</h4>
+                <div class="cadeNum">
+                    <span id="carno1" th:text="${bankCard}">62179705</span>
+                    <span>****</span>
+                    <span>****</span>
+                    <span id="carno2" th:text="${bankCard}">62179705</span>
+                </div>
+                <!-- <div class="cadeItd">
+                    <span>CARD HOLOER</span>
+                    <span>EXPRESS</span>
+                </div> -->
+            </div>
+        </div>
+        <!-- 主体部分 -->
+        <!-- 输入框 -->
+        <div class="middle">
+            <div class="codeStep">
+                <div class="radio radioYes">
+                    <div class="miaoshu">开始</div>
+                </div>
+                <div class="StepHeng"></div>
+                <div class="radio radioYes " style=" background:#54b8f4;">
+                    <!-- <div class="hongdian"></div> -->
+                    <div class="miaoshu">已绑卡</div>
+                </div>
+                <div class="StepHeng"></div>
+                <div class="radio">
+                    <!-- <div class="hongdian"></div> -->
+                    <div class="miaoshu">正在充值</div>
+                </div>
+            </div>
+            <div class="middle_bg">
+                <div class="middle_amount_box">
+                    <div class="middle_amount">￥<span th:text="${amount}" id="amount">4050</span></div>
+                    <div class="middle_dec" th:text="${orderDesc}">我是描述我是描述</div>
+                </div>
+                <div class="middle_input_box">
+                    <div class="mui-input-row middle_input">
+                        <label> 有效期</label>
+                        <input class="input inputRight" type="number" th:value="${expiredTime}" placeholder="示例：15/09,输入1509"
+                            id="expiredTime" />
+                    </div>
+                    <div class="mui-input-row middle_input">
+                        <label>安全码</label>
+                        <input class="input inputRight" type="number" th:value="${securityCode}" placeholder="卡背面末三位"
+                            id="securityCode" />
+                    </div>
+                    <ul>
+                        <li class="sendcode_item" id="nones">
+                            <div class="sendcode_item_left">省&nbsp&nbsp&nbsp份</div>
+                            <div class="sendcode_item_right">
+                                <select name="" id="provinceOfBank">
+                                    <option value="">请选择所在省份</option>
+                                </select>
+                            </div> <img src="http://fzjobofo.com/img/nav_bottom.png" class="nav_icon" alt="" height="14"
+                                width="14">
+                        </li>
+                        <li class="sendcode_item" id="nones">
+                            <div class="sendcode_item_left">城&nbsp&nbsp&nbsp市</div>
+                            <div class="sendcode_item_right">
+                                <select name="" id="cityOfBank">
+                                    <option value="">请选择所在市/区</option>
+                                </select>
+                            </div> <img src="http://fzjobofo.com/img/nav_bottom.png" class="nav_icon" alt="" height="14"
+                                width="14">
+                        </li>
+                        <li class="sendcode_item" id="nones">
+                            <div class="sendcode_item_left">商&nbsp&nbsp&nbsp户</div>
+                            <div class="sendcode_item_right">
+                                <select name="" id="merchant">
+                                    <option value="">请选择商户</option>
+                                </select>
+                            </div> <img src="http://fzjobofo.com/img/nav_bottom.png" class="nav_icon" alt="" height="14"
+                                width="14">
+                        </li>
+                    </ul>
+                    <div class="smscode_box">
+                        <input class="input left" type="text" name="smsCode" id="smsCode" placeholder="请输入验证码" />
+                        <input class="input right" id="btn_sendCode" type="button" value="获取验证码" />
+                    </div>
+                </div>
+                <button id="btn" class="btn">确定并充值</button>
+                <p class="text">提醒：您正在进行充值，请认真核实并确保银行卡信息不能透露给别人！</p>
+            </div>
+            <!-- 参数 -->
+            <input style="display: none" type="text" placeholder="订单号" th:value="${orderCode}" id="orderCode" />
+            <input style="display: none" type="text" placeholder="IP地址" th:value="${ipAddress}" id="ipAddress" /> 
+            <input type="text" style="display: none" id="phone" th:value="${phone}">
+            <input type="text" style="display: none" id="ips" th:value="${ips}">
+            <input type="text" style="display: none" id="nature" th:value="${nature}">
+            <input type="text" style="display: none" id="bankName" th:value="${bankName}">
+            <!-- 参数 -->
+        </div>
+        <!-- 输入框 -->
+        <!-- 接收页面信息 -->
+        <div class="callback"></div>
+    </div>
+
+    <script>
+    	String.prototype.queryString= function(name) {
+    		var reg=new RegExp("[\?\&]" + name+ "=([^\&]+)","i"),r = this.match(reg);
+    		return r!==null?unescape(r[1]):null;
+    	}
+    	$(function () {
+    		var last=location.href.queryString("_v");
+	    	if(location.href.indexOf("?")==-1){
+	    		location.href=location.href+"?_v="+(new Date().getTime());
+	    	}else{
+		    	var now=new Date().getTime();
+			    if(!last){
+			    	location.href=location.href+"&_v="+(new Date().getTime());
+		    	}else if(parseInt(last)<(now-500)){
+		    		location.href=location.href.replace("_v="+last,"_v="+(new Date().getTime()));
+		    	}
+	    	}
+            var orderCode = $('#orderCode').val()
+            var ipAddress = $("#ipAddress").val()
+            var nature = $("#nature").val()
+            var phone = $("#phone").val()
+            var ips = $("#ips").val()
+            var bankName = $("#bankName").val()
+            // 银行卡加密显示
+            var str = $('#carno1').text()
+            $("#amount").text(Number($("#amount").text()).toFixed(2))
+
+            var str2 = $('#carno2').text()
+            function fun(str, str2) {
+                console.log(str)
+                console.log(str2)
+                var str = str.substring(0, 4)
+                var str2 = str2.substring(str2.length - 4, str2.length)
+                var carno1 = document.getElementById('carno1')
+                var carno1 = document.getElementById('carno1')
+                carno1.innerHTML = str
+                carno2.innerHTML = str2
+            }
+            fun(str, str2);
+            // 银行卡加密显示
+            var wait = 60;
+            function time(o) {
+                if (wait == 0) {
+                    o.setAttribute("disabled", true);
+                    o.value = "不可获取"
+                    wait = 60;
+                } else {
+                    o.setAttribute("disabled", true);
+                    o.value = wait + "(s)";
+                    wait--;
+                    setTimeout(function () {
+                        time(o)
+                    },
+                        1000)
+                }
+            };
+            // 获取省的信息
+            $.ajax({
+                url: ipAddress + '/v1.0/paymentgateway/topup/ghtmerchant/getghtprovince',
+                type: 'POST',
+                dataType: 'JSON',
+                success: function (res) {
+                    console.log(res, "省份获取成功")
+                    if (res.resp_code == "000000") {
+                        $.each(eval(res.result), function (i, item) {
+                            $("#provinceOfBank").append('<option value="' + item + '">' + item + '</option>');
+                        });
+                    } else {
+                        mui.toast(res.resp_message)
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                    mui.toast("未获取到省份,请检查网络")
+                }
+            });
+            // 获取省的信息end
+
+            // 获取市的信息
+            function loadDevice(provinceid) {
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentgateway/topup/ghtmerchant/getghtcitybyprovince',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        province: provinceid
+                    },
+                    success: function (res) {
+                        console.log(res, "市获取成功")
+                        if (res.resp_code == "000000") {
+                            $("#cityOfBank").empty();
+                            $("#cityOfBank").append('<option value="">请选择所在市/区</option>');
+                            $.each(eval(res.result), function (i, item) {
+                                $("#cityOfBank").append('<option value="' + item + '">' + item + '</option>');
+                            });
+                        } else {
+                            mui.toast(res.resp_message)
+                        }
+
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        mui.toast("未获取到城市,请检查网络")
+                    }
+                });
+            }
+            $("#provinceOfBank").change(function () {
+                loadDevice($("#provinceOfBank").val());
+            });
+            // 获取市的信息end
+            $('#cityOfBank').change(function () {
+                var province = $('#provinceOfBank').val();
+                var city = $('#cityOfBank').val();
+                $.ajax({
+                    url: ipAddress + '/v1.0/paymentgateway/topup/ghtmerchant/getghtmerchantbyprovinceandcity',
+                    datatype: 'json',
+                    type: 'POST',
+                    data: {
+                        province: province,
+                        city: city,
+                        bankName: bankName,
+                    },
+                    success: function (res) {
+                        console.log(res, "商户获取成功")
+                        if (res.resp_code == "000000") {
+                            // $("#merchant").empty().end();
+                            // console.log(1)
+                            // $("#merchant").append('<option value="请选择商户">请选择商户</option>');
+                            $.each(eval(res.result), function (i, item) {
+                                $("#merchant").append('<option value="' + item.merchantName + '(' + item.merchantCode + ')' + '">' + item.merchantName + '</option>');
+                            });
+                        } else {
+                            mui.toast(res.resp_message)
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        mui.toast("未获取到城市,请检查网络")
+                    }
+                });
+            });
+            //发送验证码
+            $("#btn_sendCode").click(function () {
+
+                var expiredTime = $('#expiredTime').val()
+                var securityCode = $('#securityCode').val()
+                console.log(orderCode)
+                console.log(expiredTime)
+                console.log(securityCode)
+                if (expiredTime == "" || securityCode == "") {
+                    mui.toast("请先输入安全码和有效期")
+                    return
+                }
+                if (expiredTime.length > 4) {
+                    mui.toast("请输入4位有效期")
+                    return
+                }
+                if (securityCode.length > 3) {
+                    mui.toast("请输入3位安全码")
+                    return
+                }
+                time(this);
+                $.ajax({
+                    type: "POST",
+                    url: ips + "/v1.0/notice/sms/sendforquick",
+                    dataType: "json",
+                    data: {
+                        phone: phone,
+                        tplId: "85468",
+                    },
+                    success: function (res) {
+                        console.log(res, "验证码返回")
+                        if (res.resp_code == "000000") {
+
+                            mui.toast('发送验证码成功');
+                        } else {
+                            mui.alert(res.resp_message, '提示信息', function () {
+                                try {
+                                    window.android.invokeMethod(1, ["true"])
+                                } catch (e) {
+                                    console.log(e)
+                                }
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err)
+                        mui.toast("交易排队中，请稍后重试！")
+                    }
+                });
+            });
+            //发送验证码
+            $("#btn").click(function () {
+                var expiredTime = $('#expiredTime').val()
+                var securityCode = $('#securityCode').val()
+                var smsCode = $('#smsCode').val()
+                var provinceCode = $('#provinceOfBank').val()
+                var cityCode = $('#cityOfBank').val()
+                var merchantCode = $('#merchant').val()
+                console.log(expiredTime)
+                console.log(securityCode)
+                console.log(provinceCode, "省份code")
+                console.log(cityCode, "市code")
+                console.log(merchantCode, "商户")
+                if (expiredTime == "" || securityCode == "") {
+                    mui.toast("请先输入安全码和有效期")
+                    return
+                }
+                if (expiredTime.length != 4) {
+                    mui.toast("请输入4位有效期")
+                    return
+                }
+                if (securityCode.length != 3) {
+                    mui.toast("请输入3位安全码")
+                    return
+                }
+                if ($("#smsCode").val() == "") {
+                    mui.toast("请先获取验证码")
+                    return
+                }
+                function go() {
+                    $("#btn").attr("disabled", "disabled");
+                    $("#btn").css({ background: '#999' })
+                    $("#btn")[0].innerText = "正在加载中..."
+                    $.ajax({
+                        type: "POST",
+                        url: ipAddress + "/v1.0/paymentgateway/topup/ghtquick/preorder",
+                        dataType: "json",
+                        data: {
+                            orderCode: orderCode,
+                            expiredTime: expiredTime,
+                            securityCode: securityCode,
+                            storeNo: merchantCode,
+                            smsCode: smsCode,
+                        },
+                        success: function (res) {
+                            console.log(res, "绑卡返回")
+                            if (res.resp_code == "000000") {
+
+                                turntopage(res.result)
+                            } else if (res.resp_code == "666666") {
+                                mui.alert(res.resp_message, '温馨提示', function () {
+                                    $('#btn').attr("disabled", false);
+                                    $("#btn").css({ background: '#1485f4' })
+                                    $("#btn")[0].innerText = "确认并支付"
+                                });
+                            } else {
+                                mui.toast(res.resp_message);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err)
+                            mui.toast("交易排队中，请稍后重试！")
+
+                        }
+                    });
+
+                }
+
+                if (provinceCode == "" || cityCode == "" || merchantCode == "") {
+                    var btnArray = ['否', '是'];
+                    mui.confirm('您当前暂未选择商户,您的账单将不是自主选择，是否确认去支付？', '提示信息', btnArray, function (e) {
+                        if (e.index == 1) {
+                            go()
+                        }
+                    })
+                } else {
+                    go()
+                }
+            })
+
+            //跳转页面专用
+            function turntopage(url) {
+                mui.openWindow({
+                    url: url,
+                });
+            }
+            //跳转页面专用
+        })
+    </script>
+</body>
+
+</html>

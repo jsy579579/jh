@@ -1,0 +1,93 @@
+info:
+  component: Zuul Server
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 300
+      maxQueueSize: 200
+      queueSizeRejectionThreshold: 150
+  command: 
+    default:
+      circuitBreaker:
+        requestVolumeThreshold: 50
+      execution:
+        timeout: 
+          enabled: true
+        isolation: 
+          strategy: THREAD
+          semaphore:
+            maxConcurrentRequests: 1000
+          thread:  
+            timeoutInMilliseconds: 15000
+
+ribbon:
+  ConnectTimeout: 30000
+  ReadTimeout: 30000
+#  MaxAutoRetriesNextServer: 3
+
+zuul:
+  host:  
+    socket-timeout-millis: 30000  
+    connect-timeout-millis: 30000  
+  ignoredServices: "*"
+  routes:
+    user:
+      path: /v1.0/user/**
+      stripPrefix: false
+      serviceId: user
+    channel:
+      path: /v1.0/channel/**
+      stripPrefix: false
+      serviceId: channel      
+    facade:
+      path: /v1.0/facade/**
+      stripPrefix: false
+      serviceId: facade
+    merchant:
+      path: /v1.0/merchant/**
+      stripPrefix: false
+      serviceId: merchant
+    notice:
+      path: /v1.0/notice/**
+      stripPrefix: false
+      serviceId: notice
+    paymentchannel:
+      path: /v1.0/paymentchannel/**
+      stripPrefix: false  
+      serviceId: paymentchannel    
+    risk:
+      path: /v1.0/risk/**
+      stripPrefix: false
+      serviceId: risk  
+    transactionclear:
+      path: /v1.0/transactionclear/**
+      stripPrefix: false
+      serviceId: transactionclear
+    creditcardmanager:
+      path: /v1.0/creditcardmanager/**
+      stripPrefix: false
+      serviceId: creditcardmanager
+    integralmall:
+      path: /v1.0/integralmall/**
+      stripPrefix: false
+      serviceId: integralmall
+    paymentgateway: 
+      path: /v1.0/paymentgateway/**
+      stripPrefix: false
+      serviceId: paymentgateway
+ 
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.web: INFO
+ 
+spring.resources.static-locations: classpath:/static/

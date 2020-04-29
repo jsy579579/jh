@@ -1,0 +1,438 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="http://fzjobofo.com/link/css/mui.min.css"
+	rel="stylesheet">
+<script src="http://fzjobofo.com/link/js/jquery.min.js"></script>
+<script src="http://fzjobofo.com/link/js/mui.min.js"></script>
+</head>
+<style type="text/css">
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn,
+	em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var,
+	b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table,
+	caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas,
+	details, embed, figure, figcaption, footer, header, menu, nav, output,
+	section, summary, time, mark, audio, video, input {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font-weight: normal;
+	vertical-align: baseline;
+	list-style: none
+}
+
+input {
+	outline: none;
+}
+
+body {
+	background: #efeff4;
+	box-sizing: border-box;
+}
+.card{
+}
+.triangle-facing-left {
+	display: inline-block;
+	border-left: 2px solid;
+	border-bottom: 2px solid;
+	width: 12px;
+	height: 12px;
+	transform: rotate(45deg);
+	margin-top: 12px;
+}
+
+.header_title_fonts {
+	font-size: 12px;
+	color: #666;
+}
+
+.header {
+	height: 44px;
+	width: 100%;
+	position: fixed;
+	line-height: 44px;
+	display: flex;
+	z-index: 44;
+	background: #fff
+}
+
+.back {
+	height: 44px;
+	width: 44px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	text-align: center;
+	line-height: 44px;
+	color: #1485f4;
+}
+
+.header_title {
+	font-size: 18px;
+	text-align: center;
+	width: 100%;
+	line-height: 44px;
+}
+
+.primary_button {
+	line-height: 40px;
+	text-align: center;
+	font-size: 16px;
+	color: #fff;
+	background: #1485f4;
+	border-radius: 5px;
+	margin: 40px 0;
+}
+
+.wrapper {
+	
+}
+
+.card_box {
+	padding: 10px;
+}
+
+.card_bg {
+	background: url(http://fzjobofo.com/img/card_bg.png) center no-repeat;
+	background-size: 100% 100%;
+	height: 93px;
+	width: 100%;
+	position: relative;
+	padding: 18px 30px 0 30px;
+}
+
+.card_no {
+	height: 30px;
+	position: absolute;
+	bottom: 0;
+	line-height: 30px;
+	color: #fff;
+	font-size: 20px;
+	overflow: hidden;
+}
+
+.card_no div {
+	float: left;
+}
+
+.card_no .card_xing {
+	font-size: 22px;
+	margin-right: 15px;
+	padding-top: 6px;
+}
+
+.card_type {
+	height: 40px;
+	width: 100%;
+	position: relative;
+	line-height: 40px;
+	font-size: 16px;
+	color: #fff;
+}
+
+.card_icon {
+	position: absolute;
+	right: 0;
+	top: 10px;
+	font-size: 12px;
+	background: rgba(255, 255, 255, .4);
+	padding: 0 8px;
+	display: inline-block;
+	line-height: 18px;
+	border-radius: 10px;
+}
+
+.sendcode {
+	/*background: #fff;*/
+	
+}
+
+.sendcode_list {
+	
+}
+
+.sendcode_item {
+	height: 44px;
+	background: #fff;
+	margin-bottom: 1px;
+	overflow: hidden;
+	padding: 0 15px;
+	line-height: 44px;
+	position: relative;
+}
+
+.nav_icon {
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%)
+}
+
+.sendcode_item_left {
+	float: left;
+	width: 20%;
+	font-size: 14px;
+	color: #333
+}
+
+.sendcode_item_right {
+	float: left;
+	width: 80%;
+	font-size: 14px;
+	color: #333
+}
+
+.sendcode_item_right>select {
+	margin: 0;
+}
+
+input.sendcode_item_right {
+	margin: 0;
+	border: none;
+	float: left;
+	width: 80%;
+	font-size: 16px;
+}
+
+input.sendcode_item_right[placeholder] {
+	font-size: 14px;
+}
+
+input.sendcode_item_code_left[placeholder] {
+	font-size: 14px;
+}
+
+input.sendcode_item_code_left {
+	border: none;
+	margin: 0;
+	padding: 0;
+	line-height: 44px;
+	float: left;
+	width: 50%;
+	text-align: center;
+	border-right: 1px solid #ddd;
+}
+
+input.sendcode_item_code_right {
+	border: none;
+	margin: 0;
+	padding: 0;
+	line-height: 44px;
+	float: left;
+	width: 50%;
+	color: #238af3;
+}
+.iframe_box{
+	display: none;
+}
+</style>
+<body>
+
+	<div class="wrapper  card">
+		<div class="card_box">
+			<div class="card_bg">
+				<div class="card_type">
+					<div th:text="${bankName}" id="bankName">中国建设银行</div>
+					<div class="card_icon" th:text="${cardType}">贷记卡</div>
+				</div>
+				<div class="card_no">
+					<div class="card_xing">****</div>
+					<div class="card_xing">****</div>
+					<div class="card_xing">****</div>
+					<div id="carno" th:text="${bankCard}">62170025</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<input type="text" style="display: none" id="bankCard" th:value="${bankCard}"> 
+			<input type="text" style="display: none" id="idCard"  th:value="${idCard}"> 
+			<input type="text" style="display: none" id="ip" th:value="${ip}">
+			<input type="text" style="display: none" id="idCard" th:value="${idCard}">
+			<input type="text" style="display: none" id="phone"th:value="${phone}">
+			<input type="text" style="display: none" id="userName"th:value="${userName}">
+			<input type="text" style="display: none" id="rate"th:value="${rate}">
+			<input type="text" style="display: none" id="bankName"th:value="${bankName}">
+			<input type="text" style="display: none" id="extraFee"th:value="${extraFee}">
+		</div>
+		<div class="sendcode">
+			<ul class="sendcode_list">
+				<li class="sendcode_item" id="nones">
+					<div class="sendcode_item_left">省份</div>
+					<div class="sendcode_item_right">
+						<select name="" id="provinceOfBank">
+							<option value="">请选择所在省份</option>
+						</select>
+					</div> <img src="http://fzjobofo.com/img/nav_bottom.png" class="nav_icon"
+					alt="" height="14" width="14">
+				</li>
+				<li class="sendcode_item" id="nones">
+					<div class="sendcode_item_left">城市</div>
+					<div class="sendcode_item_right">
+						<select name="" id="cityOfBank">
+							<option value="">请选择所在市/区</option>
+						</select>
+					</div> <img src="http://fzjobofo.com/img/nav_bottom.png" class="nav_icon"
+					alt="" height="14" width="14">
+				</li>
+			</ul>
+			<div style="padding: 0 15px;">
+				<div class="primary_button" id="btn">确认绑卡</div>
+			</div>
+		</div>
+	</div>
+	<div class="iframe_box"  style="width:100%;height:100%;padding-top: 44px;-webkit-overflow-scrolling:touch;overflow-y:scroll;position:fixed"> 
+            <iframe width="100%" height="100%"  frameborder="0" style="display:block;"  id="myframe" ></iframe>
+     </div>  
+</body>
+<script type="text/javascript">
+
+    $(function () {
+	
+          var ipAddress=$("#ip").val()
+          var nature=$("#nature").val()
+          var phone=$("#phone").val()
+          var bankName=$("#bankName").text()
+         // 银行卡加密显示
+        var str = $('#carno').text()
+        function fun(str,str2) {
+            console.log(str)
+           var str=str.substring(str.length - 4, str.length)
+            $('#carno').text(str)
+        }
+        fun(str);
+        // 银行卡加密显示
+      
+      $("#back").click(function () {
+          try{
+                window.android.invokeMethod(1,["true"])
+            }catch(e){
+                console.log(e)
+            }
+      })
+       // 获取省的信息
+	        $.ajax({
+	            url: ipAddress + '/v1.0/paymentgateway/topup/hqg/getprovince',
+	            type: 'POST',
+	            dataType: 'JSON',
+	            success: function (res) {
+	               console.log(res,"省份获取成功")
+	              if(res.resp_code=="000000"){
+	                  $.each(eval(res.result), function (i, item) {
+	                    $("#provinceOfBank").append('<option value="'+item.code+'">'+item.name+'</option>');
+	                });
+	              }else{
+	                  mui.toast(res.resp_message) 
+	              }
+	            },
+	            error: function (err) {
+	                console.log(err);
+	                 mui.toast("未获取到省份,请检查网络") 
+	            }
+	        });
+	        // 获取省的信息end
+	        
+	        // 获取市的信息
+	     function loadDevice(provinceid) {
+	        $.ajax({
+	            url: ipAddress + '/v1.0/paymentgateway/topup/hqg/getcity',
+	            type: 'POST',
+	            dataType: 'JSON',
+	            data: {
+	                province: provinceid
+	            },
+	            success: function (res) {
+	               console.log(res,"市获取成功")
+	              if(res.resp_code=="000000"){
+	                   $("#cityOfBank").empty();
+	                    $("#cityOfBank").append('<option value="">请选择所在市/区</option>');
+	                    $.each(eval(res.result), function (i, item) {
+	                        $("#cityOfBank").append('<option value="'+item.cityCode+"|"+item.hkCityName+'">'+item.hkCityName+'</option>');
+	                    });
+	              }else{
+	                  mui.toast(res.resp_message) 
+	              }
+	            },
+	             error: function (err) {
+	                console.log(err);
+	                 mui.toast("未获取到城市,请检查网络") 
+	            }
+	        });
+	    }
+	      $("#provinceOfBank").change(function () {
+	       loadDevice($("#provinceOfBank").val());
+	    });
+	    // 获取市的信息end
+
+      $("#btn").click(function () {
+		var bankCard=$('#bankCard').val()
+	   	var idCard=$('#idCard').val()
+	   	var phone=$('#phone').val()
+	   	var bankName=$('#bankName').val()
+	   	var rate=$('#rate').val()
+	   	var userName=$('#userName').val()
+	   	var cityOfBank=$('#cityOfBank').val()
+	   	var extraFee=$('#extraFee').val()
+	   	var cityOfBankArray= cityOfBank.split('|')
+	   	var cityName="4513"
+	   	var cityCode="上海市"
+	   	if(cityOfBankArray instanceof Array){
+	   		cityName=cityOfBankArray[1]
+	   		cityCode=cityOfBankArray[0]
+	   	}
+	   	
+          console.log(cityName,"省份cityName")
+          console.log(cityCode,"市cityCode")
+       
+          $("#btn").attr("disabled", "disabled");
+          $("#btn").css({background:'#999'})
+          $("#btn")[0].innerText="正在加载中..."
+	         $.ajax({
+	           type: "POST",
+	           url: ipAddress+"/v1.0/paymentgateway/topup/mhhqg/registet",
+	           dataType: 'JSON',
+	           data: {
+	        	   bankCard:bankCard,
+	        	   idCard:idCard,
+	        	   phone:phone,
+	        	   bankName:bankName,
+	        	   rate:rate,
+	        	   cityName:cityName,
+	        	   cityCode:cityCode,
+	        	   extraFee:extraFee,
+	        	   userName:userName
+	                  },
+	               success:function(res){
+	                console.log(res,"支付返回")
+	                  if(res.resp_code=="000000"){
+						$(".card").css("display","none");
+							document.getElementById("myframe").src=res.result
+							$(".iframe_box").css("display","block");
+						//   window.location.href=res.result
+						// turntopage(res.result)
+	                }else{
+	                   mui.toast(res.resp_message);
+	                }
+	             }, 
+	             error: function (err) {
+	                 console.log(err)
+	                 mui.toast("交易排队中，请稍后重试！")
+	                 }
+	             });   
+      }) 
+   
+       //跳转页面专用
+        function turntopage(url){
+            mui.openWindow({
+            url:url,
+            });
+          }
+           //跳转页面专用
+    })
+</script>
+</html>

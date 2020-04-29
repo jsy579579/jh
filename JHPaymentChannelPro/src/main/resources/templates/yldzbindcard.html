@@ -1,0 +1,416 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title></title>
+    <link href="https://cdn.bootcss.com/mui/3.7.1/css/mui.min.css" rel="stylesheet">
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/mui/3.7.1/js/mui.min.js"></script>
+</head>
+    <style type="text/css">
+          html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed,
+        figure, figcaption, footer, header,
+        menu, nav, output, section, summary,
+        time, mark, audio, video, input {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font-weight: normal;
+        vertical-align: baseline;
+        list-style: none
+        }
+        input{
+           outline: none;
+        }
+        body{
+          background: #efeff4 ;
+          box-sizing: border-box;
+        }
+         .triangle-facing-left {  
+           display: inline-block;
+          border-left: 2px solid;
+          border-bottom: 2px solid;
+          width: 12px;
+          height: 12px;
+          transform: rotate(45deg);
+          margin-top: 12px;
+         }  
+        .header_title_fonts{
+        font-size: 12px;
+        color: #666; 
+        }
+        .header{
+        height: 44px;
+        width: 100%;
+        position: fixed;
+        line-height: 44px;
+        display: flex;
+        z-index: 44;
+        background: #fff
+        }
+        .back{
+        height: 44px;
+        width: 44px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+        line-height: 44px;
+        color: #1485f4;
+        }
+        .header_title{
+        font-size: 18px;
+        text-align: center;
+        width: 100%;
+        line-height: 44px;
+        }
+         .primary_button{
+          line-height: 40px;
+          text-align: center;
+          font-size: 16px;
+          color: #fff;
+          background: #1485f4;
+          border-radius: 5px;
+          margin:40px 0;
+
+        }
+        .wrapper{
+          padding-top: 44px;
+
+        }
+        .card_box{
+          padding:10px;
+        }
+        .card_bg{
+          background:url("http://fzjobofo.com/img/card_bg.png") center no-repeat;
+          background-size: 100% 100%;
+          height: 120px;
+          width: 100%;
+          position: relative;
+          padding:30px 30px 0 30px;
+
+        }
+        .card_no{
+          height: 30px;
+          position: absolute;
+          bottom: 0;
+          line-height: 30px;
+          color: #fff;
+          font-size: 20px;
+          overflow: hidden;
+        }
+        .card_no div{
+          float: left;
+        }
+        .card_no .card_xing{
+          font-size: 22px;
+          margin-right: 15px;
+          padding-top:6px;
+        }
+        .card_type{
+          height: 40px;
+          width: 100%;
+          position: relative;
+          line-height: 40px;
+          font-size: 16px;
+          color: #fff;
+
+        }
+        .card_icon{
+          position: absolute;
+          right: 0;
+          top: 10px;
+          font-size: 12px;
+          background: rgba(255,255,255,.4);
+          padding:0 8px;
+          display:inline-block;
+          line-height: 18px;
+          border-radius: 10px;
+        }
+        .sendcode{
+          /*background: #fff;*/
+
+        }
+        .sendcode_list{
+          
+        }
+        .sendcode_item{
+          height: 44px;
+          background: #fff;
+          margin-bottom: 1px;
+          overflow: hidden;
+          padding:0 15px;
+          line-height: 44px;
+
+        }
+        .sendcode_item_left{
+          float: left;
+          width: 20%;
+          font-size: 14px;
+          color: #333
+        } 
+        .sendcode_item_right{
+        
+        }
+        input.sendcode_item_right{
+          margin:0;
+          border:none;
+            float: left;
+          width: 80%;
+          font-size:16px;
+        }
+        input.sendcode_item_right[placeholder]{
+          font-size: 14px;
+        }
+         input.sendcode_item_code_left[placeholder]{
+          font-size: 14px;
+         }
+        input.sendcode_item_code_left{
+          border:none;
+          margin:0;
+          padding:0;
+          line-height: 44px;
+          float: left;
+          width: 50%;
+          text-align: center;
+          border-right: 1px solid #ddd;
+        } 
+        input.sendcode_item_code_right{
+             border:none;
+          margin:0;
+          padding:0;
+          line-height: 44px;
+          float: left;
+          width: 50%;
+          color:#238af3;
+        }
+
+    </style>
+<body>
+     <header class="header ">
+        <div class="back" id="back">
+            <span class=" triangle-facing-left" ></span>
+        </div>
+        <h1 class="header_title">签约</h1>
+     </header>
+     <div class="wrapper">
+        <div class="card_box"> 
+          <div class="card_bg">
+              <div class="card_type" >
+                <div th:text="${bankName}">中国建设银行</div>
+               <div  class="card_icon"  th:text="${nature}" >111</div>
+              </div>
+             
+              <div class="card_no"> 
+                <div class="card_xing">****</div>
+                <div class="card_xing">****</div>
+                <div class="card_xing">****</div>
+                <div id="carno" th:text="${bankCard}">62170025</div>
+              </div>
+          </div>
+        </div>
+        <div>
+           <input type="text"  style="display: none" id="orderCode" th:value="${orderCode}">
+           <input type="text"  style="display: none" id="ipAddress" th:value="${ipAddress}">
+           <input type="text"  style="display: none" id="nature" th:value="${nature}">
+        </div>
+        <div class="sendcode">
+            <ul class="sendcode_list">
+                <li class="sendcode_item" id="none">
+                    <div class="sendcode_item_left">有效期</div>
+                    <input type="number" placeholder="示例：09/22输入0922"   id="expiredTime" th:value="${expiredTime}" class="sendcode_item_right">
+                </li> 
+                 <li class="sendcode_item" id="nones">
+                    <div class="sendcode_item_left">安全码</div>
+                    <input type="number" placeholder="卡背面CVN2后三位数字" id="securityCode" th:value="${securityCode}" class="sendcode_item_right">
+                </li>   
+                  <li class="sendcode_item">
+                    <input type="number" id="smsCode" placeholder="请输入验证码" class="sendcode_item_code_left">
+                    <input type="button" class="sendcode_item_code_right"  id="btn_sendCode" value="获取验证码" >
+                </li>
+            </ul>
+            <div style="padding:0 15px;">
+                <div class="primary_button" id="btn">确定</div>
+            </div>
+        </div>
+     </div>
+</body>
+<script type="text/javascript">
+    $(function () {
+          var ipAddress=$("#ipAddress").val()
+          var nature=$("#nature").val()
+          if(nature.indexOf('贷')>=0){
+            console.log("贷记卡")
+          }else{
+            $("#none").hide()
+            $("#nones").hide()
+             console.log("借记卡")
+          }
+         // 银行卡加密显示
+        var str = $('#carno').text()
+        function fun(str,str2) {
+            console.log(str)
+           var str=str.substring(str.length - 4, str.length)
+            $('#carno').text(str)
+        }
+        fun(str);
+        // 银行卡加密显示
+      
+      $("#back").click(function () {
+          try{
+                window.android.invokeMethod(1,["true"])
+            }catch(e){
+                console.log(e)
+            }
+      })
+       // 获取验证码和发送验证码
+        var wait=60;            
+        function time(o) {  
+            if (wait == 0) {  
+              o.setAttribute("disabled", true);  
+                o.value="不可重复获取"
+                $("#btn_sendCode")[0].style.color="#999" 
+                wait = 60;
+            } else {  
+                o.setAttribute("disabled", true);  
+                o.value=  wait+"s后可重新获取" ;  
+                wait--;                     
+                setTimeout(function() {  
+                    time(o)  
+                },  
+                1000)  
+            }  
+        };              
+      // 获取验证码
+       $("#btn_sendCode").click(function(){
+          var orderCode=$('#orderCode').val()
+           var expiredTime=$('#expiredTime').val()
+          var securityCode=$('#securityCode').val()
+          console.log(orderCode)
+          console.log(expiredTime)
+          console.log(securityCode)
+           if(nature.indexOf('贷')>=0){
+                if(expiredTime==""||securityCode==""){
+                  mui.toast("请先输入安全码和有效期")
+                return
+                }
+                if(expiredTime.length>4){
+                    mui.toast("请输入4位有效期") 
+                    return
+                }
+                  if(securityCode.length>3){
+                    mui.toast("请输入3位安全码") 
+                    return
+                }
+          }
+
+          
+            time(this);
+             $.ajax({
+             type: "POST",
+             url: ipAddress+"/v1.0/paymentchannel/topup/yldz/bindcardsms",
+             dataType: "json",
+             data: {
+                 orderCode: orderCode,
+                 expiredTime: expiredTime,
+                 securityCode: securityCode
+                    },
+                 success: function(res){
+                  console.log(res,"验证码返回")
+                 if(res.resp_code=="success"){
+                  
+                   mui.toast('发送验证码成功');
+                }else{
+                   mui.alert(res.resp_message, '提示信息', function() {
+                         try{
+                           window.android.invokeMethod(1,["true"])
+                            }catch(e){
+                                console.log(e)
+                            }
+                        });
+                }
+             }, 
+             error: function (err) {
+                 console.log(err)
+                 mui.toast("交易排队中，请稍后重试！")
+                 }
+             });  
+
+    });
+      $("#btn").click(function () {
+           var orderCode=$('#orderCode').val()
+          var expiredTime=$('#expiredTime').val()
+          var securityCode=$('#securityCode').val()
+          var smsCode=$('#smsCode').val()
+          console.log(expiredTime)
+          console.log(securityCode)
+
+            if(nature.indexOf('贷')>=0){
+                if(expiredTime==""||securityCode==""){
+                  mui.toast("请先输入安全码和有效期")
+                return
+                }
+                if(expiredTime.length>4){
+                    mui.toast("请输入4位有效期") 
+                    return
+                }
+                  if(securityCode.length>3){
+                    mui.toast("请输入3位安全码") 
+                    return
+                }
+          }
+
+          if($("#smsCode").val()==""){
+            mui.toast("请先获取验证码")
+            return
+          }
+      		$("#btn").attr("disabled", "disabled");
+          $("#btn").css({background:'#999'})
+          $("#btn")[0].innerText="正在加载中..."
+         $.ajax({
+           type: "POST",
+           url: ipAddress+"/v1.0/paymentchannel/topup/yldz/bindcard",
+           dataType: "json",
+           data: {
+               orderCode: orderCode,
+               expiredTime: expiredTime,
+               securityCode: securityCode,
+               smsCode: smsCode,
+                  },
+               success: function(res){
+                console.log(res,"绑卡返回")
+                  if(res.resp_code=="success"){
+
+                     turntopage(res.redirect_url)
+                }else{
+                   mui.toast(res.resp_message);
+                }
+              
+             }, 
+             error: function (err) {
+                 console.log(err)
+                 mui.toast("交易排队中，请稍后重试！")
+                 }
+             });   
+      })
+       //跳转页面专用
+        function turntopage(url){
+            mui.openWindow({
+            url:url,
+            });
+          }
+           //跳转页面专用
+    })
+</script>
+</html>

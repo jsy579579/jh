@@ -1,0 +1,47 @@
+server:
+  tomcat: 
+    max-threads: 1000
+    maxPostSize: 0
+    
+multipart.maxFileSize: 100Mb  
+multipart.maxRequestSize: 100Mb 
+
+mysql: 
+  dataBaseName: facade
+
+---
+spring: 
+  profiles: dev
+  application: 
+    name: facade
+  jpa:
+    show-sql: false
+  cloud: 
+    config: 
+      label: xinli
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/
+logging: 
+    level:
+      ROOT: INFO
+      org.springframework.web: INFO
+      org: 
+        hibernate: 
+          SQL: INFO
+---
+spring: 
+  profiles: prod
+  application: 
+    name: facade
+  jpa:
+    show-sql: false
+  cloud: 
+    config: 
+      label: baiyete
+      name: eureka,mysql,${spring.application.name}
+      uri: http://localhost:8099/
+      #uri: http://106.15.47.73:8099/
+logging: 
+    level:
+      ROOT: INFO
+      org.springframework.web: INFO

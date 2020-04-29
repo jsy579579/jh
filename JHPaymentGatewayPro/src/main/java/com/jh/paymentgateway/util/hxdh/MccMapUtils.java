@@ -1,0 +1,108 @@
+package com.jh.paymentgateway.util.hxdh;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class MccMapUtils {
+    private static Map<String, String> mccMap = new HashMap<>();
+
+    public static Map<String, String> init(){
+        if(mccMap.size()<1){
+            mccMap.put("5814", "其他轻餐");
+            mccMap.put("8999", "其他专业服务");
+            mccMap.put("7531", "汽车维修/保养");
+            mccMap.put("4214", "物流");
+            mccMap.put("5541", "加油");
+            mccMap.put("5122", "药店");
+            mccMap.put("5047", "医疗器械");
+            mccMap.put("5969", "直销业务");
+            mccMap.put("8661", "宗教组织");
+            mccMap.put("4814", "电信运营商");
+            mccMap.put("5812", "餐馆");
+            mccMap.put("5462", "面包甜点");
+            mccMap.put("5499", "其他美食");
+            mccMap.put("7911", "KTV");
+            mccMap.put("7297", "洗浴、按摩服务");
+            mccMap.put("5813", "酒吧,茶馆,咖啡厅");
+            mccMap.put("4816", "网吧网咖");
+            mccMap.put("7999", "娱乐服务");
+            mccMap.put("7932", "桌球馆");
+            mccMap.put("7996", "游乐游艺");
+            mccMap.put("7994", "桌面游戏");
+            mccMap.put("8011", "中医养生");
+            mccMap.put("5971", "文化艺术");
+            mccMap.put("7210", "衣物洗护");
+            mccMap.put("7538", "汽车服务");
+            mccMap.put("5995", "宠物店");
+            mccMap.put("7295", "家政");
+            mccMap.put("7699", "维修");
+            mccMap.put("7299", "个人服务");
+            mccMap.put("5697", "裁缝");
+            mccMap.put("7251", "修鞋");
+            mccMap.put("4722", "旅行社");
+            mccMap.put("7922", "演出票务");
+            mccMap.put("5699", "服饰鞋包");
+            mccMap.put("5411", "超市/便利店");
+            mccMap.put("8043", "眼镜店");
+            mccMap.put("5655", "运动户外");
+            mccMap.put("5977", "化妆品");
+            mccMap.put("5641", "母婴亲子");
+            mccMap.put("5942", "书店");
+            mccMap.put("5722", "数码电器");
+            mccMap.put("5094", "珠宝饰品");
+            mccMap.put("5949", "家纺");
+            mccMap.put("5712", "家居建材");
+            mccMap.put("5999", "特色集市");
+            mccMap.put("5943", "办公/文化用品");
+            mccMap.put("7230", "美发");
+            mccMap.put("7298", "美容/SPA");
+            mccMap.put("7997", "健身、各种俱乐部");
+            mccMap.put("5399", "其他综合零售");
+            mccMap.put("4900", "水电煤缴费");
+            mccMap.put("8062", "公立医院");
+            mccMap.put("8220", "公立学校");
+            mccMap.put("8398", "慈善机构");
+            mccMap.put("6012", "金融机构－商品和服务");
+            mccMap.put("5211", "饮品店");
+            mccMap.put("7992", "高尔夫球场馆");
+            mccMap.put("7832", "电影院");
+            mccMap.put("7395", "快照冲印");
+            mccMap.put("5992", "鲜花");
+            mccMap.put("7273", "婚介服务");
+            mccMap.put("7523", "停车场");
+            mccMap.put("5734", "软件、信息咨询");
+            mccMap.put("4215", "快递服务");
+            mccMap.put("6513", "物业管理");
+            mccMap.put("5511", "汽车4S店");
+            mccMap.put("5533", "汽车零配件商店");
+            mccMap.put("9704", "其他房产汽车");
+            mccMap.put("4468", "船运");
+            mccMap.put("4511", "航空公司");
+            mccMap.put("4789", "其他交通类");
+            mccMap.put("8021", "牙医");
+            mccMap.put("8099", "其他医疗服务");
+            mccMap.put("8249", "培训班");
+            mccMap.put("8299", "其他教育类");
+            mccMap.put("5960", "保险代销、直销");
+            mccMap.put("6300", "保险公司");
+            mccMap.put("7995", "彩票");
+            mccMap.put("5933", "典当、拍卖、信托");
+            mccMap.put("6211", "证券公司");
+            mccMap.put("0763", "农业合作");
+            mccMap.put("5311", "百货商店");
+            mccMap.put("5331", "各类杂货店、便利店");
+            mccMap.put("5611", "男子和男童服装及附件商店");
+            mccMap.put("5651", "家庭服装商店");
+            mccMap.put("5976", "假肢店");
+            mccMap.put("5993", "香烟雪茄专卖店");
+            mccMap.put("5998", "其他批发商");
+            mccMap.put("7011", "住宿服务");
+            mccMap.put("7278", "购物服务及会所（贸易、经济服务）");
+            mccMap.put("7311", "广告服务");
+            mccMap.put("7392", "管理、咨询和公共关系服务");
+            mccMap.put("7394", "设备、工具、家俱和电器出租");
+            mccMap.put("7623", "空调及冷藏设备维修店");
+        }
+        return mccMap;
+    }
+}

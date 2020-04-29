@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.TaobaoDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Taobao">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="level" jdbcType="TINYINT" property="level" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="zh" jdbcType="VARCHAR" property="zh" />
+		<result column="ru" jdbcType="VARCHAR" property="ru" />
+		<result column="pt" jdbcType="VARCHAR" property="pt" />
+		<result column="en" jdbcType="VARCHAR" property="en" />
+		<result column="sort" jdbcType="INTEGER" property="sort" />
+		<result column="catid" jdbcType="INTEGER" property="catid" />
+		<result column="catid_use" jdbcType="TINYINT" property="catidUse" />
+		<result column="query" jdbcType="VARCHAR" property="query" />
+		<result column="query_use" jdbcType="TINYINT" property="queryUse" />
+		<result column="weight" jdbcType="REAL" property="weight" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+	</resultMap>
+	<select id="selectLevel" resultMap="BaseResultMap">
+		select
+		id,parent_id,zh,ru,pt,en,sort,catid,catid_use,query,query_use,weight,status
+		from t_taobao where
+		level =2;
+	</select>
+	<select id="selectLevel2" resultMap="BaseResultMap">
+		select
+		id,parent_id,zh,ru,pt,en,sort,catid,catid_use,query,query_use,weight,status
+		from t_taobao where parent_id =#{id} and level=3
+	</select>
+</mapper>

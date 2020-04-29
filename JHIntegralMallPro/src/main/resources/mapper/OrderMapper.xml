@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jh.mircomall.dao.OrderDao">
+	<resultMap id="BaseResultMap" type="com.jh.mircomall.bean.Order">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="order_code" property="orderCode" jdbcType="VARCHAR" />
+		<result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+		<result column="business_id" property="businessId" jdbcType="INTEGER" />
+		<result column="logistics_id" property="logisticsId" jdbcType="INTEGER" />
+		<result column="logistics_num" property="logisticsNum"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="change_time" property="changeTime" jdbcType="TIMESTAMP" />
+		<result column="consignee_id" property="consigneeId" jdbcType="INTEGER" />
+		<result column="out_of_pocket" property="outOfPocket" jdbcType="VARCHAR" />
+		<result column="goods_logo" property="goodsLogo" jdbcType="VARCHAR" />
+		<result column="goods_url" property="goodsUrl" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+		<result column="goods_num" property="goodsNum" jdbcType="INTEGER" />
+		<result column="shipper_id" property="shipperId" jdbcType="INTEGER" />
+
+		<association property="goods" javaType="com.jh.mircomall.bean.Goods"
+			resultMap="com.jh.mircomall.dao.GoodsDao.BaseResultMap" />
+		<association property="business" javaType="com.jh.mircomall.bean.Business"
+			resultMap="com.jh.mircomall.dao.BusinessDao.BaseResultMap" />
+		<association property="consigneeAddress"
+			javaType="com.jh.mircomall.bean.ConsigneeAddress" resultMap="com.jh.mircomall.dao.ConsigneeAddressDao.BaseResultMap" />
+		<association property="provinces" javaType="com.jh.mircomall.bean.Provinces"
+			resultMap="com.jh.mircomall.dao.ProvincesDao.BaseResultMap" />
+		<association property="areas" javaType="com.jh.mircomall.bean.Areas"
+			resultMap="com.jh.mircomall.dao.AreasDao.BaseResultMap"></association>
+		<association property="cities" javaType="com.jh.mircomall.bean.Cities"
+			resultMap="com.jh.mircomall.dao.CitiesDao.BaseResultMap"></association>
+		<association property="user" javaType="com.jh.mircomall.bean.User"
+			resultMap="com.jh.mircomall.dao.UserDao.BaseResultMap"></association>
+		<association property="shipperCode" javaType="com.jh.mircomall.bean.ShipperCode"
+			resultMap="com.jh.mircomall.dao.ShipperCodeDao.BaseResultMap" />
+		<association property="groups" javaType="com.jh.mircomall.bean.Groups"
+			resultMap="com.jh.mircomall.dao.GroupsDao.BaseResultMap" />
+
+	</resultMap>
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.jh.mircomall.bean.Order">
+		insert into t_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="orderCode != null">
+				order_code,
+			</if>
+			<if test="goodsId != null">
+				goods_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="businessId != null">
+				business_id,
+			</if>
+			<if test="logisticsId != null">
+				logistics_id,
+			</if>
+			<if test="logisticsNum != null">
+				logistics_num,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="changeTime != null">
+				change_time,
+			</if>
+			<if test="consigneeId != null">
+				consignee_id,
+			</if>
+			<if test="outOfPocket != null">
+				out_of_pocket,
+			</if>
+			<if test="goodsLogo != null">
+				goods_logo,
+			</if>
+			<if test="goodsUrl != null">
+				goods_url,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="isDelete != null">
+				is_delete,
+			</if>
+			<if test="goodsNum != null">
+				goods_num,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="orderCode != null">
+				#{orderCode,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsId != null">
+				#{goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="businessId != null">
+				#{businessId,jdbcType=INTEGER},
+			</if>
+			<if test="logisticsId != null">
+				#{logisticsId,jdbcType=INTEGER},
+			</if>
+			<if test="logisticsNum != null">
+				#{logisticsNum,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="changeTime != null">
+				#{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="consigneeId != null">
+				#{consigneeId,jdbcType=INTEGER},
+			</if>
+			<if test="outOfPocket != null">
+				#{outOfPocket,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsLogo != null">
+				#{goodsLogo,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsUrl != null">
+				#{goodsUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="isDelete != null">
+				#{isDelete,jdbcType=INTEGER},
+			</if>
+			<if test="goodsNum != null">
+				#{goodsNum,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateOrder" parameterType="com.jh.mircomall.bean.Order">
+		update t_order
+		<set>
+			<if test="orderCode != null">
+				order_code = #{orderCode,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsId != null">
+				goods_id = #{goodsId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="businessId != null">
+				business_id = #{businessId,jdbcType=INTEGER},
+			</if>
+			<if test="logisticsId != null">
+				logistics_id = #{logisticsId,jdbcType=INTEGER},
+			</if>
+			<if test="logisticsNum != null">
+				logistics_num = #{logisticsNum,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="changeTime != null">
+				change_time = #{changeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="consigneeId != null">
+				consignee_id = #{consigneeId,jdbcType=INTEGER},
+			</if>
+			<if test="outOfPocket != null">
+				out_of_pocket = #{outOfPocket,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsLogo != null">
+				goods_logo = #{goodsLogo,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsUrl != null">
+				goods_url = #{goodsUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="isDelete != null">
+				is_delete = #{isDelete,jdbcType=INTEGER},
+			</if>
+			<if test="goodsNum != null">
+				goods_num = #{goodsNum,jdbcType=INTEGER},
+			</if>
+			<if test="shipperId != null">
+				shipper_id = #{shipperId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="selectOrderList" resultMap="BaseResultMap">
+		SELECT
+		sc.code,
+		sc.name,
+		o.id,
+		o.shipper_id,
+		o.`status`,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		o.goods_num,
+		o.goods_id,
+		o.user_id,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.goods_price,
+		g.is_delete,
+		g.original_price,
+		o.logistics_num,
+		a.area,
+		t.city,
+		p.province,
+		gp.groups_name
+		FROM
+		t_order o
+		left join
+		t_consignee_address c on
+		(c.id =
+		o.consignee_id)
+		left
+		join
+		t_business b
+		on
+		(b.id = o.business_id)
+		left join
+		t_goods g on
+		(g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left
+		join
+		t_user u on ( u.id =
+		o.user_id)
+		left join
+		t_provinces
+		p on
+		(p.provinceid=c.provinceid )
+		left
+		join
+		t_cities t
+		on
+		(t.cityid
+		=c.cityid )
+		left join
+		t_areas a on(a.areaid =
+		c.areaid )
+		left
+		join
+		t_shipper_code sc
+		on(sc.id =
+		o.shipper_id)
+		where
+		o.user_id
+		=#{userid}
+		and
+		o.is_delete ='0'
+		order by o.id desc
+		LIMIT
+		#{offset},#{limit}
+	</select>
+	<select id="selectOrderByStatus" resultMap="BaseResultMap">
+		SELECT
+		sc.code,
+		sc.name,
+		o.shipper_id,
+		o.`status`,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.goods_price,
+		g.is_delete,
+		g.original_price,
+		o.goods_num,
+		o.logistics_num,
+		o.id,
+		gp.groups_name
+		FROM
+		t_order
+		o
+		LEFT JOIN
+		t_consignee_address c ON
+		(c.id = o.consignee_id)
+		LEFT JOIN
+		t_business b
+		ON (b.id = o.business_id)
+		LEFT JOIN t_goods g ON
+		(g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left join
+		t_shipper_code sc
+		on(sc.id =
+		o.shipper_id)
+		WHERE
+		o.`status` =
+		#{status}
+		AND o.user_id
+		=#{userId}
+		AND
+		o.is_delete ='0'
+		order
+		by
+		o.change_time desc
+		LIMIT
+		#{offset},#{limit}
+	</select>
+
+	<select id="selectOrderById" resultMap="BaseResultMap">
+		SELECT
+		sc.code,
+		sc.name,
+		o.shipper_id,
+		o.`status`,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		o.goods_num,
+		o.goods_id,
+		o.user_id,
+		o.id,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.is_delete,
+		o.logistics_num,
+		g.goods_price,
+		g.original_price,
+		gp.groups_name
+		FROM
+		t_order
+		o
+		LEFT
+		JOIN
+		t_consignee_address
+		c ON (c.id =
+		o.consignee_id)
+		LEFT JOIN
+		t_business b
+		ON (b.id =
+		o.business_id)
+		LEFT JOIN
+		t_goods g ON (g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left
+		join
+		t_shipper_code sc on(sc.id =
+		o.shipper_id)
+		WHERE
+		o.id=#{id}
+	</select>
+	<select id="selectOrderByOrderCode" resultMap="BaseResultMap">
+		SELECT
+		sc.code,
+		sc.name,
+		o.shipper_id,
+		o.`status`,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		o.goods_num,
+		o.goods_id,
+		o.user_id,
+		o.id,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.is_delete,
+		o.logistics_num,
+		g.goods_price,
+		g.original_price,
+		gp.groups_name
+		FROM
+		t_order
+		o
+		LEFT
+		JOIN
+		t_consignee_address
+		c ON (c.id =
+		o.consignee_id)
+		LEFT JOIN
+		t_business b
+		ON (b.id =
+		o.business_id)
+		LEFT JOIN
+		t_goods g ON (g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left
+		join
+		t_shipper_code sc on(sc.id =
+		o.shipper_id)
+		WHERE
+		o.order_code=#{orderCode}
+	</select>
+
+	<select id="selectOrderByGoodsId" resultMap="BaseResultMap">
+		SELECT
+		sc.code,
+		sc.name,
+		o.shipper_id,
+		o.`status`,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		o.goods_num,
+		o.goods_id,
+		o.user_id,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.goods_price,
+		g.is_delete,
+		g.original_price,
+		o.logistics_num,
+		o.id,
+		gp.groups_name
+		FROM
+		t_order o
+		LEFT JOIN
+		t_consignee_address c
+		ON
+		(c.id = o.consignee_id)
+		LEFT JOIN
+		t_business b
+		ON
+		(b.id =
+		o.business_id)
+		LEFT JOIN t_goods g ON (g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left
+		join
+		t_shipper_code sc
+		on(sc.id =
+		o.shipper_id)
+		WHERE
+		g.id=#{goodsid}
+		and
+		o.is_delete ='0'
+	</select>
+	<select id="businessOrderPage" resultMap="BaseResultMap">
+		SELECT
+		o.`status`,
+		sc.code,
+		sc.name,
+		o.shipper_id,
+		o.create_time,
+		o.goods_url,
+		o.order_code,
+		o.out_of_pocket,
+		o.goods_num,
+		o.goods_id,
+		o.user_id,
+		b.business_name,
+		b.brand_id,
+		c.consignee_phone,
+		c.consignee_name,
+		c.detailed_addr,
+		g.goods_coin,
+		g.goods_context,
+		g.goods_logo,
+		g.goods_details,
+		g.goods_name,
+		g.goods_price,
+		g.is_delete,
+		gp.groups_name,
+		g.original_price,
+		o.logistics_num,
+		o.id,
+		a.area,
+		t.city,
+		p.province
+		FROM
+		t_order o
+		left join
+		t_consignee_address c on
+		(c.id =
+		o.consignee_id)
+		left
+		join
+		t_business b
+		on
+		(b.id = o.business_id)
+		left join
+		t_goods g on
+		(g.id =
+		o.goods_id)
+		left join
+		t_groups gp
+		on(gp.id=g.oodsg_type_id)
+		left
+		join
+		t_user u on ( u.id =
+		o.user_id)
+		left join
+		t_provinces
+		p on
+		(p.provinceid=c.provinceid )
+		left
+		join
+		t_cities t
+		on
+		(t.cityid
+		=c.cityid )
+		left join
+		t_areas a on(a.areaid =
+		c.areaid )
+		left
+		join
+		t_shipper_code sc
+		on(sc.id =
+		o.shipper_id)
+		where
+		o.business_id
+		=#{businessId}
+		and
+		(o.status = '2' or o.status ='3')
+		order by
+		o.id desc
+		LIMIT
+		#{offset},#{limit}
+
+	</select>
+	<select id="selectOrderCount" resultType="Integer">
+		select count(*) from
+		t_order where user_id = #{userId} and is_delete ='0'
+	</select>
+	<select id="selectOrderCountByStatus" resultType="Integer">
+		select count(*)
+		from
+		t_order where user_id = #{userId} and is_delete ='0' and
+		status
+		=#{status}
+	</select>
+	<select id="selectBusinessOrderCount" resultType="Integer">
+		select count(*)
+		from t_order where business_id =#{businessId} and status='2' or status='3'
+	</select>
+</mapper>
